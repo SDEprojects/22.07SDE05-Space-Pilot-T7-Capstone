@@ -33,6 +33,9 @@ public class Game {
     System.out.flush();
   }
 
+  public static void showCommands() {
+    System.out.println("show commands");
+  }
 
 }
 
