@@ -21,6 +21,11 @@ public class Main {
       // save user response and sanitize it (turn it into lower-case and trim whitespaces)
       userInput = reader.readLine().trim().toLowerCase();
       System.out.println("You entered: " + userInput);
+//      if (userInput.contains("go")){
+//        if (userInput.contains("moon")){
+//
+//        }
+//      }
     } while (keepPlaying(userInput));
   }
 
