@@ -5,7 +5,7 @@ public class Game {
     System.out.flush();
   }
 
-  public void displayAscii() {
+  public void printTitle() {
     System.out.println(
         "     _______..______      ___       ______  _______       .______    __   __        ______   .___________.\n"
             +

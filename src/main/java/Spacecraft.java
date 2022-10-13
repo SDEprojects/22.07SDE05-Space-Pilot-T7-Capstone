@@ -3,17 +3,10 @@ import java.util.Collection;
 
 public class Spacecraft {
 
-  private static Spacecraft spacecraft = null;
   private String name = "Bermoona Triangle";
   private int health = 5;
-  private Planet currentPlanet = Earth;
+  private Planet currentPlanet = new Planet("earth", "sandstorm", 9, 6371, (int) (6 * 10E24));
   private Collection<Person> passengers = new ArrayList<Person>();
-
-  Spacecraft(){
-    if(spacecraft == null){
-      spacecraft = new Spacecraft();
-    }
-  }
 
   public String getName() {
     return name;
