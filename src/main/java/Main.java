@@ -13,24 +13,51 @@ public class Main {
 
     Game game1 = new Game();
     Game.clearConsole();
-    game1.displayAscii();
+    game1.printTitle();
+    // TODO: print how to play information (commands, etc)
 
     do {
       // prompt the user to enter a command
       System.out.println("Please enter your next command");
       // save user response and sanitize it (turn it into lower-case and trim whitespaces)
       userInput = reader.readLine().trim().toLowerCase();
-      System.out.println("You entered: " + userInput);
-//      if (userInput.contains("go")){
-//        if (userInput.contains("moon")){
-//
-//        }
-//      }
+      String[] userCommand = textParser(userInput);
+
+      if (userCommand[0].equals("go")) {
+        if (userCommand[1].equals("moon")) {
+          // do something
+        }
+        if (userCommand[1].equals("mars")) {
+          // do something
+        }
+        if (userCommand[1].equals("mercury")) {
+          // do something
+        }
+      }
+
+      if (userCommand[0].equals("help")) {
+        Game.showCommands();
+      }
+
+      if (userCommand[0].equals("fix")) {
+        // fix something
+      }
+
     } while (keepPlaying(userInput));
   }
 
-  private static boolean keepPlaying(String command)
-      throws IOException {
+  // Our own customized text parser, replace with a text parser API later
+  private static String[] textParser(String text) {
+    String[] result = new String[2];
+    String[] splitText = text.split(" ");
+    String verb = splitText[0]; // First word
+    String noun = splitText[splitText.length - 1]; // Last word
+    result[0] = verb;
+    result[1] = noun;
+    return result;
+  }
+
+  private static boolean keepPlaying(String command) throws IOException {
     // check if user input was "quit"
     if (command.equals("quit")) {
       // return false, which will break the while loop and end the program
