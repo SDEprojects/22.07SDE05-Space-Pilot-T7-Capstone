@@ -65,9 +65,5 @@ public class Game {
     );
   }
 
-  public static void showCommands() {
-    System.out.println("show commands");
-  }
-
 }
 
