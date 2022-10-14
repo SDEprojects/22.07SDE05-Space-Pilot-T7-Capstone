@@ -48,7 +48,7 @@ public class GameText {
         "A former Space Force Astronaut, Colonel Walker, receives a call from NASA.\n" +
         "He is asked to do his one last dance: a Search and Rescue mission.\n" +
         "Given the urgency of the situation, the international community\n" +
-        "manages to cooperate and quickly construct one special spacecraft\n" +
+        "manages to cooperate and quickly construct one special spacecraft.\n" +
         "But time is not on Walker’s side.\n" +
         "Colonel Walker must rescue every stranded astronaut\n" +
         "and safely bring them home in just one trip.\n" +
@@ -76,7 +76,7 @@ public class GameText {
         "        - load\n" +
         "        - unload\n" +
         "\n" +
-        "To see this menu again, enter \"help\".\n" +
+        "To see all available commands, enter \"help\".\n" +
         "\n" +
         "To quit the program, enter \"quit\"."
     );
