@@ -2,15 +2,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
+
+  private static final HashMap<String, String> COMMANDS = new HashMap<>() {{
+    put("Help", "Displays available commands");
+    put("Quit", "Quit the game");
+    put("go", "Move the spacecraft when followed by a location (e.g., go mars)");
+  }};
 
   public static void main(String[] args) throws IOException {
     Reader input = new InputStreamReader(System.in);
     BufferedReader reader = new BufferedReader(input);
     // variable used to save user input
     String userInput;
-
+  
     Game game1 = new Game();
     Game.clearConsole();
     game1.printTitle();
@@ -36,7 +44,7 @@ public class Main {
       }
 
       if (userCommand[0].equals("help")) {
-        Game.showCommands();
+        displayCommands();
       }
 
       if (userCommand[0].equals("fix")) {
@@ -55,6 +63,13 @@ public class Main {
     result[0] = verb;
     result[1] = noun;
     return result;
+  }
+
+  private static void displayCommands() {
+    for (String command : COMMANDS.keySet()) {
+      String explanation = COMMANDS.get(command);
+      System.out.println(command + ": " + explanation);
+    }
   }
 
   private static boolean keepPlaying(String command) throws IOException {
