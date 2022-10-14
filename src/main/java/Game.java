@@ -48,21 +48,21 @@ public class Game {
         + "Game Instructions \n"
         + "Col. Walker starts off on Planet Earth. Help him move around the solar \n"
         + "system by using the \"go\" command. For example:\n"
-        + "go to the moon\n"
-        + "go to Mars\n"
-        + "go to Mercury\n"
-        + "go to Earth"
+        + "   - go to the moon\n"
+        + "   - go to Mars\n"
+        + "   - go to Mercury\n"
+        + "   - go to Earth"
         + "Keep in mind that the spacecraft takes a hit every time it encounters a\n"
         + "sandstorm. Thankfully, some of the passengers you'll be picking up\n"
         + "are engineers. Issue the following command to do some repairs:\n"
-        + "repair spacecraft\n"
+        + "   - repair spacecraft\n"
         + "If the spacecraft's condition (health) turns 0, everyone on board dies.\n"
         + "As Col. Walker hops from planet to planet, he must load passengers – and \n"
         + "eventually unload them on planet Earth. Loading and unloading passengers \n"
         + "can be done using the following commands:\n"
-        + "load passengers\n"
-        + "unload passengers\n"
-        //MEDIOCRE INSTRUCTIONS -- UPDATE LATER ONCE CODING COMPLETE
+        + "   - load passengers\n"
+        + "   - unload passengers\n"
+        //TODO: MEDIOCRE INSTRUCTIONS -- UPDATE LATER ONCE CODING COMPLETE
     );
   }
 
