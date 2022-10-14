@@ -37,12 +37,9 @@ public class Controller {
     view.printHowToPlay();
     System.out.println();
 
-//    System.out.println("Cleared console."); //TODO: This is for testing, remove before 1.1 release
-
-    // TODO: print game intro
-    // TODO: print how to play info
-
     while (!game.isOver()) { // While game is not over
+      // print current game info
+      updateView();
       // Prompt the user to enter their next command (saved as userInput)
       getUserInput("Please enter your next command");
       // Parse their command (verb and noun)
@@ -58,13 +55,16 @@ public class Controller {
 
     if (command[0].equals("go")) {
       if (command[1].equals("moon")) {
-        // do something
+        game.getSpacecraft().setCurrentPlanet(game.getMoon());
       }
       if (command[1].equals("mars")) {
-        // do something
+        game.getSpacecraft().setCurrentPlanet(game.getMars());
       }
       if (command[1].equals("mercury")) {
-        // do something
+        game.getSpacecraft().setCurrentPlanet(game.getMercury());
+      }
+      if (command[1].equals("earth")) {
+        game.getSpacecraft().setCurrentPlanet(game.getEarth());
       }
     }
 
@@ -72,8 +72,10 @@ public class Controller {
       view.displayCommands();
     }
 
-    if (command[0].equals("fix")) {
-      // fix something
+    if (command[0].equals("repair")) {
+      // check if at least 1 engineer is on board
+      // if so, repair the spacecraft
+      // if not, display appropriate message
     }
   }
 
@@ -91,7 +93,8 @@ public class Controller {
   }
 
   public void updateView() {
-    view.displayGameState(game.getRemainingAstro(), game.getRemainingDays(), game.getShipHealth());
+    view.displayGameState(game.getRemainingAstro(), game.getRemainingDays(), game.getShipHealth(),
+        game.getSpacecraft().getCurrentPlanet().getName());
   }
 
   private static String[] commandParser(String text) {
