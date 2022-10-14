@@ -1,3 +1,7 @@
+package model;
+
+import model.Planet;
+
 public class Person {
 
   private String name;

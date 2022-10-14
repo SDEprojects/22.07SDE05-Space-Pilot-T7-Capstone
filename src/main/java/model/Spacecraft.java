@@ -1,3 +1,5 @@
+package model;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -35,6 +37,5 @@ public class Spacecraft {
   public void setPassengers(Collection<Person> passengers) {
     this.passengers = passengers;
   }
-
 
 }

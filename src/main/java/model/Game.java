@@ -5,13 +5,14 @@ public class Game {
   private boolean isOver;
   private int remainingAstro;
   private int remainingDays;
-
   private int shipHealth;
+  private Spacecraft spacecraft;
 
   public Game() {
     isOver = false;
     remainingAstro = 5;
     remainingDays = 10;
+    spacecraft = new Spacecraft();
   }
 
   public boolean isOver() { // Getter for isOver
