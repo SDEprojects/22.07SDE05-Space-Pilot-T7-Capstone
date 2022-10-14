@@ -52,16 +52,15 @@ public class Game {
         + "   - go to Mars\n"
         + "   - go to Mercury\n"
         + "   - go to Earth"
-        + "Keep in mind that the spacecraft takes a hit every time it encounters a\n"
-        + "sandstorm. Thankfully, some of the passengers you'll be picking up\n"
-        + "are engineers. Issue the following command to do some repairs:\n"
-        + "   - repair spacecraft\n"
-        + "If the spacecraft's condition (health) turns 0, everyone on board dies.\n"
+        + "In case the spacecraft is damaged, you can repair it if you have more than\n"
+        +"one engineer onboard. If the spacecraft's health turns 0, it will explode."
+        + "Use the following command to repair the spacecraft:\n"
+        + "   - repair\n"
         + "As Col. Walker hops from planet to planet, he must load passengers – and \n"
         + "eventually unload them on planet Earth. Loading and unloading passengers \n"
         + "can be done using the following commands:\n"
-        + "   - load passengers\n"
-        + "   - unload passengers\n"
+        + "   - load\n"
+        + "   - unload\n"
         //TODO: MEDIOCRE INSTRUCTIONS -- UPDATE LATER ONCE CODING COMPLETE
     );
   }
