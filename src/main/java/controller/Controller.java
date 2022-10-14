@@ -13,22 +13,38 @@ public class Controller {
   private final BufferedReader reader; // Just a buffered reader used to read in what user enters
 
   public Controller(Game game, GameText view, BufferedReader reader) {
+    this.userInput = "";
     this.game = game;
     this.view = view;
     this.reader = reader;
   }
 
   public void play() throws IOException {
-    GameText.clearConsole();
-    System.out.println("Cleared console."); //TODO: This is for testing, remove before 1.1 release
-
     view.printTitle();
+    System.out.println();
+    while (!userInput.equals("y")) {
+      getUserInput("Press Y to continue");
+    }
+    userInput = "";
+    GameText.clearConsole();
+    view.printIntro();
+    System.out.println();
+    while (!userInput.equals("y")) {
+      getUserInput("Press Y to continue");
+    }
+    userInput = "";
+    GameText.clearConsole();
+    view.printHowToPlay();
+    System.out.println();
+
+//    System.out.println("Cleared console."); //TODO: This is for testing, remove before 1.1 release
+
     // TODO: print game intro
     // TODO: print how to play info
 
     while (!game.isOver()) { // While game is not over
       // Prompt the user to enter their next command (saved as userInput)
-      getUserInput();
+      getUserInput("Please enter your next command");
       // Parse their command (verb and noun)
       String[] userCommand = commandParser(userInput);
       nextMove(userCommand);
@@ -61,9 +77,9 @@ public class Controller {
     }
   }
 
-  public void getUserInput() throws IOException {
-    // prompt the user to enter a command
-    System.out.println("Please enter your next command");
+  public void getUserInput(String prompt) throws IOException {
+    // print the prompt message
+    System.out.println(prompt);
     // sanitize user response (turn it into lower-case and trim whitespaces) and save it to userInput
     userInput = reader.readLine().trim().toLowerCase();
   }
