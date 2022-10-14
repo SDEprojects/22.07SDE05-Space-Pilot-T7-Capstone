@@ -5,7 +5,7 @@ public class Game {
     System.out.flush();
   }
 
-  public void printTitle() {
+  public static void printTitle() {
     System.out.println(
         "     _______..______      ___       ______  _______       .______    __   __        ______   .___________.\n"
             +
@@ -33,7 +33,7 @@ public class Game {
 
   }
 
-  public void showBackgroundInfoAndGameInstructions() {
+  public static void showBackgroundInfoAndGameInstructions() {
     System.out.println("*ring ring, ring ring*\n"
         + "A few months after his retirement, former Space Force Astronaut \n"
         + "Colonel Walker receives a call from NASA. He is asked to do \n"
@@ -47,7 +47,7 @@ public class Game {
         + "__________________________________________________________________________\n"
         + "Game Instructions \n"
         + "Col. Walker starts off on Planet Earth. Help him move around the solar \n"
-        + "system by using the following commands: \n"
+        + "system by using the \"go\" command. For example:\n"
         + "go to the moon\n"
         + "go to Mars\n"
         + "go to Mercury\n"
@@ -56,9 +56,10 @@ public class Game {
         + "sandstorm. Thankfully, some of the passengers you'll be picking up\n"
         + "are engineers. Issue the following command to do some repairs:\n"
         + "repair spacecraft\n"
-        + "If the spacecraft's safety (health?) gage hits 0, everyone on board dies\n"
+        + "If the spacecraft's condition (health) turns 0, everyone on board dies.\n"
         + "As Col. Walker hops from planet to planet, he must load passengers – and \n"
-        + "eventually unload them on planet Earth – using the following commands:\n"
+        + "eventually unload them on planet Earth. Loading and unloading passengers \n"
+        + "can be done using the following commands:\n"
         + "load passengers\n"
         + "unload passengers\n"
         //MEDIOCRE INSTRUCTIONS -- UPDATE LATER ONCE CODING COMPLETE
