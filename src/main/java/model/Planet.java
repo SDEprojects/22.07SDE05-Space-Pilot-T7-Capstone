@@ -18,6 +18,10 @@ public class Planet {
     this.mass = mass;
   }
 
+  public String getName() {
+    return name;
+  }
+
   public int getGravity() {
     return gravity;
   }
@@ -38,4 +42,5 @@ public class Planet {
     }
     return null;
   }
+
 }

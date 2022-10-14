@@ -1,9 +1,6 @@
 package view;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import java.io.FileReader;
-import java.util.HashMap;
 
 public class GameText {
 
@@ -22,20 +19,20 @@ public class GameText {
   public void printTitle() {
     System.out.println(
         ANSI_BLUE +
-        "░██████╗██████╗░░█████╗░░█████╗░███████╗  ██████╗░██╗██╗░░░░░░█████╗░████████╗██╗\n" +
-        "██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔══██╗██║██║░░░░░██╔══██╗╚══██╔══╝╚═╝\n" +
-        "╚█████╗░██████╔╝███████║██║░░╚═╝█████╗░░  ██████╔╝██║██║░░░░░██║░░██║░░░██║░░░░░░\n" +
-        "░╚═══██╗██╔═══╝░██╔══██║██║░░██╗██╔══╝░░  ██╔═══╝░██║██║░░░░░██║░░██║░░░██║░░░░░░\n" +
-        "██████╔╝██║░░░░░██║░░██║╚█████╔╝███████╗  ██║░░░░░██║███████╗╚█████╔╝░░░██║░░░██╗\n" +
-        "╚═════╝░╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚══════╝  ╚═╝░░░░░╚═╝╚══════╝░╚════╝░░░░╚═╝░░░╚═╝\n" +
-        "\n" +
-        "██╗░░██╗░█████╗░███╗░░░███╗███████╗██████╗░░█████╗░██╗░░░██╗███╗░░██╗██████╗░\n" +
-        "██║░░██║██╔══██╗████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░░██║████╗░██║██╔══██╗\n" +
-        "███████║██║░░██║██╔████╔██║█████╗░░██████╦╝██║░░██║██║░░░██║██╔██╗██║██║░░██║\n" +
-        "██╔══██║██║░░██║██║╚██╔╝██║██╔══╝░░██╔══██╗██║░░██║██║░░░██║██║╚████║██║░░██║\n" +
-        "██║░░██║╚█████╔╝██║░╚═╝░██║███████╗██████╦╝╚█████╔╝╚██████╔╝██║░╚███║██████╔╝\n" +
-        "╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚═╝╚══════╝╚═════╝░░╚════╝░░╚═════╝░╚═╝░░╚══╝╚═════╝░\n"
-        + ANSI_RESET
+            "░██████╗██████╗░░█████╗░░█████╗░███████╗  ██████╗░██╗██╗░░░░░░█████╗░████████╗██╗\n" +
+            "██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔══██╗██║██║░░░░░██╔══██╗╚══██╔══╝╚═╝\n" +
+            "╚█████╗░██████╔╝███████║██║░░╚═╝█████╗░░  ██████╔╝██║██║░░░░░██║░░██║░░░██║░░░░░░\n" +
+            "░╚═══██╗██╔═══╝░██╔══██║██║░░██╗██╔══╝░░  ██╔═══╝░██║██║░░░░░██║░░██║░░░██║░░░░░░\n" +
+            "██████╔╝██║░░░░░██║░░██║╚█████╔╝███████╗  ██║░░░░░██║███████╗╚█████╔╝░░░██║░░░██╗\n" +
+            "╚═════╝░╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚══════╝  ╚═╝░░░░░╚═╝╚══════╝░╚════╝░░░░╚═╝░░░╚═╝\n" +
+            "\n" +
+            "██╗░░██╗░█████╗░███╗░░░███╗███████╗██████╗░░█████╗░██╗░░░██╗███╗░░██╗██████╗░\n" +
+            "██║░░██║██╔══██╗████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░░██║████╗░██║██╔══██╗\n" +
+            "███████║██║░░██║██╔████╔██║█████╗░░██████╦╝██║░░██║██║░░░██║██╔██╗██║██║░░██║\n" +
+            "██╔══██║██║░░██║██║╚██╔╝██║██╔══╝░░██╔══██╗██║░░██║██║░░░██║██║╚████║██║░░██║\n" +
+            "██║░░██║╚█████╔╝██║░╚═╝░██║███████╗██████╦╝╚█████╔╝╚██████╔╝██║░╚███║██████╔╝\n" +
+            "╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚═╝╚══════╝╚═════╝░░╚════╝░░╚═════╝░╚═╝░░╚══╝╚═════╝░\n"
+            + ANSI_RESET
     );
   }
 
@@ -43,55 +40,57 @@ public class GameText {
     // TODO: Implement GSON instead of using plain string
     System.out.println(
         "A week ago, an unusual solar activity destroyed space navigation systems\n" +
-        "and life-support devices on multiple spaceships, stranding astronauts\n" +
-        "on the Moon, Mars, and Mercury.\n" +
-        "A former Space Force Astronaut, Colonel Walker, receives a call from NASA.\n" +
-        "He is asked to do his one last dance: a Search and Rescue mission.\n" +
-        "Given the urgency of the situation, the international community\n" +
-        "manages to cooperate and quickly construct one special spacecraft.\n" +
-        "But time is not on Walker’s side.\n" +
-        "Colonel Walker must rescue every stranded astronaut\n" +
-        "and safely bring them home in just one trip.\n" +
-        "NASA expects Colonel Walker to bring back at least 4/5 (four-fifths)\n" +
-        "of the stranded astronauts (overpopulation, sorry)."
+            "and life-support devices on multiple spaceships, stranding astronauts\n" +
+            "on the Moon, Mars, and Mercury.\n" +
+            "A former Space Force Astronaut, Colonel Walker, receives a call from NASA.\n" +
+            "He is asked to do his one last dance: a Search and Rescue mission.\n" +
+            "Given the urgency of the situation, the international community\n" +
+            "manages to cooperate and quickly construct one special spacecraft.\n" +
+            "But time is not on Walker’s side.\n" +
+            "Colonel Walker must rescue every stranded astronaut\n" +
+            "and safely bring them home in just one trip.\n" +
+            "NASA expects Colonel Walker to bring back at least 4/5 (four-fifths)\n" +
+            "of the stranded astronauts (overpopulation, sorry)."
     );
   }
 
   public void printHowToPlay() {
     System.out.println(
         "                   HOW TO PLAY\n\n" +
-        "To go to a different planet, use the \"go\" command.\n" +
-        "    Go Command Usage Example:\n" +
-        "        - go to the moon\n" +
-        "        - go to Mars\n" +
-        "\n" +
-        "If the spacecraft is damaged, you can use the \"repair\" command.\n" +
-        "To use \"repair\", there must be at least one engineer onboard.\n" +
-        "If the spacecraft's health turns 0, it will explode.\n" +
-        "    Repair Command Usage Example:\n" +
-        "        - repair\n" +
-        "\n" +
-        "To load and unload passengers, use the \"load\" and \"unload\" commands.\n" +
-        "    Load/Unload Command Usage Example:\n" +
-        "        - load\n" +
-        "        - unload\n" +
-        "\n" +
-        "To see all available commands, enter \"help\".\n" +
-        "\n" +
-        "To quit the program, enter \"quit\"."
+            "To go to a different planet, use the \"go\" command.\n" +
+            "    Go Command Usage Example:\n" +
+            "        - go to the moon\n" +
+            "        - go to Mars\n" +
+            "\n" +
+            "If the spacecraft is damaged, you can use the \"repair\" command.\n" +
+            "To use \"repair\", there must be at least one engineer onboard.\n" +
+            "If the spacecraft's health turns 0, it will explode.\n" +
+            "    Repair Command Usage Example:\n" +
+            "        - repair\n" +
+            "\n" +
+            "To load and unload passengers, use the \"load\" and \"unload\" commands.\n" +
+            "    Load/Unload Command Usage Example:\n" +
+            "        - load\n" +
+            "        - unload\n" +
+            "\n" +
+            "To see all available commands, enter \"help\".\n" +
+            "\n" +
+            "To quit the program, enter \"quit\"."
     );
   }
 
-  public void displayGameState(int remainingAstro, int remainingDays, int shipHealth) {
+  public void displayGameState(int remainingAstro, int remainingDays, int shipHealth,
+      String planetName) {
     System.out.println("Number of Remaining Astronauts: " + remainingAstro);
     System.out.println("Number of Remaining Days: " + remainingDays);
     System.out.println("Ship's Condition: " + shipHealth);
+    System.out.println("Current Planet: " + planetName);
   }
 
   public void displayCommands() {
     System.out.println(
         "      AVAILABLE COMMANDS:\n\n" +
-        "Help: Displays available commands\n" +
+            "Help: Displays available commands\n" +
             "go: Move the spacecraft when followed by a location (e.g., go mars)\n" +
             "repair: Repair spacecraft (only possible if an engineer is onboard)\n" +
             "load: Load a passenger to the spacecraft\n" +
