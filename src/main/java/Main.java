@@ -11,6 +11,9 @@ public class Main {
     put("Help", "Displays available commands");
     put("Quit", "Quit the game");
     put("go", "Move the spacecraft when followed by a location (e.g., go mars)");
+    put("repair", "Repair spacecraft (only possible if an engineer is onboard)");
+    put("load", "Load a passenger to the spacecraft");
+    put("unload", "Unload a passenger from the spacecraft");
   }};
 
   public static void main(String[] args) throws IOException {
@@ -21,8 +24,8 @@ public class Main {
   
     Game game1 = new Game();
     Game.clearConsole();
-    game1.printTitle();
-    // TODO: print how to play information (commands, etc)
+    Game.printTitle();
+    Game.showBackgroundInfoAndGameInstructions();
 
     do {
       // prompt the user to enter a command
