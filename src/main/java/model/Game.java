@@ -18,9 +18,9 @@ public class Game {
     remainingDays = 10;
     spacecraft = new Spacecraft();
     earth = new Planet("Earth", "WWIII", 9, 6300, 100);
-    moon = new Planet("Moon", "WWIV", 2, 1000, 1);
-    mars = new Planet("Mars", "WWV", 4, 2100, 10);
-    mercury = new Planet("Mercury", "WWVI", 4, 1500, 5);
+    moon = new Planet("Moon", "asteroid", 2, 1000, 1);
+    mars = new Planet("Mars", "sand storm", 4, 2100, 10);
+    mercury = new Planet("Mercury", "solar flare", 4, 1500, 5);
     spacecraft.setCurrentPlanet(earth);
   }
 
