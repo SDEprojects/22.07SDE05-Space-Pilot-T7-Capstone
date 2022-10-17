@@ -53,18 +53,7 @@ public class Controller {
     }
 
     if (command[0].equals("go")) {
-      if (command[1].equals("moon")) {
-        game.getSpacecraft().setCurrentPlanet(game.getMoon());
-      }
-      if (command[1].equals("mars")) {
-        game.getSpacecraft().setCurrentPlanet(game.getMars());
-      }
-      if (command[1].equals("mercury")) {
-        game.getSpacecraft().setCurrentPlanet(game.getMercury());
-      }
-      if (command[1].equals("earth")) {
-        game.getSpacecraft().setCurrentPlanet(game.getEarth());
-      }
+      moveSpacecraft(command[1]);
     }
 
     if (command[0].equals("help")) {
@@ -72,6 +61,7 @@ public class Controller {
     }
 
     if (command[0].equals("repair")) {
+      int engineerCount = 0;
       // iterate over the current passengers on board
       for (Person passenger : game.getSpacecraft().getPassengers()) {
         // check if at least 1 engineer is on board
@@ -79,10 +69,30 @@ public class Controller {
           // if so, repair the spacecraft using the engineer's repair method
           Engineer engineer = (Engineer) passenger;
           engineer.repairSpacecraft(game.getSpacecraft());
+          engineerCount++;
         }
-        // if not, alert the user that they need an engineer to repair the spacecraft
+      }
+      // if no engineer on board, alert the user that they need an engineer to repair the spacecraft
+      if (engineerCount == 0) {
         view.noEngineerToRepair();
       }
+    }
+  }
+
+  public void moveSpacecraft(String destination) {
+    switch (destination) {
+      case "moon":
+        game.getSpacecraft().setCurrentPlanet(game.getMoon());
+        break;
+      case "mars":
+        game.getSpacecraft().setCurrentPlanet(game.getMars());
+        break;
+      case "mercury":
+        game.getSpacecraft().setCurrentPlanet(game.getMercury());
+        break;
+      case "earth":
+        game.getSpacecraft().setCurrentPlanet(game.getEarth());
+        break;
     }
   }
 
