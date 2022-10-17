@@ -52,6 +52,7 @@ public class GameText {
             "NASA expects Colonel Walker to bring back at least 4/5 (four-fifths)\n" +
             "of the stranded astronauts (overpopulation, sorry)."
     );
+    System.out.println();
   }
 
   public void printHowToPlay() {
@@ -77,17 +78,11 @@ public class GameText {
             "\n" +
             "To quit the program, enter \"quit\"."
     );
-  }
-
-  public void displayGameState(int remainingAstro, int remainingDays, int shipHealth,
-      String planetName) {
-    System.out.println("Number of Remaining Astronauts: " + remainingAstro);
-    System.out.println("Number of Remaining Days: " + remainingDays);
-    System.out.println("Ship's Condition: " + shipHealth);
-    System.out.println("Current Planet: " + planetName);
+    System.out.println();
   }
 
   public void displayCommands() {
+    System.out.println();
     System.out.println(
         "      AVAILABLE COMMANDS:\n\n" +
             "Help: Displays available commands\n" +
@@ -96,6 +91,19 @@ public class GameText {
             "load: Load a passenger to the spacecraft\n" +
             "unload: Unload a passenger from the spacecraft"
     );
+  }
+
+  public void displayGameState(int remainingAstro, int remainingDays, int shipHealth,
+      String planetName) {
+    System.out.println();
+    System.out.println("Number of Remaining Astronauts: " + remainingAstro);
+    System.out.println("Number of Remaining Days: " + remainingDays);
+    System.out.println("Ship's Condition: " + shipHealth);
+    System.out.println("Current Planet: " + planetName);
+  }
+
+  public void noEngineerToRepair() {
+    System.out.println("You need to have at least one engineer on board to repair the ship.");
   }
 
 }
