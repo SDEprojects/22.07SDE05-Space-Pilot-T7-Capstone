@@ -1,6 +1,9 @@
 package view;
 
 import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Random;
 
 public class GameText {
 
@@ -9,6 +12,16 @@ public class GameText {
   public static final String ANSI_BLUE = "\u001B[34m";
   public static final String ANSI_GREEN = "\u001B[32m";
   public static final Gson gson = new Gson();
+  public static final String [] arrayOfNPCComments  = {
+      "MY LEG!",
+      "I haven't eaten in 7 days...",
+      "...how could I ever forget that alien invasion? *cries*",
+      "I'm never leaving my home again.",
+      "Is that Elon Musk?",
+      "Please get me back home to my family safely...",
+      "*rocks back and forth*"
+  };
+
 
 
   public static void clearConsole() {
@@ -65,7 +78,7 @@ public class GameText {
             "\n" +
             "If the spacecraft is damaged, you can use the \"repair\" command.\n" +
             "To use \"repair\", there must be at least one engineer onboard.\n" +
-            "If the spacecraft's health turns 0, it will explode.\n" +
+            "If the spacecraft's health turns 0, it will implode.\n" +
             "    Repair Command Usage Example:\n" +
             "        - repair\n" +
             "\n" +
@@ -96,14 +109,20 @@ public class GameText {
   public void displayGameState(int remainingAstro, int remainingDays, int shipHealth,
       String planetName) {
     System.out.println();
+    System.out.println("Current Planet: " + planetName);
+    System.out.println("Ship's Condition: " + shipHealth);
     System.out.println("Number of Remaining Astronauts: " + remainingAstro);
     System.out.println("Number of Remaining Days: " + remainingDays);
-    System.out.println("Ship's Condition: " + shipHealth);
-    System.out.println("Current Planet: " + planetName);
   }
 
   public void noEngineerToRepair() {
     System.out.println("You need to have at least one engineer on board to repair the ship.");
+  }
+
+  public void printNPCLine(){
+    Random random = new Random();
+    int randomIntInArrayRange = random.nextInt(7);
+    System.out.println("Passenger: " + arrayOfNPCComments[randomIntInArrayRange]);
   }
 
 }
