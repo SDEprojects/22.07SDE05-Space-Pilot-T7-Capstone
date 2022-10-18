@@ -13,16 +13,6 @@ public class Spacecraft {
   private int numOfNonEngineersOnBoard = 0;
   private int totalPassengers = 0;
 
-  public void typeAndNumOfPassengersOnBoard() {
-    for (Person passenger : passengers) {
-      totalPassengers++;
-      if (passenger.getClass().getSimpleName().equals("Engineer")) {
-        numOfEngineersOnBoard++;
-      }
-      numOfNonEngineersOnBoard = totalPassengers - numOfEngineersOnBoard;
-    }
-  }
-
   public String getName() {
     return name;
   }
@@ -55,12 +45,26 @@ public class Spacecraft {
     return numOfEngineersOnBoard;
   }
 
+
 //  public int getNumOfNonEngineersOnBoard() {
 //    return numOfNonEngineersOnBoard;
 //  }
 //
 //  public int getTotalPassengers() {
 //    return totalPassengers;
+
 //  }
 
+  public void addPassengers(Collection<Person> newPassengers){
+    getPassengers().addAll(newPassengers);
+  }
+public void typeAndNumOfPassengersOnBoard() {
+  for (Person passenger : passengers) {
+    totalPassengers++;
+    if (passenger.getClass().getSimpleName().equals("Engineer")) {
+      numOfEngineersOnBoard++;
+    }
+    numOfNonEngineersOnBoard = totalPassengers - numOfEngineersOnBoard;
+  }
+}
 }
