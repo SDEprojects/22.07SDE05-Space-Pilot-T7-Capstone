@@ -50,10 +50,13 @@ public class Controller {
   public void nextMove(String[] command) {
     if (command[0].equals("quit")) {
       game.setOver(true);
+
     } else if (command[0].equals("go")) {
       moveSpacecraft(command[1]);
+
     } else if (command[0].equals("help")) {
       view.displayCommands();
+
     } else if (command[0].equals("repair")) {
       int engineerCount = 0;
       // iterate over the current passengers on board
@@ -70,6 +73,7 @@ public class Controller {
       if (engineerCount == 0) {
         view.noEngineerToRepair();
       }
+      //Invalid command message
     } else{
       System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
     }
