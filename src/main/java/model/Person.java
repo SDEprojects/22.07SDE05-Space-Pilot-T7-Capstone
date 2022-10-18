@@ -5,6 +5,7 @@ public class Person {
   private String name;
   private Planet currentPlanet;
 
+  Person(){}
   Person(String name, Planet currentPlanet) {
     this.name = name;
     this.currentPlanet = currentPlanet;

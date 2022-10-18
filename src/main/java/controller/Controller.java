@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import model.Engineer;
 import model.Game;
-import model.Person;
 import view.GameText;
+
 
 public class Controller {
 
@@ -47,7 +47,7 @@ public class Controller {
     }
   }
 
-  public void nextMove(String[] command) {
+  public void nextMove(String[] command) throws IOException {
     if (command[0].equals("quit")) {
       game.setOver(true);
 
@@ -57,24 +57,25 @@ public class Controller {
     } else if (command[0].equals("help")) {
       view.displayCommands();
 
+    } else if (command[0].equals("chat")) {
+      userInput = "";
+      while (userInput.length() < 1) {
+        System.out.println("The passengers aren't doing well...");
+        //display line below until user inputs at least one char
+        getUserInput("What would you like to say to them?");
+        
     } else if (command[0].equals("repair")) {
-      int engineerCount = 0;
-      // iterate over the current passengers on board
-      for (Person passenger : game.getSpacecraft().getPassengers()) {
-        // check if at least 1 engineer is on board
-        if (passenger.getClass().getSimpleName().equals("Engineer")) {
-          // if so, repair the spacecraft using the engineer's repair method
-          Engineer engineer = (Engineer) passenger;
-          engineer.repairSpacecraft(game.getSpacecraft());
-          engineerCount++;
-        }
-      }
-      // if no engineer on board, alert the user that they need an engineer to repair the spacecraft
+      game.getSpacecraft().typeAndNumOfPassengersOnBoard();
+      int engineerCount = game.getSpacecraft().getNumOfEngineersOnBoard();
       if (engineerCount == 0) {
         view.noEngineerToRepair();
+        return;
       }
-      //Invalid command message
-    } else{
+      Engineer engineer = new Engineer();
+      engineer.repairSpacecraft(game.getSpacecraft());
+      
+    //Invalid command message
+    } else {
       System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
     }
   }
