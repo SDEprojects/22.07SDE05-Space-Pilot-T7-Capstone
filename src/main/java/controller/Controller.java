@@ -74,7 +74,7 @@ public class Controller {
       userInput = "";
       while (userInput.length() < 1) {
         System.out.println("The passengers aren't doing well...");
-        //display line below until user inputs at least one char
+        // display line below until user inputs at least one char
         getUserInput("What would you like to say to them?");
       }
 
@@ -88,7 +88,7 @@ public class Controller {
       Engineer engineer = new Engineer();
       engineer.repairSpacecraft(game.getSpacecraft());
 
-      //Invalid command message
+      // invalid command message
     } else {
       System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
     }

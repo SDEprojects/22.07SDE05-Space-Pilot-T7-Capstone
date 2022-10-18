@@ -20,7 +20,7 @@ public class GameText {
     try (Reader reader = new InputStreamReader(
         this.getClass().getResourceAsStream("/game-text.json"))
     ) {
-      // convert JSON file to GameText
+      // convert JSON file to model.GameText
       gameText = new Gson().fromJson(reader, model.GameText.class);
     } catch (IOException e) {
       throw new RuntimeException(e);
