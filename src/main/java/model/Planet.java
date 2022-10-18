@@ -12,7 +12,7 @@ public class Planet {
   private int radius;
   private int mass;
   private final Collection<Person> arrayOfAstronautsOnPlanet = new ArrayList<>();
-  int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
+
 
   Planet(String name, String event, int gravity, int radius, int mass) {
     this.name = name;
@@ -21,7 +21,9 @@ public class Planet {
     this.radius = radius;
     this.mass = mass;
 
+    int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
     for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
+      //if name isn't earth
       if (i == 3) {
         Person engineerOnThisPlanet = new Engineer();
         arrayOfAstronautsOnPlanet.add(engineerOnThisPlanet);
@@ -50,9 +52,10 @@ public class Planet {
     return mass;
   }
 
-  public int getTotalNumOfAstronautsOnPlanet() {
-    return totalNumOfAstronautsOnPlanet;
-  }
+//  public int getTotalNumOfAstronautsOnPlanet() {
+//    return totalNumOfAstronautsOnPlanet;
+//  }
+  //array length
 
   public Collection<Person> getArrayOfAstronautsOnPlanet() {
     return arrayOfAstronautsOnPlanet;

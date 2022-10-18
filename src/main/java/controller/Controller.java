@@ -5,7 +5,6 @@ import java.io.IOException;
 import model.Engineer;
 import model.Game;
 import view.GameText;
-import model.Spacecraft;
 
 
 public class Controller {
