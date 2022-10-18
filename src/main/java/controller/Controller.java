@@ -70,7 +70,7 @@ public class Controller {
       if (engineerCount == 0) {
         view.noEngineerToRepair();
       }
-    } else {
+    } else{
       System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
     }
   }
