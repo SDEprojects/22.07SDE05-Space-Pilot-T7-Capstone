@@ -48,6 +48,8 @@ public class Controller {
     }
   }
 
+
+
   public void nextMove(String[] command) throws IOException {
     if (command[0].equals("quit")) {
       game.setOver(true);
@@ -64,7 +66,7 @@ public class Controller {
         System.out.println("The passengers aren't doing well...");
         //display line below until user inputs at least one char
         getUserInput("What would you like to say to them?");
-        
+      
     } else if (command[0].equals("repair")) {
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       int engineerCount = game.getSpacecraft().getNumOfEngineersOnBoard();
