@@ -2,7 +2,8 @@ package model;
 
 public class Engineer extends Person {
 
-  Engineer(String name, Planet currentPlanet) {
+  public Engineer(){}
+  public Engineer(String name, Planet currentPlanet) {
     super(name, currentPlanet);
   }
 
