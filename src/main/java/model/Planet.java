@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import model.Game;
 
 public class Planet {
 
@@ -22,17 +23,18 @@ public class Planet {
     this.mass = mass;
 
     int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
+
     for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
-      //if name isn't earth
-      if (i == 3) {
-        Person engineerOnThisPlanet = new Engineer();
-        arrayOfAstronautsOnPlanet.add(engineerOnThisPlanet);
-      } else {
-        Person nonEngineerOnThisPlanet = new Person();
-        arrayOfAstronautsOnPlanet.add(nonEngineerOnThisPlanet);
+      if(!name.equals("Earth")){
+        if (i == 3) {
+          Person engineerOnThisPlanet = new Engineer();
+          arrayOfAstronautsOnPlanet.add(engineerOnThisPlanet);
+        } else {
+          Person nonEngineerOnThisPlanet = new Person();
+          arrayOfAstronautsOnPlanet.add(nonEngineerOnThisPlanet);
+        }
       }
     }
-
   }
 
 

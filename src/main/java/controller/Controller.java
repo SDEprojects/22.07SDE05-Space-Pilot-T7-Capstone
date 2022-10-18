@@ -2,8 +2,11 @@ package controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Collection;
 import model.Engineer;
 import model.Game;
+import model.Person;
+import model.Spacecraft;
 import view.GameText;
 
 
@@ -93,6 +96,41 @@ public class Controller {
       System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
     }
   }
+
+  public void loadNewPassengers(){
+    Collection<Person> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet().getArrayOfAstronautsOnPlanet();
+    if(arrayOfAstronautsOnCurrentPlanet.size() > 0){
+      System.out.println("size of array of astros on current planet before loading: " + arrayOfAstronautsOnCurrentPlanet.size() );
+      System.out.println("size of array of astros on spacecraft before loading: " + game.getSpacecraft().getPassengers().size() );
+      game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
+      System.out.println("size of array of astros on spacecraft AFTER loading: " + game.getSpacecraft().getPassengers().size() );
+
+      arrayOfAstronautsOnCurrentPlanet.clear();
+      System.out.println("array of astros on current planet after loading onto SC (should be empty): " + arrayOfAstronautsOnCurrentPlanet);
+    }else{
+      System.out.println("Sorry, there are no astronauts to rescue on this planet.");
+      //stop user from trying to load passengers back onto planet
+    }
+    //collections are immutable?
+  }
+
+  public void unloadPassengersOnEarth() {
+    Spacecraft bermoona = game.getSpacecraft();
+    if(bermoona.getCurrentPlanet().getName().equals("Earth")){
+      System.out.println("bermoona psngr array size before unloading: " + bermoona.getPassengers().size());
+      game.getEarth().getArrayOfAstronautsOnPlanet().addAll(bermoona.getPassengers());
+      System.out.println("Earth passenger array size after spacecraft unloaded: " + game.getEarth().getArrayOfAstronautsOnPlanet().size());
+      bermoona.getPassengers().clear();
+      System.out.println("bermoona psngr array size after cleared: " + bermoona.getPassengers().size());
+
+    }else{
+      System.out.println("Passengers can only be dropped off on Earth.");
+    }
+
+  }
+
+
+
 
   public void moveSpacecraft(String destination) {
     switch (destination) {
