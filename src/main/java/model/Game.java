@@ -3,7 +3,7 @@ package model;
 public class Game {
 
   private boolean isOver;
-  private int remainingAstro;
+  private int remainingAstronauts;
   private int remainingDays;
   private int shipHealth;
   private Spacecraft spacecraft;
@@ -14,7 +14,7 @@ public class Game {
 
   public Game() {
     isOver = false;
-    remainingAstro = 5;
+    remainingAstronauts = 5;
     remainingDays = 10;
     spacecraft = new Spacecraft();
     earth = new Planet("Earth", "WWIII", 9, 6300, 100);
@@ -32,12 +32,12 @@ public class Game {
     isOver = over;
   }
 
-  public int getRemainingAstro() {
-    return remainingAstro;
+  public int getRemainingAstronauts() {
+    return remainingAstronauts;
   }
 
-  public void setRemainingAstro(int remainingAstro) {
-    this.remainingAstro = remainingAstro;
+  public void setRemainingAstronauts(int remainingAstronauts) {
+    this.remainingAstronauts = remainingAstronauts;
   }
 
   public int getRemainingDays() {
@@ -75,5 +75,5 @@ public class Game {
   public Planet getMercury() {
     return mercury;
   }
-}
 
+}

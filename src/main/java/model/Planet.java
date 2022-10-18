@@ -25,7 +25,7 @@ public class Planet {
     int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
 
     for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
-      if(!name.equals("Earth")){
+      if (!name.equals("Earth")) {
         if (i == 3) {
           Person engineerOnThisPlanet = new Engineer();
           arrayOfAstronautsOnPlanet.add(engineerOnThisPlanet);
@@ -36,7 +36,6 @@ public class Planet {
       }
     }
   }
-
 
   public String getName() {
     return name;

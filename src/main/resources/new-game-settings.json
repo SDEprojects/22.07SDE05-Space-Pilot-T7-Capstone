@@ -1,0 +1,54 @@
+{
+  "isOver": false,
+  "remainingAstronauts": 5,
+  "remainingDays": 10,
+  "shipHealth": 3,
+  "spacecraft": {
+    "name": "Bermoona Triangle",
+    "health": 5,
+    "currentPlanet": {
+      "name": "Moon",
+      "event": "asteroid",
+      "gravity": 2,
+      "radius": 1000,
+      "mass": 1,
+      "arrayOfAstronautsOnPlanet": []
+    },
+    "passengers": [],
+    "numOfEngineersOnBoard": 0,
+    "numOfNonEngineersOnBoard": 0,
+    "totalPassengers": 0
+  },
+  "earth": {
+    "name": "Earth",
+    "event": "WWIII",
+    "gravity": 9,
+    "radius": 6300,
+    "mass": 100,
+    "arrayOfAstronautsOnPlanet": []
+  },
+  "moon": {
+    "name": "Moon",
+    "event": "asteroid",
+    "gravity": 2,
+    "radius": 1000,
+    "mass": 1,
+    "arrayOfAstronautsOnPlanet": []
+  },
+  "mars": {
+    "name": "Mars",
+    "event": "sand storm",
+    "gravity": 4,
+    "radius": 2100,
+    "mass": 10,
+    "arrayOfAstronautsOnPlanet": []
+  },
+  "mercury": {
+    "name": "Mercury",
+    "event": "solar flare",
+    "gravity": 4,
+    "radius": 1500,
+    "mass": 5,
+    "arrayOfAstronautsOnPlanet": []
+  }
+}

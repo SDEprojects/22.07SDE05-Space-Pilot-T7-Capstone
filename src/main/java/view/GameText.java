@@ -15,7 +15,7 @@ public class GameText {
   public static final String ANSI_RED = "\u001B[31m";
   public static final String ANSI_GREEN = "\u001B[32m";
 
-  public void getJsonGameText() {
+  public void getGameTextJson() {
     // create a reader
     try (Reader reader = new InputStreamReader(
         this.getClass().getResourceAsStream("/game-text.json"))
