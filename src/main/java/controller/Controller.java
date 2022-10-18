@@ -50,39 +50,33 @@ public class Controller {
   public void nextMove(String[] command) throws IOException {
     if (command[0].equals("quit")) {
       game.setOver(true);
-    }
 
-    if (command[0].equals("go")) {
+    } else if (command[0].equals("go")) {
       moveSpacecraft(command[1]);
-    }
 
-    if (command[0].equals("help")) {
+    } else if (command[0].equals("help")) {
       view.displayCommands();
-    }
 
-    if(command[0].equals("chat")){
-      userInput="";
-      while(userInput.length()<1) {
+    } else if (command[0].equals("chat")) {
+      userInput = "";
+      while (userInput.length() < 1) {
         System.out.println("The passengers aren't doing well...");
         //display line below until user inputs at least one char
         getUserInput("What would you like to say to them?");
-      }
-      view.printNPCLine();
-    }
-//    if(command[0].equals("load")) {
-//      model.Planet.
-//    }
-    //add load command
-
-    if (command[0].equals("repair")) {
+        
+    } else if (command[0].equals("repair")) {
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       int engineerCount = game.getSpacecraft().getNumOfEngineersOnBoard();
       if (engineerCount == 0) {
         view.noEngineerToRepair();
         return;
       }
-        Engineer engineer = new Engineer();
-        engineer.repairSpacecraft(game.getSpacecraft());
+      Engineer engineer = new Engineer();
+      engineer.repairSpacecraft(game.getSpacecraft());
+      
+    //Invalid command message
+    } else {
+      System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
     }
   }
 
