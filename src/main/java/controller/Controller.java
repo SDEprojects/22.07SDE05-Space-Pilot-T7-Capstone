@@ -63,6 +63,8 @@ public class Controller {
     view.printInstructions();
   }
 
+
+
   public void nextMove(String[] command) throws IOException {
     if (command[0].equals("quit")) {
       game.setOver(true);
