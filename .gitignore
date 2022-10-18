@@ -12,7 +12,6 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-<<<<<<< HEAD
 
 ##############################
 ## Maven
@@ -26,8 +25,6 @@ pom.xml.bak
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
 
 ##############################
 ## Gradle
@@ -58,5 +55,3 @@ bin/
 ## OS X
 ##############################
 .DS_Store
-=======
->>>>>>> main

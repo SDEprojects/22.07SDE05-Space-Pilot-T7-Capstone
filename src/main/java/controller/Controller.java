@@ -22,19 +22,20 @@ public class Controller {
   }
 
   public void play() throws IOException {
-    view.printTitle();
-    while (!userInput.equals("y")) {
-      getUserInput("Press Y to continue");
-    }
-    userInput = "";
-    GameText.clearConsole(); // Clear console does not work on IntelliJ console
-    view.printIntro();
-    while (!userInput.equals("y")) {
-      getUserInput("Press Y to continue");
-    }
-    userInput = "";
-    GameText.clearConsole();
-    view.printHowToPlay();
+//    view.printTitle();
+//    while (!userInput.equals("y")) {
+//      getUserInput("Press Y to continue");
+//    }
+//    userInput = "";
+//    GameText.clearConsole(); // Clear console does not work on IntelliJ console
+//    view.printIntro();
+//    while (!userInput.equals("y")) {
+//      getUserInput("Press Y to continue");
+//    }
+//    userInput = "";
+//    GameText.clearConsole();
+//    view.printHowToPlay();
+    view.printGameText();
 
     while (!game.isOver()) { // While game is not over
       // print current game info
