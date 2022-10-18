@@ -22,30 +22,42 @@ public class Controller {
   }
 
   public void play() throws IOException {
-//    view.printTitle();
-//    while (!userInput.equals("y")) {
-//      getUserInput("Press Y to continue");
-//    }
-//    userInput = "";
-//    GameText.clearConsole(); // Clear console does not work on IntelliJ console
-//    view.printIntro();
-//    while (!userInput.equals("y")) {
-//      getUserInput("Press Y to continue");
-//    }
-//    userInput = "";
-//    GameText.clearConsole();
-//    view.printHowToPlay();
-    view.printGameText();
-
+    // display game's introduction with flash screen and story
+    gameIntro();
     while (!game.isOver()) { // While game is not over
       // print current game info
       updateView();
-      // Prompt the user to enter their next command (saved as userInput)
+      // prompt the user to enter their next command (saved as userInput)
       getUserInput("Please enter your next command");
-      // Parse their command (verb and noun)
+      // parse the user input to get their command (verb and noun)
       String[] userCommand = textParser(userInput);
+      // execute their command and/or display information (e.g., list of commands, invalid command, etc.)
       nextMove(userCommand);
     }
+    // display game over message
+    // TODO: Right now, the game is set to display the lose message only.
+    //  Change this when the game's win / lose logic is implemented.
+    view.printGameOverMessage(false);
+  }
+
+  public void gameIntro() throws IOException {
+    view.getJsonGameText();
+    // display title
+    view.printTitle();
+    // prompt the user to press "y" to continue
+    do {
+      getUserInput("Enter y to continue");
+    } while (!userInput.equals("y"));
+    GameText.clearConsole(); // Note: clear console does not work on IntelliJ console
+    // display introductory background story
+    view.printIntro();
+    // prompt the user to press "y" to continue
+    do {
+      getUserInput("Enter y to continue");
+    } while (!userInput.equals("y"));
+    GameText.clearConsole(); // Note: clear console does not work on IntelliJ console
+    // display game instructions (how-to-play)
+    view.printInstructions();
   }
 
   public void nextMove(String[] command) throws IOException {
@@ -56,7 +68,7 @@ public class Controller {
       moveSpacecraft(command[1]);
 
     } else if (command[0].equals("help")) {
-      view.displayCommands();
+      view.printInstructions();
 
     } else if (command[0].equals("chat")) {
       userInput = "";
@@ -70,13 +82,13 @@ public class Controller {
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       int engineerCount = game.getSpacecraft().getNumOfEngineersOnBoard();
       if (engineerCount == 0) {
-        view.noEngineerToRepair();
+        view.printNoEngineerAlert();
         return;
       }
       Engineer engineer = new Engineer();
       engineer.repairSpacecraft(game.getSpacecraft());
-      
-    //Invalid command message
+
+      //Invalid command message
     } else {
       System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
     }
@@ -100,14 +112,16 @@ public class Controller {
   }
 
   public void getUserInput(String prompt) throws IOException {
+    // clear previous user input
+    userInput = "";
     // print the prompt message
-    System.out.println(prompt);
+    view.printUserInputPrompt(prompt);
     // sanitize user response (turn it into lower-case and trim whitespaces) and save it to userInput
     userInput = reader.readLine().trim().toLowerCase();
   }
 
   public void updateView() {
-    view.displayGameState(game.getRemainingAstro(), game.getRemainingDays(), game.getShipHealth(),
+    view.printGameState(game.getRemainingAstro(), game.getRemainingDays(), game.getShipHealth(),
         game.getSpacecraft().getCurrentPlanet().getName());
   }
 

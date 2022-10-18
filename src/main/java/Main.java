@@ -8,7 +8,7 @@ import view.GameText;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
     try (
         Reader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
