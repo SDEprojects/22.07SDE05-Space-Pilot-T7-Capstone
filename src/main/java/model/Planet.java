@@ -3,7 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import model.Engineer;
 import model.Game;
+import model.Person;
+import model.Spacecraft;
 
 public class Planet {
 
@@ -21,20 +24,6 @@ public class Planet {
     this.gravity = gravity;
     this.radius = radius;
     this.mass = mass;
-
-    int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
-
-    for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
-      if(!name.equals("Earth")){
-        if (i == 3) {
-          Person engineerOnThisPlanet = new Engineer();
-          arrayOfAstronautsOnPlanet.add(engineerOnThisPlanet);
-        } else {
-          Person nonEngineerOnThisPlanet = new Person();
-          arrayOfAstronautsOnPlanet.add(nonEngineerOnThisPlanet);
-        }
-      }
-    }
   }
 
 
@@ -54,11 +43,6 @@ public class Planet {
     return mass;
   }
 
-//  public int getTotalNumOfAstronautsOnPlanet() {
-//    return totalNumOfAstronautsOnPlanet;
-//  }
-  //array length
-
   public Collection<Person> getArrayOfAstronautsOnPlanet() {
     return arrayOfAstronautsOnPlanet;
   }
@@ -72,4 +56,23 @@ public class Planet {
     return null;
   }
 
+  public void createEngineer(Planet currentPlanet) {
+    int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
+    for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
+      if (!name.equals("Earth")) {
+        if (i == 3) {
+          String[] engineerNames = {"Bob", "Michelle", "Chad", "Aria"};
+          int indexOfEngineerArrayForSettingName = new Random().nextInt(4);
+          String engineerName = engineerNames[indexOfEngineerArrayForSettingName];
+          Engineer engineerOnThisPlanet = new Engineer(engineerName, currentPlanet);
+          arrayOfAstronautsOnPlanet.add(engineerOnThisPlanet);
+        } else {
+          Person nonEngineerOnThisPlanet = new Person();
+          arrayOfAstronautsOnPlanet.add(nonEngineerOnThisPlanet);
+        }
+      }
+    }
+
+
+  }
 }

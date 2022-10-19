@@ -75,5 +75,10 @@ public class Game {
   public Planet getMercury() {
     return mercury;
   }
+
+  public void createEngineersHelper(){
+    earth.createEngineer(earth);
+  }
+
 }
 

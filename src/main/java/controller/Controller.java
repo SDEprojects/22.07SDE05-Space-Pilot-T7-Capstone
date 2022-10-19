@@ -13,7 +13,9 @@ import view.GameText;
 public class Controller {
 
   private String userInput; // variable used to save user input
+
   private final Game game; // model, where the current state of the game is stored
+
   private final GameText view; // view, which is in charge of displaying (printing) game info
   private final BufferedReader reader; // buffered reader used to read in what user enters
 
@@ -22,6 +24,10 @@ public class Controller {
     this.game = game;
     this.view = view;
     this.reader = reader;
+  }
+
+  public Game getGame() {
+    return game;
   }
 
   public void play() throws IOException {
@@ -94,7 +100,11 @@ public class Controller {
       engineer.repairSpacecraft(game.getSpacecraft());
 
       // invalid command message
-    } else {
+    } else if(command[0].equals("load")){
+      loadNewPassengers();
+    } else if(command[0].equals("unload")){
+      unloadPassengersOnEarth();
+    }else{
       System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
     }
   }
@@ -113,7 +123,7 @@ public class Controller {
       System.out.println("Sorry, there are no astronauts to rescue on this planet.");
       //stop user from trying to load passengers back onto planet
     }
-    //collections are immutable?
+
   }
 
   public void unloadPassengersOnEarth() {
