@@ -25,6 +25,7 @@
     "gravity": 9,
     "radius": 6300,
     "mass": 100,
+    "names": ["Bob", "Michelle", "Chad", "Aria"],
     "arrayOfAstronautsOnPlanet": []
   },
   "moon": {
@@ -33,6 +34,7 @@
     "gravity": 2,
     "radius": 1000,
     "mass": 1,
+    "names": ["Bob", "Michelle", "Chad", "Aria"],
     "arrayOfAstronautsOnPlanet": []
   },
   "mars": {
@@ -41,6 +43,7 @@
     "gravity": 4,
     "radius": 2100,
     "mass": 10,
+    "names": ["Bob", "Michelle", "Chad", "Aria"],
     "arrayOfAstronautsOnPlanet": []
   },
   "mercury": {
@@ -49,6 +52,7 @@
     "gravity": 4,
     "radius": 1500,
     "mass": 5,
+    "names": ["Bob", "Michelle", "Chad", "Aria"],
     "arrayOfAstronautsOnPlanet": []
   }
 }

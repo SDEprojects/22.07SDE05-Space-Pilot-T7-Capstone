@@ -1,28 +1,16 @@
-package model;
+package com.spacepilot.model;
 
 public class Game {
 
   private boolean isOver;
   private int remainingAstronauts;
   private int remainingDays;
-  private int shipHealth;
+  private int shipHealth; // TODO: Spacecraft has its own health so this is redundant
   private Spacecraft spacecraft;
   private Planet earth;
   private Planet moon;
   private Planet mars;
   private Planet mercury;
-
-//  public Game() {
-//    isOver = false;
-//    remainingAstronauts = 5;
-//    remainingDays = 10;
-//    spacecraft = new Spacecraft();
-//    earth = new Planet("Earth", "WWIII", 9, 6300, 100);
-//    moon = new Planet("Moon", "asteroid", 2, 1000, 1);
-//    mars = new Planet("Mars", "sand storm", 4, 2100, 10);
-//    mercury = new Planet("Mercury", "solar flare", 4, 1500, 5);
-//    spacecraft.setCurrentPlanet(earth);
-//  }
 
   public boolean isOver() { // Getter for isOver
     return isOver;

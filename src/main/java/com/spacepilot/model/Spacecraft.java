@@ -1,4 +1,4 @@
-package model;
+package com.spacepilot.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,10 +44,6 @@ public class Spacecraft {
   public int getNumOfEngineersOnBoard() {
     return numOfEngineersOnBoard;
   }
-
-//  public int getTotalPassengers() {
-//    return totalPassengers;
-//  }
 
   public void addPassengers(Collection<Person> newPassengers) {
     getPassengers().addAll(newPassengers);
