@@ -1,4 +1,4 @@
-package model;
+package com.spacepilot.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +11,7 @@ public class Planet {
   private int gravity;
   private int radius;
   private int mass;
+  private String[] names;
   private final Collection<Person> arrayOfAstronautsOnPlanet = new ArrayList<>();
 
   Planet(String name, String event, int gravity, int radius, int mass) {
@@ -50,11 +51,6 @@ public class Planet {
     return mass;
   }
 
-//  public int getTotalNumOfAstronautsOnPlanet() {
-//    return totalNumOfAstronautsOnPlanet;
-//  }
-  //array length
-
   public Collection<Person> getArrayOfAstronautsOnPlanet() {
     return arrayOfAstronautsOnPlanet;
   }
@@ -66,6 +62,34 @@ public class Planet {
       return event;
     }
     return null;
+  }
+
+  public void placeAstronauts(Planet currentPlanet) {
+    Random rand = new Random();
+    // random total number of astronauts on a planet
+    int totalNumOfAstronautsOnPlanet = rand.nextInt(4);
+    // check to make sure the current planet is not Earth
+    if (!name.equals("Earth")) {
+      // place stranded astronauts to the planet
+      for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
+        // create a random boolean
+        boolean randBool = rand.nextBoolean();
+        // placeholder for a person (either engineer or non-engineer)
+        Person person;
+        // if the random boolean was true
+        if (randBool) {
+          // grab a random name
+          String randomName = names[rand.nextInt(4)];
+          // create an engineer
+          person = new Engineer(randomName, currentPlanet);
+        } else { // if the random boolean was false
+          // create a non-engineer astronaut
+          person = new Person();
+        }
+        // add either engineer or non-engineer to the array of astronauts on this planet
+        arrayOfAstronautsOnPlanet.add(person);
+      }
+    }
   }
 
 }

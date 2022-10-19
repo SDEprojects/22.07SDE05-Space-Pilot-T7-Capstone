@@ -1,14 +1,15 @@
-package view;
+package com.spacepilot.view;
 
 import com.google.gson.Gson;
+import com.spacepilot.model.GameText;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Random;
 
-public class GameText {
+public class View {
 
-  public static model.GameText gameText;
+  public static GameText gameText;
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_BLUE = "\u001B[34m";
   public static final String ANSI_RED = "\u001B[31m";
@@ -20,7 +21,7 @@ public class GameText {
         this.getClass().getResourceAsStream("/game-text.json"))
     ) {
       // convert JSON file to model.GameText
-      gameText = new Gson().fromJson(reader, model.GameText.class);
+      gameText = new Gson().fromJson(reader, GameText.class);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

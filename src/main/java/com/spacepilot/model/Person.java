@@ -1,4 +1,4 @@
-package model;
+package com.spacepilot.model;
 
 public class Person {
 

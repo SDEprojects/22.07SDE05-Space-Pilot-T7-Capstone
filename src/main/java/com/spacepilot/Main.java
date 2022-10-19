@@ -1,11 +1,13 @@
+package com.spacepilot;
+
 import com.google.gson.Gson;
-import controller.Controller;
+import com.spacepilot.controller.Controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import model.Game;
-import view.GameText;
+import com.spacepilot.model.Game;
+import com.spacepilot.view.View;
 
 public class Main {
 
@@ -17,7 +19,7 @@ public class Main {
         BufferedReader reader = new BufferedReader(input);
     ) {
       createNewGame();
-      GameText view = new GameText(); // View
+      View view = new View(); // View
       Controller controller = new Controller(game, view, reader); // Controller
       controller.play();
     } catch (IOException e) {

@@ -1,4 +1,4 @@
-package controller;
+package com.spacepilot.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,20 +9,20 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
-import model.Engineer;
-import model.Game;
-import model.Person;
-import model.Spacecraft;
-import view.GameText;
+import com.spacepilot.model.Engineer;
+import com.spacepilot.model.Game;
+import com.spacepilot.model.Person;
+import com.spacepilot.model.Spacecraft;
+import com.spacepilot.view.View;
 
 public class Controller {
 
-  private final GameText view; // view, which is in charge of displaying (printing) game info
+  private final View view; // view, which is in charge of displaying (printing) game info
   private final BufferedReader reader; // buffered reader used to read in what user enters
   private String userInput; // variable used to save user input
   private Game game; // model, where the current state of the game is stored
 
-  public Controller(Game game, GameText view, BufferedReader reader) {
+  public Controller(Game game, View view, BufferedReader reader) {
     this.userInput = "";
     this.game = game;
     this.view = view;
@@ -30,6 +30,8 @@ public class Controller {
   }
 
   public void play() throws IOException {
+    // set up game environment (placing random number of astronauts, etc)
+    setUp();
     // display game's introduction with flash screen and story
     gameIntro();
     while (!game.isOver()) { // While game is not over
@@ -48,6 +50,13 @@ public class Controller {
     view.printGameOverMessage(false);
   }
 
+  public void setUp() {
+    // place random number of astronauts on each planet
+    game.getMoon().placeAstronauts(game.getMoon());
+    game.getMars().placeAstronauts(game.getMars());
+    game.getMercury().placeAstronauts(game.getMercury());
+  }
+
   public void gameIntro() throws IOException {
     view.getGameTextJson();
     // display title
@@ -56,14 +65,14 @@ public class Controller {
     do {
       getUserInput("Enter y to continue");
     } while (!userInput.equals("y"));
-    GameText.clearConsole(); // Note: clear console does not work on IntelliJ console
+    View.clearConsole(); // Note: clear console does not work on IntelliJ console
     // display introductory background story
     view.printIntro();
     // prompt the user to press "y" to continue
     do {
       getUserInput("Enter y to continue");
     } while (!userInput.equals("y"));
-    GameText.clearConsole(); // Note: clear console does not work on IntelliJ console
+    View.clearConsole(); // Note: clear console does not work on IntelliJ console
     // display game instructions (how-to-play)
     view.printInstructions();
   }
@@ -75,11 +84,13 @@ public class Controller {
     } else if (command[0].equals("help")) {
       view.printInstructions();
 
-    } else if (command[0].equals("save")) {
-      saveGame(game);
+// TODO: save and continue broken with the lastest change
 
-    } else if (command[0].equals("continue")) {
-      loadSavedGame();
+//    } else if (command[0].equals("save")) {
+//      saveGame(game);
+
+//    } else if (command[0].equals("continue")) {
+//      loadSavedGame();
 
     } else if (command[0].equals("go")) {
       // if the user is trying to go to the current planet
@@ -106,8 +117,14 @@ public class Controller {
         view.printNoEngineerAlert();
         return;
       }
-      Engineer engineer = new Engineer();
-      engineer.repairSpacecraft(game.getSpacecraft());
+      Engineer.repairSpacecraft(game.getSpacecraft());
+      game.setShipHealth(game.getSpacecraft().getHealth());
+
+    } else if (command[0].equals("load")) {
+      loadNewPassengers();
+
+    } else if (command[0].equals("unload")) {
+      unloadPassengersOnEarth();
 
     } else { // invalid command message
       System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
@@ -115,6 +132,7 @@ public class Controller {
   }
 
   public void loadNewPassengers() {
+    // TODO: Move these print line statements to View after debugging
     Collection<Person> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
     if (arrayOfAstronautsOnCurrentPlanet.size() > 0) {
@@ -140,6 +158,7 @@ public class Controller {
   }
 
   public void unloadPassengersOnEarth() {
+    // TODO: Move these print line statements to View after debugging
     Spacecraft bermoona = game.getSpacecraft();
     if (bermoona.getCurrentPlanet().getName().equals("Earth")) {
       System.out.println(
