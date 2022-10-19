@@ -7,11 +7,11 @@
     "name": "Bermoona Triangle",
     "health": 5,
     "currentPlanet": {
-      "name": "Moon",
-      "event": "asteroid",
-      "gravity": 2,
-      "radius": 1000,
-      "mass": 1,
+      "name": "Earth",
+      "event": "WWIII",
+      "gravity": 9,
+      "radius": 6300,
+      "mass": 100,
       "arrayOfAstronautsOnPlanet": []
     },
     "passengers": [],

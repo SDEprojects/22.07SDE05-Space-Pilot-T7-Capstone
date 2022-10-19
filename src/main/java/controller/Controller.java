@@ -1,21 +1,26 @@
 package controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 import model.Engineer;
 import model.Game;
 import model.Person;
 import model.Spacecraft;
-import model.GameSerializer;
 import view.GameText;
 
 public class Controller {
 
-  private String userInput; // variable used to save user input
-  private final Game game; // model, where the current state of the game is stored
   private final GameText view; // view, which is in charge of displaying (printing) game info
   private final BufferedReader reader; // buffered reader used to read in what user enters
+  private String userInput; // variable used to save user input
+  private Game game; // model, where the current state of the game is stored
 
   public Controller(Game game, GameText view, BufferedReader reader) {
     this.userInput = "";
@@ -71,12 +76,15 @@ public class Controller {
       view.printInstructions();
 
     } else if (command[0].equals("save")) {
-      GameSerializer.writeJSON(game);
+      saveGame(game);
+
+    } else if (command[0].equals("load")) {
+      loadSavedGame();
 
     } else if (command[0].equals("go")) {
       // if the user is trying to go to the current planet
       if (command[1].equals(game.getSpacecraft().getCurrentPlanet())) {
-        // TODO: Print an alert in View
+        view.printSamePlanetAlert();
       } else {
         moveSpacecraft(command[1]);
         // decrement remaining days by 1 when user goes somewhere
@@ -189,6 +197,29 @@ public class Controller {
     result[0] = verb;
     result[1] = noun;
     return result;
+  }
+
+  public void loadSavedGame() {
+    try (Reader reader = Files.newBufferedReader(Paths.get("./game-data.json"))) {
+      Game savedGame = new Gson().fromJson(reader, Game.class);
+      if (savedGame != null) { // if there is a saved game data
+        game = savedGame;
+        view.printLoadGameResult(true);
+      } else {
+        view.printLoadGameResult(false);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void saveGame(Game game) throws IOException {
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.create();
+    FileWriter writer = new FileWriter("game-data.json");
+    writer.write(gson.toJson(game));
+    writer.close();
+    view.printSaveGameMessage();
   }
 
 }

@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
-import model.Game;
 
 public class Planet {
 
@@ -14,14 +13,12 @@ public class Planet {
   private int mass;
   private final Collection<Person> arrayOfAstronautsOnPlanet = new ArrayList<>();
 
-
   Planet(String name, String event, int gravity, int radius, int mass) {
     this.name = name;
     this.event = event;
     this.gravity = gravity;
     this.radius = radius;
     this.mass = mass;
-
     int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
 
     for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
