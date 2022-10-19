@@ -1,4 +1,4 @@
-package view;
+package com.spacepilot.view;
 
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class GameText {
 
-  public static model.GameText gameText;
+  public static com.spacepilot.model.GameText gameText;
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_BLUE = "\u001B[34m";
   public static final String ANSI_RED = "\u001B[31m";
