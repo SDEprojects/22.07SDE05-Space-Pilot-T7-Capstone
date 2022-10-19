@@ -31,6 +31,10 @@ public class Controller {
   }
 
   public void play() throws IOException {
+    //creates engineers
+    game.createEngineersHelper(game.getMars());
+    game.createEngineersHelper(game.getMercury());
+    game.createEngineersHelper(game.getMoon());
     // display game's introduction with flash screen and story
     gameIntro();
     while (!game.isOver()) { // While game is not over
@@ -70,7 +74,6 @@ public class Controller {
   }
 
 
-
   public void nextMove(String[] command) throws IOException {
     if (command[0].equals("quit")) {
       game.setOver(true);
@@ -100,48 +103,58 @@ public class Controller {
       engineer.repairSpacecraft(game.getSpacecraft());
 
       // invalid command message
-    } else if(command[0].equals("load")){
+    } else if (command[0].equals("load")) {
       loadNewPassengers();
-    } else if(command[0].equals("unload")){
+    } else if (command[0].equals("unload")) {
       unloadPassengersOnEarth();
-    }else{
+    } else {
       System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
     }
   }
 
-  public void loadNewPassengers(){
-    Collection<Person> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet().getArrayOfAstronautsOnPlanet();
-    if(arrayOfAstronautsOnCurrentPlanet.size() > 0){
-      System.out.println("size of array of astros on current planet before loading: " + arrayOfAstronautsOnCurrentPlanet.size() );
-      System.out.println("size of array of astros on spacecraft before loading: " + game.getSpacecraft().getPassengers().size() );
-      game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
-      System.out.println("size of array of astros on spacecraft AFTER loading: " + game.getSpacecraft().getPassengers().size() );
+  public void loadNewPassengers() {
 
+    Collection<Person> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
+        .getArrayOfAstronautsOnPlanet();
+    if (arrayOfAstronautsOnCurrentPlanet.size() > 0) {
+      System.out.println("size of array of astros on current planet before loading: "
+          + arrayOfAstronautsOnCurrentPlanet.size());
+      System.out.println(
+          "size of array of astros on spacecraft before loading: " + game.getSpacecraft()
+              .getPassengers().size());
+      game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
+      System.out.println(
+          "size of array of astros on spacecraft AFTER loading: " + game.getSpacecraft()
+              .getPassengers().size());
       arrayOfAstronautsOnCurrentPlanet.clear();
-      System.out.println("array of astros on current planet after loading onto SC (should be empty): " + arrayOfAstronautsOnCurrentPlanet);
-    }else{
+      System.out.println(
+          "array of astros on current planet after loading onto SC (should be empty): "
+              + arrayOfAstronautsOnCurrentPlanet);
+    } else {
       System.out.println("Sorry, there are no astronauts to rescue on this planet.");
-      //stop user from trying to load passengers back onto planet
+      //TODO: stop user from trying to load passengers back onto planet
+      //TODO: get rid of souts after testing if engineers are created or move to view
     }
 
   }
 
   public void unloadPassengersOnEarth() {
     Spacecraft bermoona = game.getSpacecraft();
-    if(bermoona.getCurrentPlanet().getName().equals("Earth")){
-      System.out.println("bermoona psngr array size before unloading: " + bermoona.getPassengers().size());
+    if (bermoona.getCurrentPlanet().getName().equals("Earth")) {
+      System.out.println(
+          "bermoona psngr array size before unloading: " + bermoona.getPassengers().size());
       game.getEarth().getArrayOfAstronautsOnPlanet().addAll(bermoona.getPassengers());
-      System.out.println("Earth passenger array size after spacecraft unloaded: " + game.getEarth().getArrayOfAstronautsOnPlanet().size());
+      System.out.println("Earth passenger array size after spacecraft unloaded: " + game.getEarth()
+          .getArrayOfAstronautsOnPlanet().size());
       bermoona.getPassengers().clear();
-      System.out.println("bermoona psngr array size after cleared: " + bermoona.getPassengers().size());
+      System.out.println(
+          "bermoona psngr array size after cleared: " + bermoona.getPassengers().size());
 
-    }else{
+    } else {
       System.out.println("Passengers can only be dropped off on Earth.");
     }
 
   }
-
-
 
 
   public void moveSpacecraft(String destination) {

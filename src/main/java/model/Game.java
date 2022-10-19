@@ -76,8 +76,8 @@ public class Game {
     return mercury;
   }
 
-  public void createEngineersHelper(){
-    earth.createEngineer(earth);
+  public void createEngineersHelper(Planet differentPlanet){
+    differentPlanet.createEngineer(differentPlanet);
   }
 
 }
