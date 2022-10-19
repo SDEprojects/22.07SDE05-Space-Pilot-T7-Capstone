@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Random;
 
-
 public class GameText {
 
   public static model.GameText gameText;
@@ -15,7 +14,7 @@ public class GameText {
   public static final String ANSI_RED = "\u001B[31m";
   public static final String ANSI_GREEN = "\u001B[32m";
 
-  public void getJsonGameText() {
+  public void getGameTextJson() {
     // create a reader
     try (Reader reader = new InputStreamReader(
         this.getClass().getResourceAsStream("/game-text.json"))
@@ -49,7 +48,7 @@ public class GameText {
     System.out.println();
   }
 
-  public static void printInstructions() {
+  public void printInstructions() {
     System.out.println();
     for (String line : gameText.getInstructions()) {
       System.out.println(line);
@@ -69,6 +68,28 @@ public class GameText {
 
   public static void printUserInputPrompt(String prompt) {
     System.out.println(prompt);
+  }
+
+  public static void printLoadGameResult(boolean savedGameExists) {
+    System.out.println();
+    if (savedGameExists) {
+      System.out.println(ANSI_GREEN + "Previous game data successfully loaded" + ANSI_RESET);
+    } else {
+      System.out.println(ANSI_RED + "Failed - previous game data does not exist" + ANSI_RESET);
+    }
+    System.out.println();
+  }
+
+  public static void printSaveGameMessage() {
+    System.out.println();
+    System.out.println(ANSI_BLUE + "SAVED GAME DATA" + ANSI_RESET);
+    System.out.println();
+  }
+
+  public static void printSamePlanetAlert() {
+    System.out.println();
+    System.out.println(ANSI_RED + "System: You are already there");
+    System.out.println();
   }
 
   public static void printNoEngineerAlert() {
