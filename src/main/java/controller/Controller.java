@@ -78,7 +78,7 @@ public class Controller {
     } else if (command[0].equals("save")) {
       saveGame(game);
 
-    } else if (command[0].equals("load")) {
+    } else if (command[0].equals("continue")) {
       loadSavedGame();
 
     } else if (command[0].equals("go")) {
