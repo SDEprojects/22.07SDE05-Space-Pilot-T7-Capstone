@@ -12,7 +12,7 @@ public class Planet {
   private int radius;
   private int mass;
   private String[] names;
-  private final Collection<Person> arrayOfAstronautsOnPlanet = new ArrayList<>();
+  private Collection<Person> arrayOfAstronautsOnPlanet;
 
   Planet(String name, String event, int gravity, int radius, int mass) {
     this.name = name;
@@ -20,19 +20,8 @@ public class Planet {
     this.gravity = gravity;
     this.radius = radius;
     this.mass = mass;
-    int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
-
-    for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
-      if (!name.equals("Earth")) {
-        if (i == 3) {
-          Person engineerOnThisPlanet = new Engineer();
-          arrayOfAstronautsOnPlanet.add(engineerOnThisPlanet);
-        } else {
-          Person nonEngineerOnThisPlanet = new Person();
-          arrayOfAstronautsOnPlanet.add(nonEngineerOnThisPlanet);
-        }
-      }
-    }
+    this.names = new String[]{"Bob", "Michelle", "Chad", "Aria"};
+    this.arrayOfAstronautsOnPlanet = new ArrayList<>();
   }
 
   public String getName() {
@@ -76,15 +65,15 @@ public class Planet {
         boolean randBool = rand.nextBoolean();
         // placeholder for a person (either engineer or non-engineer)
         Person person;
+        // choose a random name
+        String randomName = names[rand.nextInt(4)];
         // if the random boolean was true
         if (randBool) {
-          // grab a random name
-          String randomName = names[rand.nextInt(4)];
           // create an engineer
           person = new Engineer(randomName, currentPlanet);
         } else { // if the random boolean was false
           // create a non-engineer astronaut
-          person = new Person();
+          person = new Person(randomName, currentPlanet.getName());
         }
         // add either engineer or non-engineer to the array of astronauts on this planet
         arrayOfAstronautsOnPlanet.add(person);
