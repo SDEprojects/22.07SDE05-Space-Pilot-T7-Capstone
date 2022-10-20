@@ -1,8 +1,5 @@
 package com.spacepilot.controller;
 
-import static com.spacepilot.view.View.ANSI_RED;
-import static com.spacepilot.view.View.ANSI_RESET;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacepilot.model.Planet;
@@ -19,8 +16,6 @@ import com.spacepilot.model.Game;
 import com.spacepilot.model.Person;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.View;
-import com.spacepilot.model.Planet;
-import java.util.Random;
 
 public class Controller {
 
@@ -63,7 +58,9 @@ public class Controller {
     for (Planet planet : game.getPlanets()) {
       planet.placeAstronauts(planet);
     }
+    // create a new spacecraft instance for the current game
     game.setSpacecraft(new Spacecraft());
+    // set the current spacecraft's current planet to be Earth
     game.getSpacecraft().setCurrentPlanet(returnPlanet("earth"));
   }
 
@@ -108,18 +105,16 @@ public class Controller {
         Planet destinationPlanet = returnPlanet(command[1]);
         String event = destinationPlanet.randomEncounter();
         Spacecraft SR22T = game.getSpacecraft();
-        if (event == null) {
-        } else {
-          //decrement spacecraft health by 1.
+        if (event != null) {
+          // decrement spacecraft health by 1.
           SR22T.setHealth(SR22T.getHealth() - 1);
-          System.out.println(ANSI_RED + "MISSION CONTROL: Your spacecraft took some damage from a rock "+ ANSI_RESET);
-
+          // alert the user about the event
+          view.printEventAlert(event);
         }
         SR22T.setCurrentPlanet(returnPlanet(command[1]));
         // decrement remaining days by 1 when user goes somewhere
         game.setRemainingDays(game.getRemainingDays() - 1);
       }
-
 
     } else if (command[0].equals("chat")) {
       userInput = "";
@@ -198,7 +193,8 @@ public class Controller {
 
   public void displayGameState() {
     view.printGameState(game.getRemainingAstronauts(), game.getRemainingDays(),
-        game.getSpacecraft().getHealth(), game.getSpacecraft().getCurrentPlanet().getName());
+        game.getSpacecraft().getHealth(), game.getSpacecraft().getCurrentPlanet().getName(),
+        game.getSpacecraft().getPassengers().size());
   }
 
   public void loadSavedGame() {
@@ -241,10 +237,8 @@ public class Controller {
     // capitalize the destination
     String planetName =
         destination.substring(0, 1).toUpperCase() + destination.substring(1).toLowerCase();
-    return Arrays.stream(game.getPlanets())
-        .filter(planet -> planet.getName().equals(planetName))
-        .findFirst()
-        .orElse(null);
+    return Arrays.stream(game.getPlanets()).filter(planet -> planet.getName().equals(planetName))
+        .findFirst().orElse(null);
   }
 
 }
