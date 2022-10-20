@@ -3,27 +3,28 @@ package com.spacepilot.model;
 public class Person {
 
   private String name;
-  private String currentLocation;
+  private Planet currentPlanet;
 
-  Person(String name, String planetName) {
+  Person(){}
+  Person(String name, Planet currentPlanet) {
     this.name = name;
-    this.currentLocation = planetName;
+    this.currentPlanet = currentPlanet;
   }
 
   public String getName() {
     return name;
   }
 
-  public String getCurrentLocation() {
-    return currentLocation;
+  public Planet getCurrentPlanet() {
+    return currentPlanet;
   }
 
   public void setName(String name) {
     this.name = name;
   }
 
-  public void setCurrentLocation(String planetName) {
-    this.currentLocation = planetName;
+  public void setCurrentPlanet(Planet currentPlanet) {
+    this.currentPlanet = currentPlanet;
   }
 
 }
