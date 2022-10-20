@@ -1,5 +1,8 @@
 package com.spacepilot.controller;
 
+import static com.spacepilot.view.View.ANSI_RED;
+import static com.spacepilot.view.View.ANSI_RESET;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacepilot.model.Planet;
@@ -16,6 +19,8 @@ import com.spacepilot.model.Game;
 import com.spacepilot.model.Person;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.View;
+import com.spacepilot.model.Planet;
+import java.util.Random;
 
 public class Controller {
 
@@ -100,10 +105,21 @@ public class Controller {
       if (command[1].equals(game.getSpacecraft().getCurrentPlanet())) {
         view.printSamePlanetAlert();
       } else {
-        game.getSpacecraft().setCurrentPlanet(returnPlanet(command[1]));
+        Planet destinationPlanet = returnPlanet(command[1]);
+        String event = destinationPlanet.randomEncounter();
+        Spacecraft SR22T = game.getSpacecraft();
+        if (event == null) {
+        } else {
+          //decrement spacecraft health by 1.
+          SR22T.setHealth(SR22T.getHealth() - 1);
+          System.out.println(ANSI_RED + "MISSION CONTROL: Your spacecraft took some damage from a rock "+ ANSI_RESET);
+
+        }
+        SR22T.setCurrentPlanet(returnPlanet(command[1]));
         // decrement remaining days by 1 when user goes somewhere
         game.setRemainingDays(game.getRemainingDays() - 1);
       }
+
 
     } else if (command[0].equals("chat")) {
       userInput = "";
