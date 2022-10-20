@@ -58,12 +58,13 @@ public class View {
   }
 
   public void printGameState(int remainingAstro, int remainingDays, int shipHealth,
-      String planetName) {
+      String planetName, int numOfPassengersOnboard) {
     System.out.println();
     System.out.println("Current Planet: " + planetName);
     System.out.println("Ship's Condition: " + shipHealth);
     System.out.println("Number of Remaining Astronauts: " + remainingAstro);
     System.out.println("Number of Remaining Days: " + remainingDays);
+    System.out.println("Number of Passengers Onboard: " + numOfPassengersOnboard);
     System.out.println();
   }
 
@@ -96,6 +97,13 @@ public class View {
   public static void printNoEngineerAlert() {
     System.out.println();
     System.out.println(ANSI_RED + gameText.getNoEngineerOnBoardAlert() + ANSI_RESET);
+    System.out.println();
+  }
+
+  public static void printEventAlert(String event) {
+    System.out.println();
+    System.out.println(
+        ANSI_RED + "MISSION CONTROL: Your spacecraft has been damaged by " + event + ANSI_RESET);
     System.out.println();
   }
 

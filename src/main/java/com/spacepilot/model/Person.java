@@ -6,6 +6,7 @@ public class Person {
   private String currentLocation;
 
   Person(){}
+
   Person(String name, String planetName) {
     this.name = name;
     this.currentLocation = planetName;
