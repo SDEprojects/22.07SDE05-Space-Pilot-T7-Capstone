@@ -113,6 +113,7 @@ public class Controller {
           //decrement spacecraft health by 1.
           SR22T.setHealth(SR22T.getHealth() - 1);
           System.out.println(ANSI_RED + "MISSION CONTROL: Your spacecraft took some damage from a rock "+ ANSI_RESET);
+
         }
         SR22T.setCurrentPlanet(returnPlanet(command[1]));
         // decrement remaining days by 1 when user goes somewhere
