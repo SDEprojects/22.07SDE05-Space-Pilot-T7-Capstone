@@ -5,12 +5,8 @@ public class Game {
   private boolean isOver;
   private int remainingAstronauts;
   private int remainingDays;
-  private int shipHealth; // TODO: Spacecraft has its own health so this is redundant
   private Spacecraft spacecraft;
-  private Planet earth;
-  private Planet moon;
-  private Planet mars;
-  private Planet mercury;
+  private Planet[] planets;
 
   public boolean isOver() { // Getter for isOver
     return isOver;
@@ -36,32 +32,20 @@ public class Game {
     this.remainingDays = remainingDays;
   }
 
-  public int getShipHealth() {
-    return shipHealth;
-  }
-
-  public void setShipHealth(int shipHealth) {
-    this.shipHealth = shipHealth;
-  }
-
   public Spacecraft getSpacecraft() {
     return spacecraft;
   }
 
-  public Planet getEarth() {
-    return earth;
+  public void setSpacecraft(Spacecraft spacecraft) {
+    this.spacecraft = spacecraft;
   }
 
-  public Planet getMoon() {
-    return moon;
+  public Planet[] getPlanets() {
+    return planets;
   }
 
-  public Planet getMars() {
-    return mars;
-  }
-
-  public Planet getMercury() {
-    return mercury;
+  public void setPlanets(Planet[] planets) {
+    this.planets = planets;
   }
 
 }
