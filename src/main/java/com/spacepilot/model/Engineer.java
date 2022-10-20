@@ -1,12 +1,13 @@
-package model;
+package com.spacepilot.model;
 
 public class Engineer extends Person {
 
-  Engineer(String name, Planet currentPlanet) {
+  public Engineer(){}
+  public Engineer(String name, Planet currentPlanet) {
     super(name, currentPlanet);
   }
 
-  public void repairSpacecraft(Spacecraft spacecraft) {
+  public static void repairSpacecraft(Spacecraft spacecraft) {
     int currentScHealth = spacecraft.getHealth();
     spacecraft.setHealth(currentScHealth + 1);
   }
