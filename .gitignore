@@ -1,16 +1,16 @@
 # Compiled Class Files
 *.class
 
-# Log file
+# Log File
 *.log
 
-# BlueJ files
+# BlueJ Files
 *.ctxt
 
-# Temporary files
+# Temporary Files
 *.tmp
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Virtual Machine Crash Logs (see http://www.java.com/en/download/help/error_hotspot.xml)
 hs_err_pid*
 
 ##############################
@@ -55,3 +55,8 @@ bin/
 ## OS X
 ##############################
 .DS_Store
+
+##############################
+## Saved Game Data
+##############################
+game-data.json
