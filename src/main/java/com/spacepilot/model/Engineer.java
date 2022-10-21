@@ -2,6 +2,9 @@ package com.spacepilot.model;
 
 public class Engineer extends Person {
 
+  public Engineer(){
+    super();
+  }
 
   public Engineer(String name, Planet currentPlanet) {
     super(name, currentPlanet.getName());
@@ -12,7 +15,5 @@ public class Engineer extends Person {
     spacecraft.setHealth(currentScHealth + 1);
     System.out.println("SC health: " + spacecraft.getHealth());
   }
-
-
 
 }
