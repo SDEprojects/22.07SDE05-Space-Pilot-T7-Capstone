@@ -50,10 +50,6 @@ public class Controller {
       // execute their command and/or display information (e.g., list of commands, invalid command, etc.)
       nextMove(userCommand);
     }
-    // display game over message
-    // TODO: Right now, the game is set to display the lose message only.
-    //  Change this when the game's win / lose logic is implemented.
-    View.printGameOverMessage(false);
   }
 
   public void setUpGame() {
@@ -61,6 +57,7 @@ public class Controller {
     for (Planet planet : game.getPlanets()) {
       planet.placeAstronauts(planet);
     }
+    game.countTotalNumberOfAstronautsOnPlanet();
     game.setSpacecraft(new Spacecraft());
     game.getSpacecraft().setCurrentPlanet(returnPlanet("earth"));
   }
@@ -110,7 +107,9 @@ public class Controller {
         } else {
           //decrement spacecraft health by 1.
           SR22T.setHealth(SR22T.getHealth() - 1);
-          System.out.println(ANSI_RED + "MISSION CONTROL: Your spacecraft took some damage from a rock "+ ANSI_RESET);
+          System.out.println(
+              ANSI_RED + "MISSION CONTROL: Your spacecraft took some damage from a rock "
+                  + ANSI_RESET);
 
         }
         SR22T.setCurrentPlanet(returnPlanet(command[1]));
@@ -148,30 +147,18 @@ public class Controller {
   }
 
   public void loadNewPassengers() {
-    // TODO: Move these print line statements to View after debugging
     Collection<Person> arrayOfAstronautsOnCurrentPlanet =
         game.getSpacecraft().getCurrentPlanet().getArrayOfAstronautsOnPlanet();
-    if(arrayOfAstronautsOnCurrentPlanet.size() <= 0 ){
+    if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
       View.printNoAstronautsToLoad();
     }
-    if (game.getSpacecraft().getCurrentPlanet().getName().equals("Earth")){
+    if (game.getSpacecraft().getCurrentPlanet().getName().equals("Earth")) {
       View.printCannotRemovePeopleFromEarth();
     }
-    if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet().getName().equals("Earth")) {
-      System.out.println("size of array of astros on current planet before loading: "
-          + arrayOfAstronautsOnCurrentPlanet.size());
-      System.out.println(
-          "size of array of astros on spacecraft before loading: " + game.getSpacecraft()
-              .getPassengers().size());
+    if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
+        .getName().equals("Earth")) {
       game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
-      System.out.println(
-          "size of array of astros on spacecraft AFTER loading: " + game.getSpacecraft()
-              .getPassengers().size());
-
       arrayOfAstronautsOnCurrentPlanet.clear();
-      System.out.println(
-          "array of astros on current planet after loading onto SC (should be empty): "
-              + arrayOfAstronautsOnCurrentPlanet);
     }
   }
 
@@ -181,7 +168,6 @@ public class Controller {
 
     if (currentPlanet.getName().equals("Earth")) {
       currentPlanet.getArrayOfAstronautsOnPlanet().addAll(game.getSpacecraft().getPassengers());
-      System.out.println("earth's passenger array size" + currentPlanet.getArrayOfAstronautsOnPlanet().size());
       spacecraft.getPassengers().clear();
       determineIfUserWinsOrLoses();
       game.setOver(true);
@@ -190,25 +176,18 @@ public class Controller {
     }
   }
 
-  public void determineIfUserWinsOrLoses(){
-    int numberOfPassengersOnEarthAfterUnloading = game.getPlanets()[0].getArrayOfAstronautsOnPlanet().size();
-//    int totalNumberOfPersonCreatedInSolarSystem = staticHelperMethodToGetTotalPersonCreatedFromPersonClass();
-    int totalNumberOfPersonCreatedInSolarSystem = 7;
-    if( (double) numberOfPassengersOnEarthAfterUnloading/totalNumberOfPersonCreatedInSolarSystem >= (double) 4/5){
+  public void determineIfUserWinsOrLoses() {
+    int numberOfPassengersOnEarthAfterUnloading = game.getPlanets()[0].getArrayOfAstronautsOnPlanet()
+        .size();
+    //assuming Earth is the first planet in the array from JSON
+    int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
+    if ((double) numberOfPassengersOnEarthAfterUnloading / totalNumberOfPersonsCreatedInSolarSystem
+        >= (double) 4 / 5) {
       View.printGameOverMessage(true);
-      System.out.println(numberOfPassengersOnEarthAfterUnloading);
-    }else{
+    } else {
       View.printGameOverMessage(false);
-      System.out.println(numberOfPassengersOnEarthAfterUnloading);
     }
   }
-
-//  public static int staticHelperMethodToGetTotalPersonCreatedFromPersonClass(){
-//    return Person.getTotalNumOfPersonsCreatedIncludingEngineers();
-//  }
-//deleted because the number of times the Person ctor was called according to the counter in its ctor
-  //does not match up with the number of persons present in the json file
-
 
   public void getUserInput(String prompt) throws IOException {
     // clear previous user input
@@ -220,7 +199,8 @@ public class Controller {
   }
 
   public void displayGameState() {
-    view.printGameState(game.getRemainingAstronauts(), game.getRemainingDays(),
+    view.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
+        game.getRemainingDays(),
         game.getSpacecraft().getHealth(), game.getSpacecraft().getCurrentPlanet().getName());
   }
 

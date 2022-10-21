@@ -3,7 +3,7 @@
   "remainingDays": 10,
   "spacecraft": {
     "name": "Bermoona Triangle",
-    "health": 5,
+    "health": 2,
     "currentPlanet": {
       "name": "Earth",
       "event": "WW III",
@@ -23,6 +23,7 @@
     "numOfNonEngineersOnBoard": 0,
     "totalPassengers": 0
   },
+  "totalNumberOfAstronauts" : 0,
   "planets": [
     {
       "name": "Earth",
@@ -50,20 +51,7 @@
         "Chad",
         "Aria"
       ],
-      "arrayOfAstronautsOnPlanet": [
-        {
-          "name": "Michelle",
-          "currentLocation": "Moon"
-        },
-        {
-          "name": "Chad",
-          "currentLocation": "Moon"
-        },
-        {
-          "name": "Aria",
-          "currentLocation": "Moon"
-        }
-      ]
+      "arrayOfAstronautsOnPlanet": []
     },
     {
       "name": "Mars",
@@ -77,16 +65,7 @@
         "Chad",
         "Aria"
       ],
-      "arrayOfAstronautsOnPlanet": [
-        {
-          "name": "Bob",
-          "currentLocation": "Mars"
-        },
-        {
-          "name": "Bobby",
-          "currentLocation": "Mars"
-        }
-      ]
+      "arrayOfAstronautsOnPlanet": []
     },
     {
       "name": "Mercury",
@@ -100,16 +79,7 @@
         "Chad",
         "Aria"
       ],
-      "arrayOfAstronautsOnPlanet": [
-        {
-          "name": "Chad",
-          "currentLocation": "Mercury"
-        },
-        {
-          "name": "Melissa",
-          "currentLocation": "Mercury"
-        }
-      ]
+      "arrayOfAstronautsOnPlanet": []
     }
   ]
 }

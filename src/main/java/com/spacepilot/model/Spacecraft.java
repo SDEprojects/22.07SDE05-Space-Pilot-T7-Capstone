@@ -6,7 +6,7 @@ import java.util.Collection;
 public class Spacecraft {
 
   private String name = "Bermoona Triangle";
-  private int health = 5;
+  private int health = 2;
   private Planet currentPlanet;
   private Collection<Person> passengers = new ArrayList<Person>();
   private int numOfEngineersOnBoard = 0;
