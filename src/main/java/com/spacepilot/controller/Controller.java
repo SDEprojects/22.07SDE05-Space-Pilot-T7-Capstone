@@ -196,7 +196,8 @@ public class Controller {
   public void displayGameState() {
     view.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
         game.getRemainingDays(),
-        game.getSpacecraft().getHealth(), game.getSpacecraft().getCurrentPlanet().getName());
+        game.getSpacecraft().getHealth(), game.getSpacecraft().getCurrentPlanet().getName(),
+        game.getSpacecraft().getPassengers().size());
   }
 
   public void loadSavedGame() {
