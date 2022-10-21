@@ -47,10 +47,6 @@ public class Controller {
       // execute their command and/or display information (e.g., list of commands, invalid command, etc.)
       nextMove(userCommand);
     }
-    // display game over message
-    // TODO: Right now, the game is set to display the lose message only.
-    //  Change this when the game's win / lose logic is implemented.
-    view.printGameOverMessage(false);
   }
 
   public void setUpGame() {
@@ -58,6 +54,7 @@ public class Controller {
     for (Planet planet : game.getPlanets()) {
       planet.placeAstronauts(planet);
     }
+    game.countTotalNumberOfAstronautsOnPlanet();
     // create a new spacecraft instance for the current game
     game.setSpacecraft(new Spacecraft());
     // set the current spacecraft's current planet to be Earth
@@ -67,14 +64,14 @@ public class Controller {
   public void gameIntro() throws IOException {
     view.getGameTextJson();
     // display title
-    view.printTitle();
+    View.printTitle();
     // prompt the user to press "y" to continue
     do {
       getUserInput("Enter y to continue");
     } while (!userInput.equals("y"));
     View.clearConsole(); // Note: clear console does not work on IntelliJ console
     // display introductory background story
-    view.printIntro();
+    View.printIntro();
     // prompt the user to press "y" to continue
     do {
       getUserInput("Enter y to continue");
@@ -99,8 +96,8 @@ public class Controller {
 
     } else if (command[0].equals("go")) {
       // if the user is trying to go to the current planet
-      if (command[1].equals(game.getSpacecraft().getCurrentPlanet())) {
-        view.printSamePlanetAlert();
+      if (command[1].equals(game.getSpacecraft().getCurrentPlanet().getName())) {
+        View.printSamePlanetAlert();
       } else {
         Planet destinationPlanet = returnPlanet(command[1]);
         String event = destinationPlanet.randomEncounter();
@@ -128,7 +125,7 @@ public class Controller {
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       int engineerCount = game.getSpacecraft().getNumOfEngineersOnBoard();
       if (engineerCount == 0) {
-        view.printNoEngineerAlert();
+        View.printNoEngineerAlert();
         return;
       }
       Engineer.repairSpacecraft(game.getSpacecraft());
@@ -145,29 +142,19 @@ public class Controller {
   }
 
   public void loadNewPassengers() {
-    // TODO: Move these print line statements to View after debugging
-    Collection<Person> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
-        .getArrayOfAstronautsOnPlanet();
-    if (arrayOfAstronautsOnCurrentPlanet.size() > 0) {
-      System.out.println("size of array of astros on current planet before loading: "
-          + arrayOfAstronautsOnCurrentPlanet.size());
-      System.out.println(
-          "size of array of astros on spacecraft before loading: " + game.getSpacecraft()
-              .getPassengers().size());
-      game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
-      System.out.println(
-          "size of array of astros on spacecraft AFTER loading: " + game.getSpacecraft()
-              .getPassengers().size());
-
-      arrayOfAstronautsOnCurrentPlanet.clear();
-      System.out.println(
-          "array of astros on current planet after loading onto SC (should be empty): "
-              + arrayOfAstronautsOnCurrentPlanet);
-    } else {
-      System.out.println("Sorry, there are no astronauts to rescue on this planet.");
-      //stop user from trying to load passengers back onto planet
+    Collection<Person> arrayOfAstronautsOnCurrentPlanet =
+        game.getSpacecraft().getCurrentPlanet().getArrayOfAstronautsOnPlanet();
+    if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
+      View.printNoAstronautsToLoad();
     }
-    //collections are immutable?
+    if (game.getSpacecraft().getCurrentPlanet().getName().equals("Earth")) {
+      View.printCannotRemovePeopleFromEarth();
+    }
+    if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
+        .getName().equals("Earth")) {
+      game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
+      arrayOfAstronautsOnCurrentPlanet.clear();
+    }
   }
 
   public void unloadPassengersOnEarth() {
@@ -177,8 +164,23 @@ public class Controller {
     if (currentPlanet.getName().equals("Earth")) {
       currentPlanet.getArrayOfAstronautsOnPlanet().addAll(game.getSpacecraft().getPassengers());
       spacecraft.getPassengers().clear();
+      determineIfUserWinsOrLoses();
+      game.setOver(true);
     } else {
-      System.out.println("Passengers can only be dropped off on Earth.");
+      View.printYouCantUnloadPassengersIfCurrentPlanetNotEarth();
+    }
+  }
+
+  public void determineIfUserWinsOrLoses() {
+    int numberOfPassengersOnEarthAfterUnloading = game.getPlanets()[0].getArrayOfAstronautsOnPlanet()
+        .size();
+    //assuming Earth is the first planet in the array from JSON
+    int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
+    if ((double) numberOfPassengersOnEarthAfterUnloading / totalNumberOfPersonsCreatedInSolarSystem
+        >= (double) 4 / 5) {
+      View.printGameOverMessage(true);
+    } else {
+      View.printGameOverMessage(false);
     }
   }
 
@@ -186,15 +188,15 @@ public class Controller {
     // clear previous user input
     userInput = "";
     // print the prompt message
-    view.printUserInputPrompt(prompt);
+    View.printUserInputPrompt(prompt);
     // sanitize user response (turn it into lower-case and trim whitespaces) and save it to userInput
     userInput = reader.readLine().trim().toLowerCase();
   }
 
   public void displayGameState() {
-    view.printGameState(game.getRemainingAstronauts(), game.getRemainingDays(),
-        game.getSpacecraft().getHealth(), game.getSpacecraft().getCurrentPlanet().getName(),
-        game.getSpacecraft().getPassengers().size());
+    view.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
+        game.getRemainingDays(),
+        game.getSpacecraft().getHealth(), game.getSpacecraft().getCurrentPlanet().getName());
   }
 
   public void loadSavedGame() {
@@ -202,9 +204,9 @@ public class Controller {
       Game savedGame = new Gson().fromJson(reader, Game.class);
       if (savedGame != null) { // if there is a saved game data
         game = savedGame;
-        view.printLoadGameResult(true);
+        View.printLoadGameResult(true);
       } else {
-        view.printLoadGameResult(false);
+        View.printLoadGameResult(false);
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -217,7 +219,7 @@ public class Controller {
     FileWriter writer = new FileWriter("game-data.json");
     writer.write(gson.toJson(game));
     writer.close();
-    view.printSaveGameMessage();
+    View.printSaveGameMessage();
   }
 
   /*

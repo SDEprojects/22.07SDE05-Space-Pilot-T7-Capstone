@@ -1,11 +1,14 @@
 package com.spacepilot.model;
 
+//import com.spacepilot.model.
 public class Game {
 
   private boolean isOver;
-  private int remainingAstronauts;
   private int remainingDays;
   private Spacecraft spacecraft;
+
+  private int totalNumberOfAstronauts;
+
   private Planet[] planets;
 
   public boolean isOver() { // Getter for isOver
@@ -14,14 +17,6 @@ public class Game {
 
   public void setOver(boolean over) {
     isOver = over;
-  }
-
-  public int getRemainingAstronauts() {
-    return remainingAstronauts;
-  }
-
-  public void setRemainingAstronauts(int remainingAstronauts) {
-    this.remainingAstronauts = remainingAstronauts;
   }
 
   public int getRemainingDays() {
@@ -40,12 +35,29 @@ public class Game {
     this.spacecraft = spacecraft;
   }
 
+  public int getTotalNumberOfAstronauts() {
+    return totalNumberOfAstronauts;
+  }
+
   public Planet[] getPlanets() {
     return planets;
   }
 
   public void setPlanets(Planet[] planets) {
     this.planets = planets;
+  }
+
+  public void countTotalNumberOfAstronautsOnPlanet() {
+    for (Planet planet : getPlanets()) {
+      totalNumberOfAstronauts += planet.getArrayOfAstronautsOnPlanet().size();
+    }
+  }
+
+  public int calculateRemainingAstronautsViaTotalNumOfAstronauts() {
+    int totalNumberOfAstronauts = getTotalNumberOfAstronauts();
+    int numberOfAstronautsOnSc = spacecraft.getPassengers().size();
+    int remainingNumberOfAstronautsToPickUp = totalNumberOfAstronauts - numberOfAstronautsOnSc;
+    return remainingNumberOfAstronautsToPickUp;
   }
 
 }

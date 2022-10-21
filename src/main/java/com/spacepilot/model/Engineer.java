@@ -1,6 +1,7 @@
 package com.spacepilot.model;
 
 public class Engineer extends Person {
+
   public Engineer(){
     super();
   }
