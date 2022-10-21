@@ -114,4 +114,17 @@ public class View {
     }
   }
 
+  public static void printNoAstronautsToLoad(){
+    System.out.println("There aren't any astronauts to rescue on this planet.");
+  }
+
+  public static void printCannotRemovePeopleFromEarth(){
+    System.out.println("All passengers dropped off on Earth must remain there, as planet Earth is their final destination.");
+
+  }
+
+  public static void printYouCantUnloadPassengersIfCurrentPlanetNotEarth(){
+    System.out.println("Passengers can only be dropped off on Earth.");
+  }
+
 }

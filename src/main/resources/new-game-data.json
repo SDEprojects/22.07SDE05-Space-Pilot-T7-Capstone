@@ -1,6 +1,5 @@
 {
   "isOver": false,
-  "remainingAstronauts": 5,
   "remainingDays": 10,
   "spacecraft": {
     "name": "Bermoona Triangle",
@@ -84,7 +83,7 @@
           "currentLocation": "Mars"
         },
         {
-          "name": "Bob",
+          "name": "Bobby",
           "currentLocation": "Mars"
         }
       ]
@@ -107,7 +106,7 @@
           "currentLocation": "Mercury"
         },
         {
-          "name": "Bob",
+          "name": "Melissa",
           "currentLocation": "Mercury"
         }
       ]
