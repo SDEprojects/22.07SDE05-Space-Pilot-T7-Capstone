@@ -1,0 +1,14 @@
+{
+  "name": "Earth",
+  "event": "WW III",
+  "gravity": 9,
+  "radius": 6300,
+  "mass": 100,
+  "names": [
+    "Bob",
+    "Michelle",
+    "Chad",
+    "Aria"
+  ],
+  "arrayOfAstronautsOnPlanet": []
+}
