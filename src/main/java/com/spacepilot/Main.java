@@ -28,12 +28,13 @@ public class Main {
         controller.play();
         //Prompt user if another game
         controller.getUserInput("Turn & Burn! Would you like to play again?\n"
-            + "Enter n for No\n"
-            + "Enter y for Yes");
+            + "Enter n for no (quit)\n"
+            + "or enter anything else to play another game\n");
         //If the input is n, chance continuePlaying to false
         if (controller.getUserInput().equals("n")) {
           continuePlaying = false;
         }
+        game.setOver(false);
       }
     } catch (IOException | URISyntaxException | MidiUnavailableException |
              InvalidMidiDataException e) {
