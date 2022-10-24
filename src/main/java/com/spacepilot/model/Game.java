@@ -1,16 +1,14 @@
 package com.spacepilot.model;
 
+import java.util.List;
+
 public class Game {
 
   private boolean isOver;
-  private int remainingAstronauts;
   private int remainingDays;
-  private int shipHealth; // TODO: Spacecraft has its own health so this is redundant
   private Spacecraft spacecraft;
-  private Planet earth;
-  private Planet moon;
-  private Planet mars;
-  private Planet mercury;
+  private int totalNumberOfAstronauts;
+  private List<Planet> planets;
 
   public boolean isOver() { // Getter for isOver
     return isOver;
@@ -18,14 +16,6 @@ public class Game {
 
   public void setOver(boolean over) {
     isOver = over;
-  }
-
-  public int getRemainingAstronauts() {
-    return remainingAstronauts;
-  }
-
-  public void setRemainingAstronauts(int remainingAstronauts) {
-    this.remainingAstronauts = remainingAstronauts;
   }
 
   public int getRemainingDays() {
@@ -36,32 +26,35 @@ public class Game {
     this.remainingDays = remainingDays;
   }
 
-  public int getShipHealth() {
-    return shipHealth;
-  }
-
-  public void setShipHealth(int shipHealth) {
-    this.shipHealth = shipHealth;
-  }
-
   public Spacecraft getSpacecraft() {
     return spacecraft;
   }
 
-  public Planet getEarth() {
-    return earth;
+  public void setSpacecraft(Spacecraft spacecraft) {
+    this.spacecraft = spacecraft;
   }
 
-  public Planet getMoon() {
-    return moon;
+  public int getTotalNumberOfAstronauts() {
+    return totalNumberOfAstronauts;
   }
 
-  public Planet getMars() {
-    return mars;
+  public void setTotalNumberOfAstronauts(int totalNumberOfAstronauts) {
+    this.totalNumberOfAstronauts = totalNumberOfAstronauts;
   }
 
-  public Planet getMercury() {
-    return mercury;
+  public List<Planet> getPlanets() {
+    return planets;
+  }
+
+  public void setPlanets(List<Planet> planets) {
+    this.planets = planets;
+  }
+
+  public int calculateRemainingAstronautsViaTotalNumOfAstronauts() {
+    int totalNumberOfAstronauts = getTotalNumberOfAstronauts();
+    int numberOfAstronautsOnSc = spacecraft.getPassengers().size();
+    int remainingNumberOfAstronautsToPickUp = totalNumberOfAstronauts - numberOfAstronautsOnSc;
+    return remainingNumberOfAstronautsToPickUp;
   }
 
 }

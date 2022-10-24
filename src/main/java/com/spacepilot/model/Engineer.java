@@ -2,9 +2,12 @@ package com.spacepilot.model;
 
 public class Engineer extends Person {
 
-  public Engineer(){}
+  public Engineer(){
+    super();
+  }
+
   public Engineer(String name, Planet currentPlanet) {
-    super(name, currentPlanet);
+    super(name, currentPlanet.getName());
   }
 
   public static void repairSpacecraft(Spacecraft spacecraft) {

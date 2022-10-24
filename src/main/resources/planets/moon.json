@@ -1,0 +1,14 @@
+{
+  "name": "Moon",
+  "event": "meteor strike",
+  "gravity": 2,
+  "radius": 1000,
+  "mass": 1,
+  "names": [
+    "Bob",
+    "Michelle",
+    "Chad",
+    "Aria"
+  ],
+  "arrayOfAstronautsOnPlanet": []
+}
