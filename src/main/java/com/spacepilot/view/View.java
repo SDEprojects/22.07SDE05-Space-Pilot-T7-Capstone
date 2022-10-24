@@ -108,12 +108,12 @@ public class View {
   }
 
   public static void printYouveGotAnEngineer() {
-    System.out.println(ANSI_RED + "You have got at least 1 engineer on board...\n"
+    System.out.println(ANSI_GREEN + "You have got at least 1 engineer on board...\n"
         + "and they've got the ability to repair the spacecraft!" + ANSI_RESET);
   }
 
   public static void printYouHaventGotAnEngineerOnBoard() {
-    System.out.println(ANSI_RED + "You don't have any engineers on board...\n"
+    System.out.println(ANSI_GREEN + "You don't have any engineers on board...\n"
         + "thus, you cannot repair the spacecraft." + ANSI_RESET);
   }
 
