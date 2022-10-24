@@ -60,17 +60,22 @@ public class Controller {
       // execute their command and/or display information (e.g., list of commands, invalid command, etc.)
       nextMove(userCommand);
     }
+    checkGameResult();
   }
 
   public void setUpGame() throws URISyntaxException, IOException {
+    // create planets based on planets' json files and set them as the current game's planets
     game.setPlanets(createPlanets());
-    // place random number of astronauts on each planet
+    // for each planet in the current game
     for (Planet planet : game.getPlanets()) {
+      // place random number of astronauts on each planet
       planet.placeAstronauts(planet);
+      // and increment the number of total astronauts by the number of astronauts on each planet
+      game.setTotalNumberOfAstronauts(
+          game.getTotalNumberOfAstronauts() + planet.getNumOfAstronautsOnPlanet());
     }
-    game.countTotalNumberOfAstronautsOnPlanet();
-    // create a new spacecraft instance for the current game, using appropriate .json file
-    game.setSpacecraft(createNewSpacecraft());
+    // create a new spacecraft instance for the current game, using data from a .json file
+    game.setSpacecraft(createSpacecraft());
     // set the current spacecraft's current planet to be Earth
     game.getSpacecraft().setCurrentPlanet(returnPlanet("earth"));
   }
@@ -114,17 +119,27 @@ public class Controller {
         View.printSamePlanetAlert();
       } else {
         Planet destinationPlanet = returnPlanet(command[1]);
-        String event = destinationPlanet.randomEncounter();
-        Spacecraft spacecraft = game.getSpacecraft();
-        if (event != null) {
-          // decrement spacecraft health by 1.
-          spacecraft.setHealth(spacecraft.getHealth() - 1);
-          // alert the user about the event
-          View.printEventAlert(event);
+        if (destinationPlanet == null) {
+          view.printInvalidDestination();
+        } else {
+          String event = destinationPlanet.randomEncounter();
+          Spacecraft spacecraft = game.getSpacecraft();
+          if (event != null) {
+            // decrement spacecraft health by 1.
+            spacecraft.setHealth(spacecraft.getHealth() - 1);
+            // alert the user about the event
+            view.printEventAlert(event);
+          }
+          spacecraft.setCurrentPlanet(returnPlanet(command[1]));
+          // decrement remaining days by 1 when user goes somewhere
+          game.setRemainingDays(game.getRemainingDays() - 1);
+          // check if the number of remaining days is less than 1
+          // or if the spacecraft's health is less than 1
+          if (game.getRemainingDays() < 1 || spacecraft.getHealth() < 1) {
+            // if so, set the game as over
+            game.setOver(true);
+          }
         }
-        spacecraft.setCurrentPlanet(returnPlanet(command[1]));
-        // decrement remaining days by 1 when user goes somewhere
-        game.setRemainingDays(game.getRemainingDays() - 1);
       }
 
     } else if (command[0].equals("chat")) {
@@ -142,10 +157,10 @@ public class Controller {
         View.printNoEngineerAlert();
         return;
       }
-      if (repairCounter<2){
+      if (repairCounter < 2) {
         Engineer.repairSpacecraft(game.getSpacecraft());
         repairCounter++;
-      }else if (repairCounter>= 2){
+      } else if (repairCounter >= 2) {
         View.printRepairLimit();
       }
     } else if (command[0].equals("load")) {
@@ -177,10 +192,10 @@ public class Controller {
     }
   }
 
-  public void determineIfEngineerIsOnBoard(){
-    if(game.getSpacecraft().getNumOfEngineersOnBoard() > 0){
+  public void determineIfEngineerIsOnBoard() {
+    if (game.getSpacecraft().getNumOfEngineersOnBoard() > 0) {
       View.printYouveGotAnEngineer();
-    }else if(game.getSpacecraft().getNumOfEngineersOnBoard() == 0){
+    } else {
       View.printYouHaventGotAnEngineerOnBoard();
     }
   }
@@ -192,28 +207,18 @@ public class Controller {
     if (currentPlanet.getName().equals("Earth")) {
       currentPlanet.getArrayOfAstronautsOnPlanet().addAll(game.getSpacecraft().getPassengers());
       spacecraft.getPassengers().clear();
-      determineIfUserWinsOrLoses();
       game.setOver(true);
     } else {
       View.printYouCantUnloadPassengersIfCurrentPlanetNotEarth();
     }
   }
 
-  public void determineIfUserWinsOrLoses() {
-    int numRescuedPassengers = returnPlanet("earth").getArrayOfAstronautsOnPlanet().size();
+  public void checkGameResult() {
+    int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     View.printGameOverMessage(
         (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
             >= (double) 4 / 5);
-  }
-
-  public void getUserInput(String prompt) throws IOException {
-    // clear previous user input
-    userInput = "";
-    // print the prompt message
-    View.printUserInputPrompt(prompt);
-    // sanitize user response (turn it into lower-case and trim whitespaces) and save it to userInput
-    userInput = reader.readLine().trim().toLowerCase();
   }
 
   public void displayGameState() {
@@ -259,6 +264,17 @@ public class Controller {
     return result;
   }
 
+  public void getUserInput(String prompt) throws IOException {
+    // clear previous user input
+    userInput = "";
+    // print the prompt message
+    View.printUserInputPrompt(prompt);
+    // sanitize user response (turn it into lower-case and trim whitespaces) and save it to userInput
+    userInput = reader.readLine().trim().toLowerCase();
+  }
+
+  // Returns an instance of the desired planet when given a planet name
+  // If the desired planet by the name does not exist, returns null
   public Planet returnPlanet(String destination) {
     // capitalize the destination
     String planetName =
@@ -271,7 +287,7 @@ public class Controller {
     return null;
   }
 
-  public static Spacecraft createNewSpacecraft() {
+  public static Spacecraft createSpacecraft() {
     // create a reader
     try (Reader reader = new InputStreamReader(
         Main.class.getResourceAsStream("/spacecraft.json"))) {
@@ -300,7 +316,5 @@ public class Controller {
     }
     return planets;
   }
-
-
 
 }

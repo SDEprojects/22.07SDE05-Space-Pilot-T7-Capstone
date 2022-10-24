@@ -15,13 +15,9 @@ import javax.sound.midi.MidiUnavailableException;
 
 public class Main {
 
-  private static Game game;
-
   public static void main(String[] args) {
-    try (
-        Reader input = new InputStreamReader(System.in);
-        BufferedReader reader = new BufferedReader(input);
-    ) {
+    try (Reader input = new InputStreamReader(
+        System.in); BufferedReader reader = new BufferedReader(input);) {
       boolean continuePlaying = true;
 
       while (continuePlaying) {
@@ -34,8 +30,6 @@ public class Main {
         controller.getUserInput("Turn & Burn! Would you like to play again?\n"
             + "Enter n for No\n"
             + "Enter y for Yes");
-        //Get user input
-
         //If the input is n, chance continuePlaying to false
         if (controller.getUserInput().equals("n")) {
           continuePlaying = false;
@@ -49,8 +43,7 @@ public class Main {
 
   public static Game createNewGame() {
     // create a reader
-    try (Reader reader = new InputStreamReader(
-        Main.class.getResourceAsStream("/game.json"))
+    try (Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/game.json"))
     ) {
       // convert JSON file to Game
       return new Gson().fromJson(reader, Game.class);

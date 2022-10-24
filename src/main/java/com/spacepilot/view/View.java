@@ -107,12 +107,12 @@ public class View {
     System.out.println();
   }
 
-  public static  void printYouveGotAnEngineer(){
+  public static void printYouveGotAnEngineer() {
     System.out.println(ANSI_RED + "You have got at least 1 engineer on board...\n"
         + "and they've got the ability to repair the spacecraft!" + ANSI_RESET);
   }
 
-  public static  void printYouHaventGotAnEngineerOnBoard(){
+  public static void printYouHaventGotAnEngineerOnBoard() {
     System.out.println(ANSI_RED + "You don't have any engineers on board...\n"
         + "thus, you cannot repair the spacecraft." + ANSI_RESET);
   }
@@ -126,10 +126,18 @@ public class View {
   public static void printGameOverMessage(boolean userWon) {
     System.out.println();
     if (userWon) {
+      System.out.println();
       System.out.println(ANSI_GREEN + gameText.getUserWon() + ANSI_RESET);
     } else {
-      System.out.println(ANSI_RED + gameText.getUserLost() + ANSI_RED);
+      System.out.println();
+      System.out.println(ANSI_RED + gameText.getUserLost() + ANSI_RESET);
     }
+  }
+
+  public static void printInvalidDestination() {
+    System.out.println();
+    System.out.println(ANSI_RED + "Sorry, you cannot go there." + ANSI_RESET);
+    System.out.println();
   }
 
   public static void printNoAstronautsToLoad() {
@@ -145,9 +153,9 @@ public class View {
     System.out.println("Passengers can only be dropped off on Earth.");
   }
 
-  public static void printRepairLimit(){
+  public static void printRepairLimit() {
     System.out.println(ANSI_RED + "Sorry, you cannot use the repair command\n"
         + "more than twice per round of the game." + ANSI_RESET);
-  };
+  }
 
 }
