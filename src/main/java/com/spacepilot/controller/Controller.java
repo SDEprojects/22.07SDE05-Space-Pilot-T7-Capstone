@@ -304,15 +304,15 @@ public class Controller {
 
   public static List<Planet> createPlanets() throws URISyntaxException, IOException {
     List<Planet> planets = new ArrayList<>();
-    URL url = Main.class.getClassLoader().getResource("planets");
-    Path dirPath = Paths.get(url.toURI());
-    Stream<Path> paths = Files.list(dirPath);
-    List<String> filenames = paths
-        .map(p -> p.getFileName().toString())
-        .collect(Collectors.toList());
-    for (String filename : filenames) {
+    List<String> planetNames = new ArrayList<>();
+    planetNames.add("/planets/earth.json");
+    planetNames.add("/planets/moon.json");
+    planetNames.add("/planets/mars.json");
+    planetNames.add("/planets/mercury.json");
+
+    for (String planetPath : planetNames) {
       try (Reader reader = new InputStreamReader(
-          Main.class.getResourceAsStream("/planets/" + filename))) {
+          Main.class.getResourceAsStream(planetPath))) {
         planets.add(new Gson().fromJson(reader, Planet.class));
       } catch (IOException e) {
         throw new RuntimeException(e);
