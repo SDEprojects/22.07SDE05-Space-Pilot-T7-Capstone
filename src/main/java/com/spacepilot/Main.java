@@ -20,15 +20,14 @@ public class Main {
         Reader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
     ) {
-      Music.playMusic();
+      Music.playMusic("src/main/resources/black-hole-audio.mp3.mid");
       createNewGame();
       Game game = createNewGame(); // Model
       View view = new View(); // View
       Controller controller = new Controller(game, view, reader); // Controller
       controller.play();
-    } catch (IOException | InvalidMidiDataException | MidiUnavailableException e) {
-      throw new RuntimeException(e);
-    } catch (URISyntaxException e) {
+    } catch (IOException | InvalidMidiDataException | MidiUnavailableException |
+             URISyntaxException e) {
       throw new RuntimeException(e);
     }
   }
