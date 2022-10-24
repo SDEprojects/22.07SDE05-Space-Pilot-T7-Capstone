@@ -26,9 +26,8 @@ public class Main {
       View view = new View(); // View
       Controller controller = new Controller(game, view, reader); // Controller
       controller.play();
-    } catch (IOException | InvalidMidiDataException | MidiUnavailableException e) {
-      throw new RuntimeException(e);
-    } catch (URISyntaxException e) {
+    } catch (IOException | InvalidMidiDataException | MidiUnavailableException |
+             URISyntaxException e) {
       throw new RuntimeException(e);
     }
   }
