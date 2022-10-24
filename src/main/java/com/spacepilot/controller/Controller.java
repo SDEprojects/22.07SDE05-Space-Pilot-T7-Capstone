@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.spacepilot.Main;
 import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
+import com.spacepilot.model.Music;
 import com.spacepilot.model.Person;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
@@ -15,40 +16,35 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
 
 public class Controller {
 
   private Game game; // model, where the current state of the game is stored
-  private final View view; // view, which is in charge of displaying (printing) game info
   private final BufferedReader reader; // buffered reader used to read in what user enters
   private String userInput; // variable used to save user input
   private int repairCounter = 0;
 
-  public Controller(Game game, View view, BufferedReader reader) {
+  public Controller(Game game, BufferedReader reader) {
     this.game = game;
-    this.view = view;
     this.reader = reader;
     this.userInput = "";
   }
 
-  public String getUserInput() {
-    return userInput;
-  }
-
-  public void play() throws IOException, URISyntaxException {
-    // set up game environment (placing random number of astronauts, etc)
+  public void play()
+      throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException {
+    // create and set up game environment
     setUpGame();
     // display game's introduction with flash screen and story and prompt the user to continue
     gameIntro();
+    // play music
+    Music.playMusic();
     // while game is not over, allow the user to continue to play
     while (!game.isOver()) {
       // print current game info
@@ -61,6 +57,7 @@ public class Controller {
       nextMove(userCommand);
     }
     checkGameResult();
+    Music.stopMusic(); // Close sequencer so that the program can terminate
   }
 
   public void setUpGame() throws URISyntaxException, IOException {
@@ -81,7 +78,7 @@ public class Controller {
   }
 
   public void gameIntro() throws IOException {
-    view.getGameTextJson();
+    View.getGameTextJson();
     // display title
     View.printTitle();
     // prompt the user to press "y" to continue
@@ -220,9 +217,10 @@ public class Controller {
   public void checkGameResult() {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
-    View.printGameOverMessage(
-        (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
-            >= (double) 4 / 5);
+    boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
+        >= (double) 4 / 5;
+    View.printGameOverMessage(userWon);
+    game.setOver(true);
   }
 
   public void displayGameState() {
