@@ -31,6 +31,7 @@ public class Controller {
   private final View view; // view, which is in charge of displaying (printing) game info
   private final BufferedReader reader; // buffered reader used to read in what user enters
   private String userInput; // variable used to save user input
+  private int repairCounter = 0;
 
   public Controller(Game game, View view, BufferedReader reader) {
     this.game = game;
@@ -129,7 +130,7 @@ public class Controller {
         // display line below until user inputs at least one char
         getUserInput("What would you like to say to them?");
       }
-
+      View.printNPCDialogue();
     } else if (command[0].equals("repair")) {
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       int engineerCount = game.getSpacecraft().getNumOfEngineersOnBoard();
@@ -137,8 +138,12 @@ public class Controller {
         View.printNoEngineerAlert();
         return;
       }
-      Engineer.repairSpacecraft(game.getSpacecraft());
-
+      if (repairCounter<2){
+        Engineer.repairSpacecraft(game.getSpacecraft());
+        repairCounter++;
+      }else if (repairCounter>= 2){
+        View.printRepairLimit();
+      }
     } else if (command[0].equals("load")) {
       loadNewPassengers();
 
