@@ -49,7 +49,7 @@ public class View {
     System.out.println();
   }
 
-  public void printInstructions() {
+  public static void printInstructions() {
     System.out.println();
     for (String line : gameText.getInstructions()) {
       System.out.println(line);
@@ -57,7 +57,7 @@ public class View {
     System.out.println();
   }
 
-  public void printGameState(int remainingAstro, int remainingDays, int shipHealth,
+  public static void printGameState(int remainingAstro, int remainingDays, int shipHealth,
       String planetName, int numOfPassengersOnboard) {
     System.out.println();
     System.out.println("Current Planet: " + planetName);
@@ -117,6 +117,11 @@ public class View {
         + "thus, you cannot repair the spacecraft." + ANSI_RESET);
   }
 
+  public static void printNPCDialoguePrompt() {
+    System.out.println();
+    System.out.println("The passengers don't seem to be doing well...");
+  }
+
   public static void printNPCDialogue() {
     Random random = new Random();
     int randomIntInArrayRange = random.nextInt(7);
@@ -132,6 +137,14 @@ public class View {
       System.out.println();
       System.out.println(ANSI_RED + gameText.getUserLost() + ANSI_RESET);
     }
+  }
+
+  public static void printInvalidCommandAlert() {
+    System.out.println();
+    System.out.println(
+        ANSI_RED + "Invalid Command! Please use HELP command to see available commands"
+            + ANSI_RESET);
+    System.out.println();
   }
 
   public static void printInvalidDestination() {
@@ -151,6 +164,12 @@ public class View {
 
   public static void printYouCantUnloadPassengersIfCurrentPlanetNotEarth() {
     System.out.println("Passengers can only be dropped off on Earth.");
+  }
+
+  public static void printRepair() {
+    System.out.println();
+    System.out.println("Spacecraft repair was successful.");
+    System.out.println();
   }
 
   public static void printRepairLimit() {

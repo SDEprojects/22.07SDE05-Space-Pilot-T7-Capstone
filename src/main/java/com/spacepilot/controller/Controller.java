@@ -97,7 +97,7 @@ public class Controller {
     } while (!userInput.equals("y"));
     View.clearConsole(); // Note: clear console does not work on IntelliJ console
     // display game instructions (how-to-play)
-    view.printInstructions();
+    View.printInstructions();
   }
 
   public void nextMove(String[] command) throws IOException {
@@ -105,7 +105,7 @@ public class Controller {
       game.setOver(true);
 
     } else if (command[0].equals("help")) {
-      view.printInstructions();
+      View.printInstructions();
 
     } else if (command[0].equals("save")) {
       saveGame(game);
@@ -120,7 +120,7 @@ public class Controller {
       } else {
         Planet destinationPlanet = returnPlanet(command[1]);
         if (destinationPlanet == null) {
-          view.printInvalidDestination();
+          View.printInvalidDestination();
         } else {
           String event = destinationPlanet.randomEncounter();
           Spacecraft spacecraft = game.getSpacecraft();
@@ -128,7 +128,7 @@ public class Controller {
             // decrement spacecraft health by 1.
             spacecraft.setHealth(spacecraft.getHealth() - 1);
             // alert the user about the event
-            view.printEventAlert(event);
+            View.printEventAlert(event);
           }
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
           // decrement remaining days by 1 when user goes somewhere
@@ -145,11 +145,12 @@ public class Controller {
     } else if (command[0].equals("chat")) {
       userInput = "";
       while (userInput.length() < 1) {
-        System.out.println("The passengers aren't doing well...");
+        View.printNPCDialoguePrompt();
         // display line below until user inputs at least one char
         getUserInput("What would you like to say to them?");
       }
       View.printNPCDialogue();
+
     } else if (command[0].equals("repair")) {
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       int engineerCount = game.getSpacecraft().getNumOfEngineersOnBoard();
@@ -159,10 +160,13 @@ public class Controller {
       }
       if (repairCounter < 2) {
         Engineer.repairSpacecraft(game.getSpacecraft());
+        View.printRepair();
+
         repairCounter++;
       } else if (repairCounter >= 2) {
         View.printRepairLimit();
       }
+
     } else if (command[0].equals("load")) {
       loadNewPassengers();
 
@@ -170,7 +174,7 @@ public class Controller {
       unloadPassengersOnEarth();
 
     } else { // invalid command message
-      System.out.println("Invalid Command! Please use the command HELP for the ship's command log");
+      View.printInvalidCommandAlert();
     }
   }
 
@@ -222,7 +226,7 @@ public class Controller {
   }
 
   public void displayGameState() {
-    view.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
+    View.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
         game.getRemainingDays(), game.getSpacecraft().getHealth(),
         game.getSpacecraft().getCurrentPlanet().getName(),
         game.getSpacecraft().getPassengers().size());

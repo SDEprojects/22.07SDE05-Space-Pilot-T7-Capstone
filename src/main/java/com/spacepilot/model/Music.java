@@ -11,7 +11,6 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 import jm.JMC;
 
-
 public final class Music implements JMC {
 
   public static void playMusic(String filePath)
