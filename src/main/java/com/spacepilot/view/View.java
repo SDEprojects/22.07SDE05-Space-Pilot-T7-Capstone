@@ -145,4 +145,9 @@ public class View {
     System.out.println("Passengers can only be dropped off on Earth.");
   }
 
+  public static void printRepairLimit(){
+    System.out.println(ANSI_RED + "Sorry, you cannot use the repair command\n"
+        + "more than twice per round of the game." + ANSI_RESET);
+  };
+
 }
