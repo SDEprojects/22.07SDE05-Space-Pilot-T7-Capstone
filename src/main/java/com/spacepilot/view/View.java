@@ -128,8 +128,14 @@ public class View {
     if (userWon) {
       System.out.println(ANSI_GREEN + gameText.getUserWon() + ANSI_RESET);
     } else {
-      System.out.println(ANSI_RED + gameText.getUserLost() + ANSI_RED);
+      System.out.println(ANSI_RED + gameText.getUserLost() + ANSI_RESET);
     }
+  }
+
+  public static void printInvalidDestination() {
+    System.out.println();
+    System.out.println(ANSI_RED + "Sorry, you cannot go there." + ANSI_RESET);
+    System.out.println();
   }
 
   public static void printNoAstronautsToLoad() {

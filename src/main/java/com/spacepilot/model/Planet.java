@@ -40,6 +40,10 @@ public class Planet {
     return mass;
   }
 
+  public int getNumOfAstronautsOnPlanet() {
+    return arrayOfAstronautsOnPlanet.size();
+  }
+
   public Collection<Person> getArrayOfAstronautsOnPlanet() {
     return arrayOfAstronautsOnPlanet;
   }

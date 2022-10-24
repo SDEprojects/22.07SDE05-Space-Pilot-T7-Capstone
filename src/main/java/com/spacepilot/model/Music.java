@@ -1,4 +1,5 @@
 package com.spacepilot.model;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +12,8 @@ import javax.sound.midi.Sequencer;
 import jm.JMC;
 
 
-public final class Music implements JMC{
+public final class Music implements JMC {
+
   public static void playMusic(String filePath)
       throws MidiUnavailableException, IOException, InvalidMidiDataException {
 

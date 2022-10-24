@@ -38,18 +38,16 @@ public class Game {
     return totalNumberOfAstronauts;
   }
 
+  public void setTotalNumberOfAstronauts(int totalNumberOfAstronauts) {
+    this.totalNumberOfAstronauts = totalNumberOfAstronauts;
+  }
+
   public List<Planet> getPlanets() {
     return planets;
   }
 
   public void setPlanets(List<Planet> planets) {
     this.planets = planets;
-  }
-
-  public void countTotalNumberOfAstronautsOnPlanet() {
-    for (Planet planet : getPlanets()) {
-      totalNumberOfAstronauts += planet.getArrayOfAstronautsOnPlanet().size();
-    }
   }
 
   public int calculateRemainingAstronautsViaTotalNumOfAstronauts() {
