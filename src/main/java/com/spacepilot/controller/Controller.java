@@ -115,7 +115,7 @@ public class Controller {
           // decrement spacecraft health by 1.
           spacecraft.setHealth(spacecraft.getHealth() - 1);
           // alert the user about the event
-          view.printEventAlert(event);
+          View.printEventAlert(event);
         }
         spacecraft.setCurrentPlanet(returnPlanet(command[1]));
         // decrement remaining days by 1 when user goes somewhere
@@ -163,6 +163,16 @@ public class Controller {
         .getName().equals("Earth")) {
       game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
       arrayOfAstronautsOnCurrentPlanet.clear();
+      game.getSpacecraft().typeAndNumOfPassengersOnBoard();
+      determineIfEngineerIsOnBoard();
+    }
+  }
+
+  public void determineIfEngineerIsOnBoard(){
+    if(game.getSpacecraft().getNumOfEngineersOnBoard() > 0){
+      View.printYouveGotAnEngineer();
+    }else if(game.getSpacecraft().getNumOfEngineersOnBoard() == 0){
+      View.printYouHaventGotAnEngineerOnBoard();
     }
   }
 
@@ -183,12 +193,9 @@ public class Controller {
   public void determineIfUserWinsOrLoses() {
     int numRescuedPassengers = returnPlanet("earth").getArrayOfAstronautsOnPlanet().size();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
-    if ((double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
-        >= (double) 4 / 5) {
-      View.printGameOverMessage(true);
-    } else {
-      View.printGameOverMessage(false);
-    }
+    View.printGameOverMessage(
+        (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
+            >= (double) 4 / 5);
   }
 
   public void getUserInput(String prompt) throws IOException {
