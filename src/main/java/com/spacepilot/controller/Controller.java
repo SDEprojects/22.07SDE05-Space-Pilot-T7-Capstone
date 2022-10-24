@@ -39,6 +39,10 @@ public class Controller {
     this.userInput = "";
   }
 
+  public String getUserInput() {
+    return userInput;
+  }
+
   public void play() throws IOException, URISyntaxException {
     // set up game environment (placing random number of astronauts, etc)
     setUpGame();
