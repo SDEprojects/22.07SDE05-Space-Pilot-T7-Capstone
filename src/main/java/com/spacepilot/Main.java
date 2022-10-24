@@ -3,7 +3,6 @@ package com.spacepilot;
 import com.google.gson.Gson;
 import com.spacepilot.controller.Controller;
 import com.spacepilot.model.Game;
-import com.spacepilot.model.Music;
 import com.spacepilot.view.View;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,26 +15,16 @@ import javax.sound.midi.MidiUnavailableException;
 public class Main {
 
   public static void main(String[] args) {
-    try (Reader input = new InputStreamReader(
-        System.in); BufferedReader reader = new BufferedReader(input);) {
-      boolean continuePlaying = true;
-
-      while (continuePlaying) {
-        Music.playMusic("src/main/resources/black-hole-audio.mp3.mid");
+    try (Reader input =
+        new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(input))
+    {
+      do {
         Game game = createNewGame(); // Model
-        View view = new View(); // View
-        Controller controller = new Controller(game, view, reader); // Controller
+        game.setOver(false); // Set the current game's status to be not over
+        Controller controller = new Controller(game, reader); // Controller
         controller.play();
-        //Prompt user if another game
-        controller.getUserInput("Turn & Burn! Would you like to play again?\n"
-            + "Enter n for no (quit)\n"
-            + "or enter anything else to play another game\n");
-        //If the input is n, chance continuePlaying to false
-        if (controller.getUserInput().equals("n")) {
-          continuePlaying = false;
-        }
-        game.setOver(false);
-      }
+      } while (continuePlaying(reader));
     } catch (IOException | URISyntaxException | MidiUnavailableException |
              InvalidMidiDataException e) {
       throw new RuntimeException(e);
@@ -44,12 +33,28 @@ public class Main {
 
   public static Game createNewGame() {
     // create a reader
-    try (Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/game.json"))
-    ) {
-      // convert JSON file to Game
+    try (Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/game.json")))
+    {
+      // convert JSON file to Game and return the Game instance
       return new Gson().fromJson(reader, Game.class);
     } catch (IOException e) {
       throw new RuntimeException(e);
+    }
+  }
+
+  public static boolean continuePlaying(BufferedReader reader) throws IOException {
+    // print the prompt message
+    View.printUserInputPrompt(
+        "\nTurn & Burn! Would you like to play again?\n"
+            + "Enter n to quit\n"
+            + "Enter anything else to play another game\n");
+    // sanitize user response (turn it into lower-case and trim whitespaces) and save it to userInput
+    String userInput = reader.readLine().trim().toLowerCase();
+    // check if the user input was "n" and return an appropriate boolean
+    if (userInput.equals("n")) {
+      return false;
+    } else {
+      return true;
     }
   }
 
