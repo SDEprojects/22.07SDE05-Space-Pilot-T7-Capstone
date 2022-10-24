@@ -21,7 +21,7 @@ public class Main {
         Reader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
     ) {
-      Music.playMusic();
+      Music.playMusic("src/main/resources/black-hole-audio.mp3.mid");
       createNewGame();
       View view = new View(); // View
       Controller controller = new Controller(game, view, reader); // Controller
