@@ -1,15 +1,14 @@
 package com.spacepilot.model;
 
-//import com.spacepilot.model.
+import java.util.List;
+
 public class Game {
 
   private boolean isOver;
   private int remainingDays;
   private Spacecraft spacecraft;
-
   private int totalNumberOfAstronauts;
-
-  private Planet[] planets;
+  private List<Planet> planets;
 
   public boolean isOver() { // Getter for isOver
     return isOver;
@@ -39,11 +38,11 @@ public class Game {
     return totalNumberOfAstronauts;
   }
 
-  public Planet[] getPlanets() {
+  public List<Planet> getPlanets() {
     return planets;
   }
 
-  public void setPlanets(Planet[] planets) {
+  public void setPlanets(List<Planet> planets) {
     this.planets = planets;
   }
 

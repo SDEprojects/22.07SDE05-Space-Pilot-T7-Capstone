@@ -5,13 +5,13 @@ import java.util.Collection;
 
 public class Spacecraft {
 
-  private String name = "Bermoona Triangle";
-  private int health = 2;
+  private String name;
+  private int health;
   private Planet currentPlanet;
   private Collection<Person> passengers = new ArrayList<Person>();
-  private int numOfEngineersOnBoard = 0;
-  private int numOfNonEngineersOnBoard = 0;
-  private int totalPassengers = 0;
+  private int numOfEngineersOnBoard;
+  private int numOfNonEngineersOnBoard;
+  private int totalPassengers;
 
   public String getName() {
     return name;

@@ -2,20 +2,28 @@ package com.spacepilot.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.spacepilot.model.Planet;
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collection;
+import com.spacepilot.Main;
 import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
 import com.spacepilot.model.Person;
+import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.View;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Controller {
 
@@ -31,7 +39,7 @@ public class Controller {
     this.userInput = "";
   }
 
-  public void play() throws IOException {
+  public void play() throws IOException, URISyntaxException {
     // set up game environment (placing random number of astronauts, etc)
     setUpGame();
     // display game's introduction with flash screen and story and prompt the user to continue
@@ -49,14 +57,15 @@ public class Controller {
     }
   }
 
-  public void setUpGame() {
+  public void setUpGame() throws URISyntaxException, IOException {
+    game.setPlanets(createPlanets());
     // place random number of astronauts on each planet
     for (Planet planet : game.getPlanets()) {
       planet.placeAstronauts(planet);
     }
     game.countTotalNumberOfAstronautsOnPlanet();
-    // create a new spacecraft instance for the current game
-    game.setSpacecraft(new Spacecraft());
+    // create a new spacecraft instance for the current game, using appropriate .json file
+    game.setSpacecraft(createNewSpacecraft());
     // set the current spacecraft's current planet to be Earth
     game.getSpacecraft().setCurrentPlanet(returnPlanet("earth"));
   }
@@ -101,14 +110,14 @@ public class Controller {
       } else {
         Planet destinationPlanet = returnPlanet(command[1]);
         String event = destinationPlanet.randomEncounter();
-        Spacecraft SR22T = game.getSpacecraft();
+        Spacecraft spacecraft = game.getSpacecraft();
         if (event != null) {
           // decrement spacecraft health by 1.
-          SR22T.setHealth(SR22T.getHealth() - 1);
+          spacecraft.setHealth(spacecraft.getHealth() - 1);
           // alert the user about the event
           view.printEventAlert(event);
         }
-        SR22T.setCurrentPlanet(returnPlanet(command[1]));
+        spacecraft.setCurrentPlanet(returnPlanet(command[1]));
         // decrement remaining days by 1 when user goes somewhere
         game.setRemainingDays(game.getRemainingDays() - 1);
       }
@@ -142,8 +151,8 @@ public class Controller {
   }
 
   public void loadNewPassengers() {
-    Collection<Person> arrayOfAstronautsOnCurrentPlanet =
-        game.getSpacecraft().getCurrentPlanet().getArrayOfAstronautsOnPlanet();
+    Collection<Person> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
+        .getArrayOfAstronautsOnPlanet();
     if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
       View.printNoAstronautsToLoad();
     }
@@ -172,11 +181,9 @@ public class Controller {
   }
 
   public void determineIfUserWinsOrLoses() {
-    int numberOfPassengersOnEarthAfterUnloading = game.getPlanets()[0].getArrayOfAstronautsOnPlanet()
-        .size();
-    //assuming Earth is the first planet in the array from JSON
+    int numRescuedPassengers = returnPlanet("earth").getArrayOfAstronautsOnPlanet().size();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
-    if ((double) numberOfPassengersOnEarthAfterUnloading / totalNumberOfPersonsCreatedInSolarSystem
+    if ((double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
         >= (double) 4 / 5) {
       View.printGameOverMessage(true);
     } else {
@@ -195,13 +202,13 @@ public class Controller {
 
   public void displayGameState() {
     view.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
-        game.getRemainingDays(),
-        game.getSpacecraft().getHealth(), game.getSpacecraft().getCurrentPlanet().getName(),
+        game.getRemainingDays(), game.getSpacecraft().getHealth(),
+        game.getSpacecraft().getCurrentPlanet().getName(),
         game.getSpacecraft().getPassengers().size());
   }
 
   public void loadSavedGame() {
-    try (Reader reader = Files.newBufferedReader(Paths.get("./game-data.json"))) {
+    try (Reader reader = Files.newBufferedReader(Paths.get("./saved-game.json"))) {
       Game savedGame = new Gson().fromJson(reader, Game.class);
       if (savedGame != null) { // if there is a saved game data
         game = savedGame;
@@ -217,7 +224,7 @@ public class Controller {
   public void saveGame(Game game) throws IOException {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
-    FileWriter writer = new FileWriter("game-data.json");
+    FileWriter writer = new FileWriter("saved-game.json");
     writer.write(gson.toJson(game));
     writer.close();
     View.printSaveGameMessage();
@@ -240,8 +247,42 @@ public class Controller {
     // capitalize the destination
     String planetName =
         destination.substring(0, 1).toUpperCase() + destination.substring(1).toLowerCase();
-    return Arrays.stream(game.getPlanets()).filter(planet -> planet.getName().equals(planetName))
-        .findFirst().orElse(null);
+    for (Planet planet : game.getPlanets()) {
+      if (planet.getName().equals(planetName)) {
+        return planet;
+      }
+    }
+    return null;
+  }
+
+  public static Spacecraft createNewSpacecraft() {
+    // create a reader
+    try (Reader reader = new InputStreamReader(
+        Main.class.getResourceAsStream("/spacecraft.json"))) {
+      // convert JSON file to Spacecraft
+      return new Gson().fromJson(reader, Spacecraft.class);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static List<Planet> createPlanets() throws URISyntaxException, IOException {
+    List<Planet> planets = new ArrayList<>();
+    URL url = Main.class.getClassLoader().getResource("planets");
+    Path dirPath = Paths.get(url.toURI());
+    Stream<Path> paths = Files.list(dirPath);
+    List<String> filenames = paths
+        .map(p -> p.getFileName().toString())
+        .collect(Collectors.toList());
+    for (String filename : filenames) {
+      try (Reader reader = new InputStreamReader(
+          Main.class.getResourceAsStream("/planets/" + filename))) {
+        planets.add(new Gson().fromJson(reader, Planet.class));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return planets;
   }
 
 

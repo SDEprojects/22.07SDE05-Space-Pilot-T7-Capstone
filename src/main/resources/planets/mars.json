@@ -1,0 +1,14 @@
+{
+  "name": "Mars",
+  "event": "sand storm",
+  "gravity": 4,
+  "radius": 2100,
+  "mass": 10,
+  "names": [
+    "Bob",
+    "Michelle",
+    "Chad",
+    "Aria"
+  ],
+  "arrayOfAstronautsOnPlanet": []
+}

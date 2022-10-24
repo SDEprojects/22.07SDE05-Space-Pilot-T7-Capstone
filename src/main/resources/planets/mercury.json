@@ -1,0 +1,14 @@
+{
+  "name": "Mercury",
+  "event": "solar flare",
+  "gravity": 4,
+  "radius": 1500,
+  "mass": 5,
+  "names": [
+    "Bob",
+    "Michelle",
+    "Chad",
+    "Aria"
+  ],
+  "arrayOfAstronautsOnPlanet": []
+}
