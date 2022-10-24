@@ -129,7 +129,6 @@ public class View {
   public static void printCannotRemovePeopleFromEarth() {
     System.out.println(
         "All passengers dropped off on Earth must remain there, as planet Earth is their final destination.");
-
   }
 
   public static void printYouCantUnloadPassengersIfCurrentPlanetNotEarth() {
