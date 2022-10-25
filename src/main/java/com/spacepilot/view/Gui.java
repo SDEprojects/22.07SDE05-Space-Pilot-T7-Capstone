@@ -30,7 +30,8 @@ public class Gui {
     //Creating the bottom panel for user input
     JPanel inputPanel = new JPanel(); //Creates panel
     JTextField inputTextField = new JTextField("Enter text here..."); //Creates input text field
-    JButton goBtn = new JButton("Go");
+    inputTextField.setSize(20, 5);
+    JButton goBtn = new JButton("Go"); //Creates button
       //Adding the Components to inputPanel using Flow Layout
     inputPanel.add(goBtn);
     inputPanel.add(inputTextField);
@@ -58,29 +59,28 @@ public class Gui {
 
     //Creating Top Panels for Status's
     JPanel statusPanel = new JPanel();
-    JPanel leftStatusPanel = new JPanel(gridLayout);
-    JPanel rightStatusPanel = new JPanel(gridLayout);
-    statusPanel.add(leftStatusPanel);
-    statusPanel.add(rightStatusPanel);
-      //Creating the Labels and TextAreas(for updating and displaying text)
-    //Left Panel
+    GridLayout panelGridLayout = new GridLayout(3, 2, 2, 3 ); //Created grid layout
+    statusPanel.setLayout(panelGridLayout); //Set status panel to gridLayout
+    //Creating the Labels and TextAreas(for updating and displaying text)
+      //Left of Panel
     JLabel currentPlanetLabel = new JLabel("Current Planet:"); //Labels can have string names and icons.
     JTextArea currentPlanetText = new JTextArea("Pluto");
     JLabel shipHealthLabel = new JLabel("Ship Health:");
     JTextArea shipHealthText = new JTextArea("100");
     JLabel passengersLabel = new JLabel("Passengers:");
     JTextArea passengersText = new JTextArea("0/50");
-    //Right Panel
+      //Right of Panel
     JLabel oxygenTimeLeftLabel  = new JLabel("Oxygen Time Remaining:");
     JTextArea oxygenTimeLeftText = new JTextArea("some");
     JLabel strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
     JTextArea strandedAstronautsText = new JTextArea("2");
-    //Adding Labels to Panels
-    leftStatusPanel.add(currentPlanetLabel);
-    leftStatusPanel.add(shipHealthLabel);
-    leftStatusPanel.add(passengersLabel);
-    rightStatusPanel.add(oxygenTimeLeftLabel);
-    rightStatusPanel.add(strandedAstronautsLabel);
+      //Adding Labels to the status panel
+    statusPanel.add(currentPlanetLabel);
+    statusPanel.add(oxygenTimeLeftLabel);
+    statusPanel.add(shipHealthLabel);
+    statusPanel.add(strandedAstronautsLabel);
+    statusPanel.add(passengersLabel);
+
 
     //Attach panels to the outermost Main Frame
     frame.add(statusPanel, BorderLayout.PAGE_START);
