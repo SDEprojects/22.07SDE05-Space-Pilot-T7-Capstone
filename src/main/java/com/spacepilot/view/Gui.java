@@ -23,15 +23,15 @@ public class Gui {
     FlowLayout flowLayout = new FlowLayout();
 
     //Creating the outermost Main Frame
-    JFrame frame = new JFrame("Main Panel"); //Create Frame for content
+    JFrame frame = new JFrame("Main Panel"); //Create Frame for content //Default layout is BorderLayout
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Set closing event
-    frame.setSize(300, 300);
+    frame.pack(); //Sets size of frame on default
 
     //Creating the bottom panel for user input
     JPanel inputPanel = new JPanel(); //Creates panel
     JTextField inputTextField = new JTextField("Enter text here..."); //Creates input text field
     JButton goBtn = new JButton("Go");
-      //Adding the Components together using Flow Layout
+      //Adding the Components to inputPanel using Flow Layout
     inputPanel.add(goBtn);
     inputPanel.add(inputTextField);
 
@@ -58,8 +58,10 @@ public class Gui {
 
     //Creating Top Panels for Status's
     JPanel statusPanel = new JPanel();
-    JPanel leftStatusPanel = new JPanel();
-    JPanel rightStatusPanel = new JPanel();
+    JPanel leftStatusPanel = new JPanel(gridLayout);
+    JPanel rightStatusPanel = new JPanel(gridLayout);
+    statusPanel.add(leftStatusPanel);
+    statusPanel.add(rightStatusPanel);
       //Creating the Labels and TextAreas(for updating and displaying text)
     //Left Panel
     JLabel currentPlanetLabel = new JLabel("Current Planet:"); //Labels can have string names and icons.
@@ -69,24 +71,28 @@ public class Gui {
     JLabel passengersLabel = new JLabel("Passengers:");
     JTextArea passengersText = new JTextArea("0/50");
     //Right Panel
-    JLabel oxygenTimeLeft  = new JLabel("Oxygen Time Remaining:");
+    JLabel oxygenTimeLeftLabel  = new JLabel("Oxygen Time Remaining:");
     JTextArea oxygenTimeLeftText = new JTextArea("some");
     JLabel strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
     JTextArea strandedAstronautsText = new JTextArea("2");
+    //Adding Labels to Panels
+    leftStatusPanel.add(currentPlanetLabel);
+    leftStatusPanel.add(shipHealthLabel);
+    leftStatusPanel.add(passengersLabel);
+    rightStatusPanel.add(oxygenTimeLeftLabel);
+    rightStatusPanel.add(strandedAstronautsLabel);
 
+    //Attach panels to the outermost Main Frame
+    frame.add(statusPanel, BorderLayout.PAGE_START);
+    frame.add(displayArea, BorderLayout.CENTER);
+    frame.add(controlPanel, BorderLayout.LINE_END);
+    frame.add(inputPanel, BorderLayout.PAGE_END );
 
+    //Centers a frame onscreen when it opens
+    frame.setLocationRelativeTo(null);
 
-
-
-
-
-
-
-
-
-
-
-
+    //Makes frame appear onscreen. Set to true.
+    frame.setVisible(true);
 
 
 
