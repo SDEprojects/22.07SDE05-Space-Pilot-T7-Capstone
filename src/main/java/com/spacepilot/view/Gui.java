@@ -29,7 +29,7 @@ public class Gui {
 
     //Creating the bottom panel for user input
     JPanel inputPanel = new JPanel(); //Creates panel
-    JTextField inputTextField = new JTextField("Enter text here..."); //Creates input text field
+    JTextField inputTextField = new JTextField(20); //Creates input text field
     inputTextField.setSize(20, 5);
     JButton goBtn = new JButton("Go"); //Creates button
       //Adding the Components to inputPanel using Flow Layout
