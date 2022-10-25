@@ -37,6 +37,8 @@ public class Controller {
     this.userInput = "";
   }
 
+
+
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException {
     // create and set up game environment
@@ -57,6 +59,7 @@ public class Controller {
       nextMove(userCommand);
     }
     checkGameResult();
+
     Music.stopMusic(); // Close sequencer so that the program can terminate
   }
 
@@ -208,7 +211,9 @@ public class Controller {
     if (currentPlanet.getName().equals("Earth")) {
       currentPlanet.getArrayOfAstronautsOnPlanet().addAll(game.getSpacecraft().getPassengers());
       spacecraft.getPassengers().clear();
-      game.setOver(true);
+      checkGameResult();
+
+//      game.setOver(true);
     } else {
       View.printYouCantUnloadPassengersIfCurrentPlanetNotEarth();
     }
@@ -219,15 +224,20 @@ public class Controller {
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
         >= (double) 4 / 5;
-    View.printGameOverMessage(userWon);
-    game.setOver(true);
+
+    if (!userWon) {
+      return;
+    } else if (userWon) {
+      game.setOver(true);
+      View.printGameOverMessage(userWon);
+    }
   }
 
   public void displayGameState() {
-    View.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
+    View.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet("earth").getNumOfAstronautsOnPlanet() ,
         game.getRemainingDays(), game.getSpacecraft().getHealth(),
         game.getSpacecraft().getCurrentPlanet().getName(),
-        game.getSpacecraft().getPassengers().size());
+        game.getSpacecraft().getPassengers().size(), returnPlanet("earth").getNumOfAstronautsOnPlanet());
   }
 
   public void loadSavedGame() {
