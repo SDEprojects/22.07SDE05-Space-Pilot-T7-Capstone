@@ -6,7 +6,6 @@ import com.spacepilot.Main;
 import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
 import com.spacepilot.model.Music;
-import com.spacepilot.model.Person;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.View;
@@ -37,6 +36,8 @@ public class Controller {
     this.userInput = "";
   }
 
+
+
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException {
     // create and set up game environment
@@ -57,6 +58,7 @@ public class Controller {
       nextMove(userCommand);
     }
     checkGameResult();
+
     Music.stopMusic(); // Close sequencer so that the program can terminate
   }
 
@@ -176,7 +178,7 @@ public class Controller {
   }
 
   public void loadNewPassengers() {
-    Collection<Person> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
+    Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
     if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
       View.printNoAstronautsToLoad();
@@ -187,7 +189,6 @@ public class Controller {
     if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
         .getName().equals("Earth")) {
       game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
-      arrayOfAstronautsOnCurrentPlanet.clear();
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       determineIfEngineerIsOnBoard();
     }
@@ -208,7 +209,9 @@ public class Controller {
     if (currentPlanet.getName().equals("Earth")) {
       currentPlanet.getArrayOfAstronautsOnPlanet().addAll(game.getSpacecraft().getPassengers());
       spacecraft.getPassengers().clear();
-      game.setOver(true);
+      checkGameResult();
+
+//      game.setOver(true);
     } else {
       View.printYouCantUnloadPassengersIfCurrentPlanetNotEarth();
     }
@@ -219,15 +222,24 @@ public class Controller {
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
         >= (double) 4 / 5;
-    View.printGameOverMessage(userWon);
-    game.setOver(true);
+
+    if (!userWon) {
+      return;
+    } else if (userWon) {
+      game.setOver(true);
+      View.printGameOverMessage(userWon);
+    }
   }
 
   public void displayGameState() {
-    View.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
-        game.getRemainingDays(), game.getSpacecraft().getHealth(),
+    View.printGameState(
         game.getSpacecraft().getCurrentPlanet().getName(),
-        game.getSpacecraft().getPassengers().size());
+        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
+        game.getSpacecraft().getHealth(),
+        game.getRemainingDays(),
+        game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet("earth").getNumOfAstronautsOnPlanet() ,
+        game.getSpacecraft().getPassengers().size(),
+        returnPlanet("earth").getNumOfAstronautsOnPlanet());
   }
 
   public void loadSavedGame() {
@@ -307,6 +319,12 @@ public class Controller {
     planetNames.add("/planets/moon.json");
     planetNames.add("/planets/mars.json");
     planetNames.add("/planets/mercury.json");
+    planetNames.add("/planets/uranus.json");
+    planetNames.add("/planets/venus.json");
+    planetNames.add("/planets/jupiter.json");
+    planetNames.add("/planets/saturn.json");
+    planetNames.add("/planets/neptune.json");
+    planetNames.add("/planets/station.json");
 
     for (String planetPath : planetNames) {
       try (Reader reader = new InputStreamReader(
