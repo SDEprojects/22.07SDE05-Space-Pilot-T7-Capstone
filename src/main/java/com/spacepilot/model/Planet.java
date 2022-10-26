@@ -20,7 +20,7 @@ public class Planet {
     this.gravity = gravity;
     this.radius = radius;
     this.mass = mass;
-    int totalNumOfAstronautsOnPlanet = new Random().nextInt(5);
+    int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
 
     for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
       if (!name.equals("Earth")) {
@@ -71,7 +71,7 @@ public class Planet {
   public void placeAstronauts(Planet currentPlanet) {
     Random rand = new Random();
     // random total number of astronauts on a planet
-    int totalNumOfAstronautsOnPlanet = rand.nextInt(5);
+    int totalNumOfAstronautsOnPlanet = rand.nextInt(3);
     // check to make sure the current planet is not Earth
     if (!name.equals("Earth")) {
       // place stranded astronauts to the planet

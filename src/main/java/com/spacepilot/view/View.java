@@ -2,7 +2,6 @@ package com.spacepilot.view;
 
 import com.google.gson.Gson;
 import com.spacepilot.Main;
-import com.spacepilot.controller.Controller;
 import com.spacepilot.model.GameText;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,8 +15,6 @@ public class View {
   public static final String ANSI_BLUE = "\u001B[34m";
   public static final String ANSI_RED = "\u001B[31m";
   public static final String ANSI_GREEN = "\u001B[32m";
-
-
 
   public static void getGameTextJson() {
     // create a reader
@@ -62,15 +59,13 @@ public class View {
   }
 
   public static void printGameState(int remainingAstro, int remainingDays, int shipHealth,
-      String planetName, int numOfPassengersOnboard, int astrosOnEarth) {
-
+      String planetName, int numOfPassengersOnboard) {
     System.out.println();
     System.out.println("Current Planet: " + planetName);
     System.out.println("Ship's Condition: " + shipHealth);
     System.out.println("Number of Remaining Astronauts: " + remainingAstro);
     System.out.println("Number of Remaining Days: " + remainingDays);
     System.out.println("Number of Passengers Onboard: " + numOfPassengersOnboard);
-    System.out.println("Number of Passengers on Earth: " + astrosOnEarth);
     System.out.println();
   }
 

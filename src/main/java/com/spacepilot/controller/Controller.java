@@ -37,8 +37,6 @@ public class Controller {
     this.userInput = "";
   }
 
-
-
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException {
     // create and set up game environment
@@ -59,7 +57,6 @@ public class Controller {
       nextMove(userCommand);
     }
     checkGameResult();
-
     Music.stopMusic(); // Close sequencer so that the program can terminate
   }
 
@@ -211,9 +208,7 @@ public class Controller {
     if (currentPlanet.getName().equals("Earth")) {
       currentPlanet.getArrayOfAstronautsOnPlanet().addAll(game.getSpacecraft().getPassengers());
       spacecraft.getPassengers().clear();
-      checkGameResult();
-
-//      game.setOver(true);
+      game.setOver(true);
     } else {
       View.printYouCantUnloadPassengersIfCurrentPlanetNotEarth();
     }
@@ -224,20 +219,15 @@ public class Controller {
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
         >= (double) 4 / 5;
-
-    if (!userWon) {
-      return;
-    } else if (userWon) {
-      game.setOver(true);
-      View.printGameOverMessage(userWon);
-    }
+    View.printGameOverMessage(userWon);
+    game.setOver(true);
   }
 
   public void displayGameState() {
-    View.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet("earth").getNumOfAstronautsOnPlanet() ,
+    View.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
         game.getRemainingDays(), game.getSpacecraft().getHealth(),
         game.getSpacecraft().getCurrentPlanet().getName(),
-        game.getSpacecraft().getPassengers().size(), returnPlanet("earth").getNumOfAstronautsOnPlanet());
+        game.getSpacecraft().getPassengers().size());
   }
 
   public void loadSavedGame() {
@@ -317,12 +307,6 @@ public class Controller {
     planetNames.add("/planets/moon.json");
     planetNames.add("/planets/mars.json");
     planetNames.add("/planets/mercury.json");
-    planetNames.add("/planets/uranus.json");
-    planetNames.add("/planets/venus.json");
-    planetNames.add("/planets/jupiter.json");
-    planetNames.add("/planets/saturn.json");
-    planetNames.add("/planets/neptune.json");
-    planetNames.add("/planets/station.json");
 
     for (String planetPath : planetNames) {
       try (Reader reader = new InputStreamReader(

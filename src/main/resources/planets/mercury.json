@@ -10,9 +10,5 @@
     "Chad",
     "Aria"
   ],
-  "arrayOfAstronautsOnPlanet": [],
-  "item": "alien baby",
-  "preReq": null,
-  "damageCondition": null
-
+  "arrayOfAstronautsOnPlanet": []
 }

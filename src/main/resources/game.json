@@ -1,9 +1,9 @@
 {
   "isOver": true,
-  "remainingDays": 20,
+  "remainingDays": 5,
   "spacecraft": {
     "name": "Bermoona Triangle",
-    "health": 10,
+    "health": 3,
     "currentPlanet": {},
     "passengers": [],
     "numOfEngineersOnBoard": 0,
