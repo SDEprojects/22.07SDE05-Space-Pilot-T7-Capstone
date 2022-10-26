@@ -269,6 +269,7 @@ public class Controller {
     } else if (currentPlanet.getName().equals("Station") && refuelCounter > 0) {
       spacecraft.setFuel(100);
       refuelCounter--;
+      View.printSpacecraftHasBeenFilled();
     }
   }
 
