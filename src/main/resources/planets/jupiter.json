@@ -1,9 +1,9 @@
 {
-  "name": "Mars",
-  "event": "sand storm",
-  "gravity": 4,
-  "radius": 2100,
-  "mass": 10,
+  "name": "Jupiter",
+  "event": "raging storm",
+  "gravity": 25,
+  "radius": 43400,
+  "mass": 2,
   "names": [
     "Bob",
     "Michelle",
@@ -11,7 +11,7 @@
     "Aria"
   ],
   "arrayOfAstronautsOnPlanet": [],
-  "item": "gas mask",
+  "item": "weapon",
   "preReq": null,
   "damageCondition": null
 }

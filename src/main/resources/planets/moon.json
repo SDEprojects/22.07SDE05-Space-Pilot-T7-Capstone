@@ -10,5 +10,8 @@
     "Chad",
     "Aria"
   ],
-  "arrayOfAstronautsOnPlanet": []
+  "arrayOfAstronautsOnPlanet": [],
+  "preReq": null,
+  "damageCondition": null,
+  "item": null
 }

@@ -1,9 +1,9 @@
 {
-  "name": "Earth",
-  "event": "WW III",
+  "name": "Venus",
+  "event": "hot flash",
   "gravity": 9,
-  "radius": 6300,
-  "mass": 100,
+  "radius": 3800,
+  "mass": 5,
   "names": [
     "Bob",
     "Michelle",
@@ -11,7 +11,7 @@
     "Aria"
   ],
   "arrayOfAstronautsOnPlanet": [],
-  "preReq": null,
-  "damageCondition": null,
+  "preReq": "gas mask",
+  "damageCondition": "poisonous gas",
   "item": null
 }
