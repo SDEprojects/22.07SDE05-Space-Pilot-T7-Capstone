@@ -6,7 +6,6 @@ import com.spacepilot.Main;
 import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
 import com.spacepilot.model.Music;
-import com.spacepilot.model.Person;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.View;
@@ -179,7 +178,7 @@ public class Controller {
   }
 
   public void loadNewPassengers() {
-    Collection<Person> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
+    Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
     if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
       View.printNoAstronautsToLoad();
@@ -190,7 +189,6 @@ public class Controller {
     if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
         .getName().equals("Earth")) {
       game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
-      arrayOfAstronautsOnCurrentPlanet.clear();
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       determineIfEngineerIsOnBoard();
     }
@@ -234,10 +232,14 @@ public class Controller {
   }
 
   public void displayGameState() {
-    View.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet("earth").getNumOfAstronautsOnPlanet() ,
-        game.getRemainingDays(), game.getSpacecraft().getHealth(),
+    View.printGameState(
         game.getSpacecraft().getCurrentPlanet().getName(),
-        game.getSpacecraft().getPassengers().size(), returnPlanet("earth").getNumOfAstronautsOnPlanet());
+        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
+        game.getSpacecraft().getHealth(),
+        game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet("earth").getNumOfAstronautsOnPlanet() ,
+        game.getRemainingDays(),
+        game.getSpacecraft().getPassengers().size(),
+        returnPlanet("earth").getNumOfAstronautsOnPlanet());
   }
 
   public void loadSavedGame() {

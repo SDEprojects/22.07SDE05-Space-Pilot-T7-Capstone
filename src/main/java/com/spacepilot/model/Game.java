@@ -1,6 +1,5 @@
 package com.spacepilot.model;
 
-import com.spacepilot.controller.Controller;
 import java.util.List;
 
 public class Game {
@@ -54,7 +53,7 @@ public class Game {
   }
 
   public int calculateRemainingAstronautsViaTotalNumOfAstronauts() {
-    int totalNumberOfAstronauts = getTotalNumberOfAstronauts();
+    int totalNumberOfAstronauts = getTotalNumberOfAstronauts()-spacecraft.getPassengers().size();
     return totalNumberOfAstronauts;
   }
 
