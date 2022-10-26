@@ -100,6 +100,7 @@ public class Controller {
   }
 
   public void nextMove(String[] command) throws IOException {
+    Spacecraft spacecraft = game.getSpacecraft();
     if (command[0].equals("quit")) {
       game.setOver(true);
 
@@ -118,11 +119,13 @@ public class Controller {
         View.printSamePlanetAlert();
       } else {
         Planet destinationPlanet = returnPlanet(command[1]);
+        //this method will decrement fuel by 10 on each move
+        spacecraft.setFuel(spacecraft.getFuel() - 10);
         if (destinationPlanet == null) {
           View.printInvalidDestination();
         } else {
           String event = destinationPlanet.randomEncounter();
-          Spacecraft spacecraft = game.getSpacecraft();
+
           if (event != null) {
             // decrement spacecraft health by 1.
             spacecraft.setHealth(spacecraft.getHealth() - 1);
@@ -221,7 +224,7 @@ public class Controller {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
-        >= (double) 4 / 5;
+        >= (double) 5 / 5;
 
     if (!userWon) {
       return;
@@ -239,7 +242,7 @@ public class Controller {
         game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet("earth").getNumOfAstronautsOnPlanet() ,
         game.getRemainingDays(),
         game.getSpacecraft().getPassengers().size(),
-        returnPlanet("earth").getNumOfAstronautsOnPlanet());
+        returnPlanet("earth").getNumOfAstronautsOnPlanet(), game.getSpacecraft().getFuel());
   }
 
   public void loadSavedGame() {
