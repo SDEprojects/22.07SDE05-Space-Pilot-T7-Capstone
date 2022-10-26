@@ -14,6 +14,10 @@ public class Spacecraft {
   private int totalPassengers;
   private int spacecraftCapacity = 50;
 
+
+
+  private int fuel;
+
   public String getName() {
     return name;
   }
@@ -32,6 +36,14 @@ public class Spacecraft {
 
   public void setHealth(int health) {
     this.health = health;
+  }
+
+  public int getFuel() {
+    return fuel;
+  }
+
+  public void setFuel(int fuel) {
+    this.fuel = fuel;
   }
 
   public void setCurrentPlanet(Planet currentPlanet) {
