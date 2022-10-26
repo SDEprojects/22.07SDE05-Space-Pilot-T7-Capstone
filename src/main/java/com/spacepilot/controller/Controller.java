@@ -134,11 +134,11 @@ public class Controller {
           }
           //Check if planet has prereq/damageCondition that causes damage to ship
           String preReq = destinationPlanet.getPreReq();
-          if(preReq != null && prereq not in inventory){
+          if(preReq != null && !spacecraft.getInventory().contains(preReq)){
             spacecraft.setHealth(spacecraft.getHealth() - 50);
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
-          }else if(preReq != null && inventory.contains prereq){
+          }else if(preReq != null && spacecraft.getInventory().contains(preReq)){
             //Call string to show that you avoided damage by having correct preReq in inventory
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAvoidedAlert(preReq, damageCondition);
@@ -146,6 +146,8 @@ public class Controller {
             destinationPlanet.setPreReq(null);
             //set damageCondition to null
             destinationPlanet.setDamageCondition(null);
+            //remove item from inventory as it's used.
+            spacecraft.getInventory().remove(preReq);
 
           }
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
@@ -204,6 +206,13 @@ public class Controller {
     }
     if (game.getSpacecraft().getCurrentPlanet().getName().equals("Earth")) {
       View.printCannotRemovePeopleFromEarth();
+    }
+    //conditional to prevent player from loading passengers while preReq is still active.
+    String preReq = game.getSpacecraft().getCurrentPlanet().getPreReq();
+    List<String> inventory = game.getSpacecraft().getInventory();
+    if(preReq != null){
+      View.printCantLoadWithoutPreReqAlert(preReq);
+      return;
     }
     if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
         .getName().equals("Earth")) {

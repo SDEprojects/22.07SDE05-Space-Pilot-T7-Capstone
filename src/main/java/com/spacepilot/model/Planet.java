@@ -15,17 +15,8 @@ public class Planet {
   private String item;
 
   private String[] names;
-  private String item;
   private String preReq;
   private String damageCondition;
-
-  public String getItem() {
-    return item;
-  }
-
-  public void setItem(String item) {
-    this.item = item;
-  }
 
   public String getPreReq() {
     return preReq;

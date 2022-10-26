@@ -128,10 +128,17 @@ public class View {
     );
   }
 
+  public static void printCantLoadWithoutPreReqAlert(String preReq){
+    System.out.println();
+    System.out.println(
+        ANSI_RED + "MISSION CONTROL: It is unsafe to load passengers on this planet without " + preReq + ANSI_RESET
+    );
+  }
+
   public static void printDamageConditionAvoidedAlert(String preReq, String damageCondition){
     System.out.println();
     System.out.println(ANSI_RED + "MISSION CONTROL: You used " + preReq + " to avoid damage from " + damageCondition + "! "
-        + "You are clear to load passengers.");
+        + "You are clear to load passengers." + ANSI_RESET);
   }
 
   public static void printYouveGotAnEngineer() {
