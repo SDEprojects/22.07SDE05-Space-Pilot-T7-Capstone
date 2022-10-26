@@ -12,7 +12,7 @@ public class Planet {
   private int radius;
   private int mass;
   private String[] names;
-  private final Collection<Person> arrayOfAstronautsOnPlanet = new ArrayList<>();
+  private final Collection<Object> arrayOfAstronautsOnPlanet = new ArrayList<Object>();
 
   Planet(String name, String event, int gravity, int radius, int mass) {
     this.name = name;
@@ -55,9 +55,14 @@ public class Planet {
     return arrayOfAstronautsOnPlanet.size();
   }
 
-  public Collection<Person> getArrayOfAstronautsOnPlanet() {
+  public Collection<Object> getArrayOfAstronautsOnPlanet() {
     return arrayOfAstronautsOnPlanet;
   }
+
+  public void removeAstronauts(Object passengerRemoved) {
+      arrayOfAstronautsOnPlanet.remove(passengerRemoved);
+  }
+
 
   public String randomEncounter() {
     Random rnd = new Random();
