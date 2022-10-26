@@ -236,8 +236,8 @@ public class Controller {
         game.getSpacecraft().getCurrentPlanet().getName(),
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
         game.getSpacecraft().getHealth(),
-        game.getRemainingDays(),
         game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet("earth").getNumOfAstronautsOnPlanet() ,
+        game.getRemainingDays(),
         game.getSpacecraft().getPassengers().size(),
         returnPlanet("earth").getNumOfAstronautsOnPlanet());
   }
