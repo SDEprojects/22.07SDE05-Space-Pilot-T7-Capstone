@@ -205,11 +205,16 @@ public class View {
     System.out.println(ANSI_RED + "Oh no! The station is out of fuel... I hope I can get back!" + ANSI_RESET);
   }
 
+  public static void printSpacecraftHasBeenFilled() {
+    System.out.println(ANSI_GREEN + "Your ship has been refueled! Time to go save more astronauts!"
+        + "" + ANSI_RESET);
+  }
+
   public static void printYouCanOnlyRefuelAtTheStation() {
     System.out.println(ANSI_RED + "You can only refuel your ship at the Station!" + ANSI_RESET);
   }
   public static void printYourFuelTankIsFullAlready() {
-    System.out.println(ANSI_RED + "Your fuel tank is already full." + ANSI_RESET);
+    System.out.println(ANSI_RED + "Your spacecraft is already full." + ANSI_RESET);
   }
   public static void printRepair() {
     System.out.println();
