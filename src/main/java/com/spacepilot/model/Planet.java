@@ -11,16 +11,19 @@ public class Planet {
   private int gravity;
   private int radius;
   private int mass;
+
+  private String item;
+
   private String[] names;
   private final Collection<Object> arrayOfAstronautsOnPlanet = new ArrayList<Object>();
-
   Planet(String name, String event, int gravity, int radius, int mass) {
     this.name = name;
     this.event = event;
     this.gravity = gravity;
     this.radius = radius;
     this.mass = mass;
-    int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
+    this.item = item;
+    int totalNumOfAstronautsOnPlanet = new Random().nextInt(5);
 
     for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
       if (!name.equals("Earth")) {
@@ -51,6 +54,14 @@ public class Planet {
     return mass;
   }
 
+  public String getItem() {
+    return item;
+  }
+
+  public void setItem(String item) {
+    this.item = item;
+  }
+
   public int getNumOfAstronautsOnPlanet() {
     return arrayOfAstronautsOnPlanet.size();
   }
@@ -76,7 +87,7 @@ public class Planet {
   public void placeAstronauts(Planet currentPlanet) {
     Random rand = new Random();
     // random total number of astronauts on a planet
-    int totalNumOfAstronautsOnPlanet = rand.nextInt(3);
+    int totalNumOfAstronautsOnPlanet = rand.nextInt(5);
     // check to make sure the current planet is not Earth
     if (!name.equals("Earth")) {
       // place stranded astronauts to the planet
