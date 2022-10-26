@@ -15,6 +15,25 @@ public class Planet {
   private String item;
 
   private String[] names;
+  private String preReq;
+  private String damageCondition;
+
+  public String getPreReq() {
+    return preReq;
+  }
+
+  public void setPreReq(String preReq) {
+    this.preReq = preReq;
+  }
+
+  public String getDamageCondition() {
+    return damageCondition;
+  }
+
+  public void setDamageCondition(String damageCondition) {
+    this.damageCondition = damageCondition;
+  }
+
   private final Collection<Object> arrayOfAstronautsOnPlanet = new ArrayList<Object>();
   Planet(String name, String event, int gravity, int radius, int mass) {
     this.name = name;

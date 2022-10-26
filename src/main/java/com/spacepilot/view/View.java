@@ -120,6 +120,27 @@ public class View {
     System.out.println();
   }
 
+  public static void printDamageConditionAlert(String damageCondition, String planet, String preReq){
+    System.out.println();
+    System.out.println(
+        ANSI_RED + "MISSION CONTROL: When you landed on " + planet + ", your spacecraft was damaged by "
+            + damageCondition + ". You need to find the " + preReq + " to safely load the passengers here." + ANSI_RESET
+    );
+  }
+
+  public static void printCantLoadWithoutPreReqAlert(String preReq){
+    System.out.println();
+    System.out.println(
+        ANSI_RED + "MISSION CONTROL: It is unsafe to load passengers on this planet without " + preReq + ANSI_RESET
+    );
+  }
+
+  public static void printDamageConditionAvoidedAlert(String preReq, String damageCondition){
+    System.out.println();
+    System.out.println(ANSI_RED + "MISSION CONTROL: You used " + preReq + " to avoid damage from " + damageCondition + "! "
+        + "You are clear to load passengers." + ANSI_RESET);
+  }
+
   public static void printYouveGotAnEngineer() {
     System.out.println(ANSI_GREEN + "You have got at least 1 engineer on board...\n"
         + "and they've got the ability to repair the spacecraft!" + ANSI_RESET);
