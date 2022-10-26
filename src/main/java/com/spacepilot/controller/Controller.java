@@ -317,6 +317,12 @@ public class Controller {
     planetNames.add("/planets/moon.json");
     planetNames.add("/planets/mars.json");
     planetNames.add("/planets/mercury.json");
+    planetNames.add("/planets/uranus.json");
+    planetNames.add("/planets/venus.json");
+    planetNames.add("/planets/jupiter.json");
+    planetNames.add("/planets/saturn.json");
+    planetNames.add("/planets/neptune.json");
+    planetNames.add("/planets/station.json");
 
     for (String planetPath : planetNames) {
       try (Reader reader = new InputStreamReader(

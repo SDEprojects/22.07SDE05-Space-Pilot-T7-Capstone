@@ -82,7 +82,7 @@ public class Planet {
         Person person;
         // if the random boolean was true
         if (randBool) {
-          // grab a random name
+          // grab a random names
           String randomName = names[rand.nextInt(4)];
           // create an engineer
           person = new Engineer(randomName, currentPlanet);

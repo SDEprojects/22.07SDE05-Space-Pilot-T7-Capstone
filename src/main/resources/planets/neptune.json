@@ -1,0 +1,18 @@
+{
+  "name": "Neptune",
+  "event": "ice rock",
+  "gravity": 11,
+  "radius": 15300,
+  "mass": 1,
+  "names": [
+    "Bob",
+    "Michelle",
+    "Chad",
+    "Aria"
+  ],
+  "arrayOfAstronautsOnPlanet": [],
+  "preReq": "weapon",
+  "damageCondition": "frost alien",
+  "item": "cold shield"
+
+}
