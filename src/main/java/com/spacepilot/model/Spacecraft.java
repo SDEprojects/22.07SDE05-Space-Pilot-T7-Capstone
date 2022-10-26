@@ -2,6 +2,7 @@ package com.spacepilot.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Spacecraft {
 
@@ -12,6 +13,9 @@ public class Spacecraft {
   private int numOfEngineersOnBoard;
   private int numOfNonEngineersOnBoard;
   private int totalPassengers;
+
+  private List<String> inventory = new ArrayList<>();
+
   private int spacecraftCapacity = 50;
 
 
@@ -21,7 +25,6 @@ public class Spacecraft {
   public String getName() {
     return name;
   }
-
   public int getHealth() {
     return health;
   }
@@ -58,6 +61,16 @@ public class Spacecraft {
     return numOfEngineersOnBoard;
   }
 
+  public List<String> getInventory() {
+    return inventory;
+  }
+
+  public void setInventory(List<String> inventory) {
+    this.inventory = inventory;
+  }
+
+
+
   public void addPassengers(Collection<Object> newPassengers) {
     int passengersAdded = 0;
     Object[] boogity = newPassengers.toArray();
@@ -81,4 +94,9 @@ public class Spacecraft {
     }
   }
 
+  public void addToInventory(String item) {
+    if(item != null){
+      inventory.add(item);
+    }
+  }
 }

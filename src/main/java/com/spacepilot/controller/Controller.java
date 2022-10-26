@@ -191,7 +191,14 @@ public class Controller {
     }
     if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
         .getName().equals("Earth")) {
+      //adds astronauts from planet to spacecraft
       game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
+
+      //gets item from planet, adds to spacecraft inventory
+      String item = game.getSpacecraft().getCurrentPlanet().getItem();
+      game.getSpacecraft().addToInventory(item);
+      game.getSpacecraft().getCurrentPlanet().setItem(null);
+
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       determineIfEngineerIsOnBoard();
     }
@@ -224,7 +231,7 @@ public class Controller {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
-        >= (double) 5 / 5;
+        >= (double) 4 / 5;
 
     if (!userWon) {
       return;
@@ -238,11 +245,14 @@ public class Controller {
     View.printGameState(
         game.getSpacecraft().getCurrentPlanet().getName(),
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
+        game.getSpacecraft().getCurrentPlanet().getItem(),
         game.getSpacecraft().getHealth(),
         game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet("earth").getNumOfAstronautsOnPlanet() ,
         game.getRemainingDays(),
         game.getSpacecraft().getPassengers().size(),
-        returnPlanet("earth").getNumOfAstronautsOnPlanet(), game.getSpacecraft().getFuel());
+        returnPlanet("earth").getNumOfAstronautsOnPlanet(),
+        game.getSpacecraft().getInventory(),
+        game.getSpacecraft().getFuel());
   }
 
   public void loadSavedGame() {
