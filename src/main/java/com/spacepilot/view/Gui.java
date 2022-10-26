@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -38,6 +40,8 @@ public class Gui {
 
     //Creating TextArea for displaying output strings on Center-Right
     JTextArea displayArea = new JTextArea();
+
+
 
     //Creating Panel for holding buttons on Center-Left
     JPanel controlPanel = new JPanel();
@@ -87,6 +91,19 @@ public class Gui {
     frame.add(displayArea, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
     frame.add(inputPanel, BorderLayout.PAGE_END );
+
+    //Creating a menu
+    JMenu menu = new JMenu("Menu");
+      //Creating menu items
+    JMenuItem quit = new JMenuItem("Quit");
+    JMenuItem saveQuit = new JMenuItem("Save and Quit");
+    JMenuItem help = new JMenuItem("Help");
+    JMenuItem volume = new JMenuItem("Volume Placeholder");
+      //Adding items to menu
+    menu.add(quit);
+    menu.add(saveQuit);
+    menu.add(help);
+    menu.add(volume);
 
     //Centers a frame onscreen when it opens
     frame.setLocationRelativeTo(null);
