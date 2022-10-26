@@ -63,7 +63,7 @@ public class View {
   }
 
   public static void printGameState(String planetName, int astrosOnPlanet, String itemOnPlanet, int shipHealth, int remainingAstros, int remainingDays
-,int numOfPassengersOnboard, int astrosOnEarth, List<String> currentInventory, int fuelLevel, int refuelsLeft) {
+,int numOfPassengersOnboard, int astrosOnEarth, List<String> currentInventory, double fuelLevel, int refuelsLeft, int repairs) {
     if(itemOnPlanet == null){
       itemOnPlanet = "No Item";
     }
@@ -79,6 +79,7 @@ public class View {
     System.out.println("Number of Passengers Onboard: " + numOfPassengersOnboard);
     System.out.println("Passengers Returned Home: " + astrosOnEarth);
     System.out.println("Current Inventory: " + currentInventory);
+    System.out.println("Number of Repairs left: " + repairs);
     System.out.println();
   }
 
@@ -207,6 +208,11 @@ public class View {
 
   public static void printSpacecraftHasBeenFilled() {
     System.out.println(ANSI_GREEN + "Your ship has been refueled! Time to go save more astronauts!"
+        + "" + ANSI_RESET);
+  }
+
+  public static void printYourSpacecraftIsOutOfFuelAndYouLose() {
+    System.out.println(ANSI_RED + "You left the planet and ran out of fuel mid flight. You are now stranded in space and slowly starve to death.\n\nGAME OVER"
         + "" + ANSI_RESET);
   }
 

@@ -32,6 +32,7 @@ public class Controller {
 
   private int refuelCounter = 3;
 
+
   public Controller(Game game, BufferedReader reader) {
     this.game = game;
     this.reader = reader;
@@ -102,6 +103,7 @@ public class Controller {
 
   public void nextMove(String[] command) throws IOException {
     Spacecraft spacecraft = game.getSpacecraft();
+
     if (command[0].equals("quit")) {
       game.setOver(true);
 
@@ -115,13 +117,18 @@ public class Controller {
       loadSavedGame();
 
     } else if (command[0].equals("go")) {
+
+      if (spacecraft.getFuel() == 0) {
+        View.printYourSpacecraftIsOutOfFuelAndYouLose();
+        game.setOver(true);
+      }
       // if the user is trying to go to the current planet
       if (command[1].equals(game.getSpacecraft().getCurrentPlanet().getName())) {
         View.printSamePlanetAlert();
       } else { //Check if planet exists or return null
         Planet destinationPlanet = returnPlanet(command[1]);
         //this method will decrement fuel by 10 on each move
-        spacecraft.setFuel(spacecraft.getFuel() - 10);
+
         if (destinationPlanet == null) {
           View.printInvalidDestination();
         } else { //Check chances of random damage event
@@ -135,11 +142,11 @@ public class Controller {
           }
           //Check if planet has prereq/damageCondition that causes damage to ship
           String preReq = destinationPlanet.getPreReq();
-          if(preReq != null && !spacecraft.getInventory().contains(preReq)){
+          if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
             spacecraft.setHealth(spacecraft.getHealth() - 50);
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
-          }else if(preReq != null && spacecraft.getInventory().contains(preReq)){
+          } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
             //Call string to show that you avoided damage by having correct preReq in inventory
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAvoidedAlert(preReq, damageCondition);
@@ -152,14 +159,16 @@ public class Controller {
 
           }
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
+          spacecraft.setFuel(spacecraft.getFuel() - 12.5);
           // decrement remaining days by 1 when user goes somewhere
           game.setRemainingDays(game.getRemainingDays() - 1);
           // check if the number of remaining days is less than 1
           // or if the spacecraft's health is less than 1
-          if (game.getRemainingDays() < 1 || spacecraft.getHealth() < 1 || spacecraft.getFuel() < 1) {
-            // if so, set the game as over
+          if (game.getRemainingDays() < 1 || spacecraft.getHealth() < 1) {
             game.setOver(true);
           }
+          // if so, set the game as over
+
         }
       }
 
@@ -179,12 +188,12 @@ public class Controller {
         View.printNoEngineerAlert();
         return;
       }
-      if (repairCounter < 2) {
+      if (repairCounter < 3) {
         Engineer.repairSpacecraft(game.getSpacecraft());
         View.printRepair();
 
         repairCounter++;
-      } else if (repairCounter >= 2) {
+      } else if (repairCounter >= 3) {
         View.printRepairLimit();
       }
 
@@ -214,7 +223,7 @@ public class Controller {
     //conditional to prevent player from loading passengers while preReq is still active.
     String preReq = game.getSpacecraft().getCurrentPlanet().getPreReq();
     List<String> inventory = game.getSpacecraft().getInventory();
-    if(preReq != null){
+    if (preReq != null) {
       View.printCantLoadWithoutPreReqAlert(preReq);
       return;
     }
@@ -289,18 +298,20 @@ public class Controller {
   }
 
   public void displayGameState() {
+    Spacecraft spacecraft = game.getSpacecraft();
     View.printGameState(
         game.getSpacecraft().getCurrentPlanet().getName(),
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
         game.getSpacecraft().getCurrentPlanet().getItem(),
         game.getSpacecraft().getHealth(),
-        game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet("earth").getNumOfAstronautsOnPlanet() ,
+        game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet(
+            "earth").getNumOfAstronautsOnPlanet(),
         game.getRemainingDays(),
         game.getSpacecraft().getPassengers().size(),
         returnPlanet("earth").getNumOfAstronautsOnPlanet(),
         game.getSpacecraft().getInventory(),
         game.getSpacecraft().getFuel(),
-        refuelCounter);
+        refuelCounter, repairCounter);
   }
 
   public void loadSavedGame() {
