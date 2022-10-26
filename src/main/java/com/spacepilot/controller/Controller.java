@@ -30,12 +30,13 @@ public class Controller {
   private String userInput; // variable used to save user input
   private int repairCounter = 0;
 
+  private int refuelCounter = 3;
+
   public Controller(Game game, BufferedReader reader) {
     this.game = game;
     this.reader = reader;
     this.userInput = "";
   }
-
 
 
   public void play()
@@ -128,7 +129,7 @@ public class Controller {
 
           if (event != null) {
             // decrement spacecraft health by 1.
-            spacecraft.setHealth(spacecraft.getHealth() - 1);
+            spacecraft.setHealth(spacecraft.getHealth() - 15);
             // alert the user about the event
             View.printEventAlert(event);
           }
@@ -155,7 +156,7 @@ public class Controller {
           game.setRemainingDays(game.getRemainingDays() - 1);
           // check if the number of remaining days is less than 1
           // or if the spacecraft's health is less than 1
-          if (game.getRemainingDays() < 1 || spacecraft.getHealth() < 1) {
+          if (game.getRemainingDays() < 1 || spacecraft.getHealth() < 1 || spacecraft.getFuel() < 1) {
             // if so, set the game as over
             game.setOver(true);
           }
@@ -192,6 +193,9 @@ public class Controller {
 
     } else if (command[0].equals("unload")) {
       unloadPassengersOnEarth();
+
+    } else if (command[0].equals("refuel")) {
+      refuelShip();
 
     } else { // invalid command message
       View.printInvalidCommandAlert();
@@ -252,6 +256,24 @@ public class Controller {
     }
   }
 
+  public void refuelShip() {
+    Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
+    Spacecraft spacecraft = game.getSpacecraft();
+
+    if (!currentPlanet.getName().equals("Station")) {
+      View.printYouCanOnlyRefuelAtTheStation();
+    } else if (spacecraft.getFuel() == 100) {
+      View.printYourFuelTankIsFullAlready();
+    } else if (currentPlanet.getName().equals("Station") && refuelCounter == 0) {
+      View.printStationHasNoMoreFuelAvailable();
+    } else if (currentPlanet.getName().equals("Station") && refuelCounter > 0) {
+      spacecraft.setFuel(100);
+      refuelCounter--;
+      View.printSpacecraftHasBeenFilled();
+    }
+  }
+
+
   public void checkGameResult() {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
@@ -277,7 +299,8 @@ public class Controller {
         game.getSpacecraft().getPassengers().size(),
         returnPlanet("earth").getNumOfAstronautsOnPlanet(),
         game.getSpacecraft().getInventory(),
-        game.getSpacecraft().getFuel());
+        game.getSpacecraft().getFuel(),
+        refuelCounter);
   }
 
   public void loadSavedGame() {

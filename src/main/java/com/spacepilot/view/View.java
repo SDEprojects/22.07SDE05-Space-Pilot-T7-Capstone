@@ -63,7 +63,7 @@ public class View {
   }
 
   public static void printGameState(String planetName, int astrosOnPlanet, String itemOnPlanet, int shipHealth, int remainingAstros, int remainingDays
-,int numOfPassengersOnboard, int astrosOnEarth, List<String> currentInventory, int fuelLevel) {
+,int numOfPassengersOnboard, int astrosOnEarth, List<String> currentInventory, int fuelLevel, int refuelsLeft) {
     if(itemOnPlanet == null){
       itemOnPlanet = "No Item";
     }
@@ -74,10 +74,11 @@ public class View {
     System.out.println("Ship's Condition: " + shipHealth);
     System.out.println("Astronauts Lost in Space: " + remainingAstros);
     System.out.println("Number of Remaining Days: " + remainingDays);
+    System.out.println("Fuel: " + fuelLevel);
+    System.out.println("Refuels left: " + refuelsLeft);
     System.out.println("Number of Passengers Onboard: " + numOfPassengersOnboard);
     System.out.println("Passengers Returned Home: " + astrosOnEarth);
     System.out.println("Current Inventory: " + currentInventory);
-    System.out.println("Fuel: " + fuelLevel);
     System.out.println();
   }
 
@@ -147,13 +148,13 @@ public class View {
   }
 
   public static void printYouHaventGotAnEngineerOnBoard() {
-    System.out.println(ANSI_GREEN + "You don't have any engineers on board...\n"
+    System.out.println(ANSI_RED + "You don't have any engineers on board...\n"
         + "thus, you cannot repair the spacecraft." + ANSI_RESET);
   }
 
   public static void printNPCDialoguePrompt() {
     System.out.println();
-    System.out.println("The passengers don't seem to be doing well...");
+    System.out.println(ANSI_RED + "The passengers don't seem to be doing well..." + ANSI_RESET);
   }
 
   public static void printNPCDialogue() {
@@ -188,21 +189,36 @@ public class View {
   }
 
   public static void printNoAstronautsToLoad() {
-    System.out.println("There aren't any astronauts to rescue on this planet.");
+    System.out.println(ANSI_RED + "There aren't any astronauts to rescue on this planet." + ANSI_RESET);
   }
 
   public static void printCannotRemovePeopleFromEarth() {
     System.out.println(
-        "All passengers dropped off on Earth must remain there, as planet Earth is their final destination.");
+        ANSI_RED + "All passengers dropped off on Earth must remain there, as planet Earth is their final destination." + ANSI_RESET);
   }
 
   public static void printYouCantUnloadPassengersIfCurrentPlanetNotEarth() {
-    System.out.println("Passengers can only be dropped off on Earth.");
+    System.out.println(ANSI_RED + "Passengers can only be dropped off on Earth." + ANSI_RESET);
   }
 
+  public static void printStationHasNoMoreFuelAvailable() {
+    System.out.println(ANSI_RED + "Oh no! The station is out of fuel... I hope I can get back!" + ANSI_RESET);
+  }
+
+  public static void printSpacecraftHasBeenFilled() {
+    System.out.println(ANSI_GREEN + "Your ship has been refueled! Time to go save more astronauts!"
+        + "" + ANSI_RESET);
+  }
+
+  public static void printYouCanOnlyRefuelAtTheStation() {
+    System.out.println(ANSI_RED + "You can only refuel your ship at the Station!" + ANSI_RESET);
+  }
+  public static void printYourFuelTankIsFullAlready() {
+    System.out.println(ANSI_RED + "Your spacecraft is already full." + ANSI_RESET);
+  }
   public static void printRepair() {
     System.out.println();
-    System.out.println("Spacecraft repair was successful.");
+    System.out.println(ANSI_GREEN + "Spacecraft repair was successful." + ANSI_RESET);
     System.out.println();
   }
 
