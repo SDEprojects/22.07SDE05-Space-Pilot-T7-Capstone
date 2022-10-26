@@ -17,9 +17,6 @@ public class Spacecraft {
   private List<String> inventory = new ArrayList<>();
 
   private int spacecraftCapacity = 50;
-
-
-
   private int fuel;
 
   public String getName() {
