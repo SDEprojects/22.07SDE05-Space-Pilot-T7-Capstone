@@ -11,15 +11,18 @@ public class Planet {
   private int gravity;
   private int radius;
   private int mass;
+
+  private String item;
+
   private String[] names;
   private final Collection<Object> arrayOfAstronautsOnPlanet = new ArrayList<Object>();
-
   Planet(String name, String event, int gravity, int radius, int mass) {
     this.name = name;
     this.event = event;
     this.gravity = gravity;
     this.radius = radius;
     this.mass = mass;
+    this.item = item;
     int totalNumOfAstronautsOnPlanet = new Random().nextInt(5);
 
     for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
@@ -49,6 +52,14 @@ public class Planet {
 
   public int getMass() {
     return mass;
+  }
+
+  public String getItem() {
+    return item;
+  }
+
+  public void setItem(String item) {
+    this.item = item;
   }
 
   public int getNumOfAstronautsOnPlanet() {

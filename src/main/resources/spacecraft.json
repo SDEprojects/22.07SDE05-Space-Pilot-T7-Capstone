@@ -6,5 +6,6 @@
   "numOfEngineersOnBoard": 0,
   "numOfNonEngineersOnBoard": 0,
   "totalPassengers": 0,
-  "fuel": 100
+  "fuel": 100,
+  "inventory" : []
 }

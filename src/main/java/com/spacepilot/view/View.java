@@ -7,6 +7,7 @@ import com.spacepilot.model.GameText;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.List;
 import java.util.Random;
 
 public class View {
@@ -61,18 +62,22 @@ public class View {
     System.out.println();
   }
 
-  public static void printGameState(String planetName, int astrosOnPlanet, int shipHealth, int remainingAstros, int remainingDays
-,int numOfPassengersOnboard, int astrosOnEarth, int fuelLevel) {
-
+  public static void printGameState(String planetName, int astrosOnPlanet, String itemOnPlanet, int shipHealth, int remainingAstros, int remainingDays
+,int numOfPassengersOnboard, int astrosOnEarth, List<String> currentInventory, int fuelLevel) {
+    if(itemOnPlanet == null){
+      itemOnPlanet = "No Item";
+    }
     System.out.println();
     System.out.println("Current Planet: " + planetName);
     System.out.println("Astronauts on " + planetName + ": " + astrosOnPlanet);
+    System.out.println(planetName + "'s Inventory: " + itemOnPlanet);
     System.out.println("Ship's Condition: " + shipHealth);
     System.out.println("Astronauts Lost in Space: " + remainingAstros);
     System.out.println("Number of Remaining Days: " + remainingDays);
-    System.out.println("Fuel: " + fuelLevel);
     System.out.println("Number of Passengers Onboard: " + numOfPassengersOnboard);
     System.out.println("Passengers Returned Home: " + astrosOnEarth);
+    System.out.println("Current Inventory: " + currentInventory);
+    System.out.println("Fuel: " + fuelLevel);
     System.out.println();
   }
 
