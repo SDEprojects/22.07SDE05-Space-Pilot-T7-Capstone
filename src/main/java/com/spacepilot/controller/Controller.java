@@ -117,13 +117,13 @@ public class Controller {
       // if the user is trying to go to the current planet
       if (command[1].equals(game.getSpacecraft().getCurrentPlanet().getName())) {
         View.printSamePlanetAlert();
-      } else {
+      } else { //Check if planet exists or return null
         Planet destinationPlanet = returnPlanet(command[1]);
         //this method will decrement fuel by 10 on each move
         spacecraft.setFuel(spacecraft.getFuel() - 10);
         if (destinationPlanet == null) {
           View.printInvalidDestination();
-        } else {
+        } else { //Check chances of random damage event
           String event = destinationPlanet.randomEncounter();
 
           if (event != null) {
@@ -131,6 +131,22 @@ public class Controller {
             spacecraft.setHealth(spacecraft.getHealth() - 1);
             // alert the user about the event
             View.printEventAlert(event);
+          }
+          //Check if planet has prereq/damageCondition that causes damage to ship
+          String preReq = destinationPlanet.getPreReq();
+          if(preReq != null && prereq not in inventory){
+            spacecraft.setHealth(spacecraft.getHealth() - 50);
+            String damageCondition = destinationPlanet.getDamageCondition();
+            View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
+          }else if(preReq != null && inventory.contains prereq){
+            //Call string to show that you avoided damage by having correct preReq in inventory
+            String damageCondition = destinationPlanet.getDamageCondition();
+            View.printDamageConditionAvoidedAlert(preReq, damageCondition);
+            //set planet preReq to null
+            destinationPlanet.setPreReq(null);
+            //set damageCondition to null
+            destinationPlanet.setDamageCondition(null);
+
           }
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
           // decrement remaining days by 1 when user goes somewhere
@@ -231,7 +247,7 @@ public class Controller {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
-        >= (double) 4 / 5;
+        >= (double) 5 / 5;
 
     if (!userWon) {
       return;
