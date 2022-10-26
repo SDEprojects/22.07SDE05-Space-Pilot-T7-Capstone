@@ -62,7 +62,7 @@ public class View {
   }
 
   public static void printGameState(String planetName, int astrosOnPlanet, int shipHealth, int remainingAstros, int remainingDays
-,int numOfPassengersOnboard, int astrosOnEarth) {
+,int numOfPassengersOnboard, int astrosOnEarth, int fuelLevel) {
 
     System.out.println();
     System.out.println("Current Planet: " + planetName);
@@ -70,6 +70,7 @@ public class View {
     System.out.println("Ship's Condition: " + shipHealth);
     System.out.println("Astronauts Lost in Space: " + remainingAstros);
     System.out.println("Number of Remaining Days: " + remainingDays);
+    System.out.println("Fuel: " + fuelLevel);
     System.out.println("Number of Passengers Onboard: " + numOfPassengersOnboard);
     System.out.println("Passengers Returned Home: " + astrosOnEarth);
     System.out.println();
