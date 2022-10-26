@@ -1,0 +1,15 @@
+{
+  "name": "Station",
+  "event": "debris",
+  "names": [
+  "Bob",
+  "Michelle",
+  "Chad",
+  "Aria"
+],
+  "arrayOfAstronautsOnPlanet": [],
+  "item": "fuel",
+  "preReq": null,
+  "damageCondition": null
+
+}
