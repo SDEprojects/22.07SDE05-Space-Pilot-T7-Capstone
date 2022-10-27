@@ -2,9 +2,13 @@ package com.spacepilot.view;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,28 +17,39 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 
 public class Gui {
 
+  private static JLabel oxygenTimeLeftLabel;
+  static Timer timer;
+  static int seconds;
+  static int minutes;
+  static String doubleDigitSeconds;
+  static String doubleDigitMinutes;
+  static DecimalFormat dFormat = new DecimalFormat("00");
   public static void main(String[] args) {
 
     //Different type of layouts to use on JPanels and JFrames as needed.
     BorderLayout borderLayout = new BorderLayout();
     GridBagLayout gridBagLayout = new GridBagLayout();
-    GridLayout gridLayout = new GridLayout(0, 1, 5, 5); //0 rows, 1 col, 5 horizontal gap btw buttons, 5 vertical gap
+    GridLayout gridLayout = new GridLayout(0, 1, 5,
+        5); //0 rows, 1 col, 5 horizontal gap btw buttons, 5 vertical gap
     FlowLayout flowLayout = new FlowLayout();
 
     //Creating the outermost Main Frame
-    JFrame frame = new JFrame("Main Panel"); //Create Frame for content //Default layout is BorderLayout
+    JFrame frame = new JFrame(
+        "Main Panel"); //Create Frame for content //Default layout is BorderLayout
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Set closing event
-    frame.pack(); //Sets size of frame on default
+//    frame.pack(); //Sets size of frame on default
+    frame.setSize(new Dimension(800, 500));
 
     //Creating the bottom panel for user input
     JPanel inputPanel = new JPanel(); //Creates panel
     JTextField inputTextField = new JTextField(20); //Creates input text field
     inputTextField.setSize(20, 5);
     JButton goBtn = new JButton("Go"); //Creates button
-      //Adding the Components to inputPanel using Flow Layout
+    //Adding the Components to inputPanel using Flow Layout
     inputPanel.add(goBtn);
     inputPanel.add(inputTextField);
 
@@ -63,22 +78,33 @@ public class Gui {
 
     //Creating Top Panels for Status's
     JPanel statusPanel = new JPanel();
-    GridLayout panelGridLayout = new GridLayout(3, 2, 2, 3 ); //Created grid layout
+    GridLayout panelGridLayout = new GridLayout(3, 2, 2, 3); //Created grid layout
     statusPanel.setLayout(panelGridLayout); //Set status panel to gridLayout
     //Creating the Labels and TextAreas(for updating and displaying text)
-      //Left of Panel
-    JLabel currentPlanetLabel = new JLabel("Current Planet:"); //Labels can have string names and icons.
+    //Left of Panel
+    JLabel currentPlanetLabel = new JLabel(
+        "Current Planet:"); //Labels can have string names and icons.
     JTextArea currentPlanetText = new JTextArea("Pluto");
     JLabel shipHealthLabel = new JLabel("Ship Health:");
     JTextArea shipHealthText = new JTextArea("100");
     JLabel passengersLabel = new JLabel("Passengers:");
     JTextArea passengersText = new JTextArea("0/50");
-      //Right of Panel
-    JLabel oxygenTimeLeftLabel  = new JLabel("Oxygen Time Remaining:");
+
+
+    //Right of Panel
+    oxygenTimeLeftLabel = new JLabel();
     JTextArea oxygenTimeLeftText = new JTextArea("some");
     JLabel strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
     JTextArea strandedAstronautsText = new JTextArea("2");
-      //Adding Labels to the status panel
+
+    // countdown Timer setup
+    oxygenTimeLeftLabel.setText("Oxygen Time Remaining: 03:00");
+    minutes = 3;
+    seconds = 0;
+    ticktock();
+    timer.start();
+
+    //Adding Labels to the status panel
     statusPanel.add(currentPlanetLabel);
     statusPanel.add(oxygenTimeLeftLabel);
     statusPanel.add(shipHealthLabel);
@@ -90,7 +116,7 @@ public class Gui {
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(displayArea, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
-    frame.add(inputPanel, BorderLayout.PAGE_END );
+    frame.add(inputPanel, BorderLayout.PAGE_END);
 
     //Creating a menu
     JMenu menu = new JMenu("Menu");
@@ -112,12 +138,31 @@ public class Gui {
     frame.setVisible(true);
 
 
-
-
-
-
-
-
   }
+
+  private static void ticktock() {
+    timer = new Timer(1000, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        seconds--;
+        doubleDigitSeconds = dFormat.format(seconds);
+        doubleDigitMinutes = dFormat.format(minutes);
+        oxygenTimeLeftLabel.setText("Oxygen Time Remaining: " +  doubleDigitMinutes + ":" + doubleDigitSeconds);
+
+        if (seconds == -1){
+          seconds = 59;
+          minutes --;
+          doubleDigitSeconds = dFormat.format(seconds);
+          doubleDigitMinutes = dFormat.format(minutes);
+          oxygenTimeLeftLabel.setText("Oxygen Time Remaining: " +  doubleDigitMinutes + ":" + doubleDigitSeconds);
+        }
+        if(minutes == 0 && seconds ==0){
+          timer.stop();
+        }
+
+      }
+    });
+  }
+
 
 }
