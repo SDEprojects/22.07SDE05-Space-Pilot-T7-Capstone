@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintStream;
 import java.text.DecimalFormat;
 import javax.sound.sampled.FloatControl;
 import javax.swing.JButton;
@@ -46,11 +47,13 @@ public class Gui {
   static JMenu menu;
   static JScrollPane scrollPaneDisplay;
 
-  public static void main(String[] args) {
-
-    new Gui();
-
-  }
+//  public static void main(String[] args) {
+//
+////    new Gui();
+//      Gui gui = new Gui();
+//      System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
+//
+//  }
 
   public Gui(){
     //Different type of layouts to use on JPanels and JFrames as needed.
@@ -71,6 +74,12 @@ public class Gui {
     inputPanel = new JPanel(); //Creates panel
     inputTextField = new JTextField(20); //Creates input text field
     inputTextField.setSize(20, 5);
+    inputTextField.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        getFieldText(inputTextField.getText());
+      }
+    });
     goBtn = new JButton("Go"); //Creates button
     //Adding the Components to inputPanel using Flow Layout
     inputPanel.add(goBtn);
@@ -280,6 +289,10 @@ public class Gui {
     displayArea.append(text);
     displayArea.setCaretPosition((displayArea.getDocument().getLength()));
 //    displayArea.update(displayArea.getGraphics());
+  }
+
+  public static String getFieldText(String input){
+    return input;
   }
 
 }
