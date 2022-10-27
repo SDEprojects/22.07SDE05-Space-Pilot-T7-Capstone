@@ -22,7 +22,6 @@ public class Main {
         BufferedReader reader = new BufferedReader(input))
     {
       do {
-        ConsoleToGUI ctg = new ConsoleToGUI();
         Game game = createNewGame(); // Model
         game.setOver(false); // Set the current game's status to be not over
         Controller controller = new Controller(game, reader); // Controller
