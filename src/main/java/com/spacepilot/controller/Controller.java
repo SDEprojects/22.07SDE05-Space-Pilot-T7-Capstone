@@ -41,13 +41,14 @@ public class Controller {
 
 
   public void play()
-      throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException {
+      throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
     // create and set up game environment
     setUpGame();
+    // play music
+    Music.startBackgroundMusic();
     // display game's introduction with flash screen and story and prompt the user to continue
     gameIntro();
-    // play music
-    Music.playMusic();
+
     // while game is not over, allow the user to continue to play
     while (!game.isOver()) {
       // print current game info
@@ -61,7 +62,7 @@ public class Controller {
     }
     checkGameResult();
 
-    Music.stopMusic(); // Close sequencer so that the program can terminate
+    Music.stopAudio(); // Close sequencer so that the program can terminate
   }
 
   public void setUpGame() throws URISyntaxException, IOException {
@@ -101,7 +102,7 @@ public class Controller {
     View.printInstructions();
   }
 
-  public void nextMove(String[] command) throws IOException {
+  public void nextMove(String[] command) throws IOException, InterruptedException {
     Spacecraft spacecraft = game.getSpacecraft();
 
     if (command[0].equals("quit")) {
@@ -160,6 +161,8 @@ public class Controller {
           }
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
           spacecraft.setFuel(spacecraft.getFuel() - 12.5);
+          Music.playMove();
+
           // decrement remaining days by 1 when user goes somewhere
           game.setRemainingDays(game.getRemainingDays() - 1);
           // check if the number of remaining days is less than 1
@@ -205,7 +208,14 @@ public class Controller {
 
     } else if (command[0].equals("refuel")) {
       refuelShip();
-
+    } else if (command[0].equals("music")) {
+      Music.musicOnOff(command[1]);
+    } else if (command[0].equals("volume")) {
+      Music.volumeUpDown(command[1]);
+    } else if (command[0].equals("fx")) {
+      Music.FXOnOff(command[1]);
+    } else if (command[0].equals("track")) {
+      Music.trackChange(command[1]);
     } else { // invalid command message
       View.printInvalidCommandAlert();
     }
