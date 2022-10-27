@@ -47,13 +47,11 @@ public class Gui {
   static JMenu menu;
   static JScrollPane scrollPaneDisplay;
 
-//  public static void main(String[] args) {
-//
-////    new Gui();
-//      Gui gui = new Gui();
-//      System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
-//
-//  }
+  public static void main(String[] args) {
+
+    new Gui();
+
+  }
 
   public Gui(){
     //Different type of layouts to use on JPanels and JFrames as needed.
@@ -234,8 +232,8 @@ public class Gui {
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(scrollPaneDisplay, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
-    frame.add(inputPanel, BorderLayout.PAGE_END);
-    frame.add(musicPanel, BorderLayout.CENTER);
+    frame.add(musicPanel, BorderLayout.PAGE_END);
+//    frame.add(musicPanel, BorderLayout.CENTER);
 
     //Creating a menu
     menu = new JMenu("Menu");
