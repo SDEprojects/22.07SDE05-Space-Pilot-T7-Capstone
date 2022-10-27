@@ -38,6 +38,11 @@ public class Gui {
   static float currentVolume;
   public static void main(String[] args) {
 
+    new Gui();
+
+  }
+
+  public Gui(){
     //Different type of layouts to use on JPanels and JFrames as needed.
     BorderLayout borderLayout = new BorderLayout();
     GridBagLayout gridBagLayout = new GridBagLayout();
@@ -66,13 +71,14 @@ public class Gui {
 
     //Creating Panel for holding buttons on Center-Left
     JPanel controlPanel = new JPanel();
+    controlPanel.setBackground(Color.blue);
     JButton menuBtn = new JButton("Menu");
     JButton mapBtn = new JButton("Map");
     JButton repairBtn = new JButton("Repair");
     JButton oxygenBtn = new JButton("Use Oxygen");
     JButton loadBtn = new JButton("Load");
     JButton unloadBtn = new JButton("Unload");
-    JButton interactBtn = new JButton("Interact");
+    JButton refuelBtn = new JButton("Refuel");
     controlPanel.setLayout(gridLayout); //Setting controlPanel to grid layout
     controlPanel.add(menuBtn); //Adding all buttons to control panel
     controlPanel.add(mapBtn);
@@ -80,7 +86,7 @@ public class Gui {
     controlPanel.add(oxygenBtn);
     controlPanel.add(loadBtn);
     controlPanel.add(unloadBtn);
-    controlPanel.add(interactBtn);
+    controlPanel.add(refuelBtn);
 
     //Creating Top Panels for Status's
     JPanel statusPanel = new JPanel();
@@ -93,13 +99,15 @@ public class Gui {
     JTextArea currentPlanetText = new JTextArea("Pluto");
     JLabel shipHealthLabel = new JLabel("Ship Health:");
     JTextArea shipHealthText = new JTextArea("100");
-    JLabel passengersLabel = new JLabel("Passengers:");
-    JTextArea passengersText = new JTextArea("0/50");
-
-
+    JLabel fuelLevelLabel = new JLabel("Fuel Level:");
+    JTextArea fuelLevelText = new JTextArea("100");
+    JLabel inventoryLabel = new JLabel("Inventory:");
+    JTextArea inventoryText = new JTextArea("[alien baby]");
     //Right of Panel
-    oxygenTimeLeftLabel = new JLabel();
+    oxygenTimeLeftLabel = new JLabel();;
     JTextArea oxygenTimeLeftText = new JTextArea("some");
+    JLabel repairsLeftLabel = new JLabel("Repairs Left:");
+    JTextArea repairsLeftText = new JTextArea("2/3");
     JLabel strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
     JTextArea strandedAstronautsText = new JTextArea("2");
 
@@ -190,8 +198,10 @@ public class Gui {
     statusPanel.add(currentPlanetLabel);
     statusPanel.add(oxygenTimeLeftLabel);
     statusPanel.add(shipHealthLabel);
+    statusPanel.add(repairsLeftLabel);
+    statusPanel.add(fuelLevelLabel);
     statusPanel.add(strandedAstronautsLabel);
-    statusPanel.add(passengersLabel);
+    statusPanel.add(inventoryLabel);
 
 
     //Attach panels to the outermost Main Frame
