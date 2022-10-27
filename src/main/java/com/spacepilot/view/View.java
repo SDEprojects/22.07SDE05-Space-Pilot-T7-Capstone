@@ -233,4 +233,19 @@ public class View {
         + "more than twice per round of the game." + ANSI_RESET);
   }
 
+  public static void printTheVolumeNumberDoesNotExist() {
+    System.out.println(ANSI_RED + "That volume number does not exist, please enter a volume number of '0-10'." + ANSI_RESET);
+  }
+
+  public static void printMusicOnlyOnAndOffCommandsAreAllowed() {
+    System.out.println(ANSI_RED + "That command is invalid, please enter 'Music On' or 'Music Off'." + ANSI_RESET);
+  }
+
+  public static void printFXOnlyOnAndOffCommandsAreAllowed() {
+    System.out.println(ANSI_RED + "That command is invalid, please enter 'FX On' or 'FX Off'." + ANSI_RESET);
+  }
+
+  public static void printTheTrackNumberDoesNotExist() {
+    System.out.println(ANSI_RED + "That track number does not exist. please enter a track number '1-4'" + ANSI_RESET);
+  }
 }

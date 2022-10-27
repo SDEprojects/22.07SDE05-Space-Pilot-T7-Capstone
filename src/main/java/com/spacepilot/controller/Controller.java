@@ -33,7 +33,6 @@ public class Controller {
   private int refuelCounter = 3;
 
 
-
   public Controller(Game game, BufferedReader reader) {
     this.game = game;
     this.reader = reader;
@@ -215,7 +214,8 @@ public class Controller {
       Music.volumeUpDown(command[1]);
     } else if (command[0].equals("fx")) {
       Music.FXOnOff(command[1]);
-
+    } else if (command[0].equals("track")) {
+      Music.trackChange(command[1]);
     } else { // invalid command message
       View.printInvalidCommandAlert();
     }
