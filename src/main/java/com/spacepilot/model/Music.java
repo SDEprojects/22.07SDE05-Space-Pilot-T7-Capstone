@@ -7,29 +7,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import jm.JMC;
 
-public final class Music implements JMC {
-
-//  private static Sequencer sequencer;
-//
-//  public static void playMusic()
-//      throws MidiUnavailableException, InvalidMidiDataException, IOException {
-//
-//    try {
-//      sequencer = MidiSystem.getSequencer();
-//      sequencer.open();
-//      InputStream inputStream = Main.class.getResourceAsStream("/black-hole-audio.mp3.mid");
-//      sequencer.setSequence(inputStream);
-//      sequencer.start();
-//    } catch (MidiUnavailableException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
-//
-//  public static void stopMusic() {
-//    sequencer.close();
-//  }
+public final class Music {
 
   private static Clip clip;
   private static Clip clip2;
