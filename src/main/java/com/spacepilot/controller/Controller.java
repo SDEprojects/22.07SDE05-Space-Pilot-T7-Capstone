@@ -6,6 +6,7 @@ import com.spacepilot.Main;
 import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
 import com.spacepilot.model.Music;
+import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.View;
@@ -42,6 +43,8 @@ public class Controller {
 
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
+    Gui gui = new Gui();
+    View.consoleToGUI(gui); //converts all strings to DisplayArea in Gui
     // create and set up game environment
     setUpGame();
     // play music
@@ -363,6 +366,7 @@ public class Controller {
   public void getUserInput(String prompt) throws IOException {
     // clear previous user input
     userInput = "";
+
     // print the prompt message
     View.printUserInputPrompt(prompt);
     // sanitize user response (turn it into lower-case and trim whitespaces) and save it to userInput

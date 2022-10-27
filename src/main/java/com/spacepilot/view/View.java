@@ -6,6 +6,7 @@ import com.spacepilot.controller.Controller;
 import com.spacepilot.model.GameText;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.Reader;
 import java.util.List;
 import java.util.Random;
@@ -18,7 +19,11 @@ public class View {
   public static final String ANSI_RED = "\u001B[31m";
   public static final String ANSI_GREEN = "\u001B[32m";
 
-
+  public static void consoleToGUI(Gui gui) {
+//    Gui gui = new Gui();
+    System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
+//    gui.start();
+  }
 
   public static void getGameTextJson() {
     // create a reader
