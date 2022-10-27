@@ -48,11 +48,13 @@ public class Gui {
   static JMenu menu;
   static JScrollPane scrollPaneDisplay;
 
-  public static void main(String[] args) {
-
-    new Gui();
-
-  }
+//  public static void main(String[] args) {
+//
+////    new Gui();
+//      Gui gui = new Gui();
+//      System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
+//
+//  }
 
   public Gui(){
     //Different type of layouts to use on JPanels and JFrames as needed.
@@ -298,6 +300,10 @@ public class Gui {
     displayArea.append(text);
     displayArea.setCaretPosition((displayArea.getDocument().getLength()));
 //    displayArea.update(displayArea.getGraphics());
+  }
+
+  public static String getFieldText(String input){
+    return input;
   }
 
 }
