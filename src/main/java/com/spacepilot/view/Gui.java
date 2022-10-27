@@ -4,7 +4,6 @@ import com.spacepilot.model.Music;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -21,6 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
@@ -292,6 +292,12 @@ public class Gui {
 
   public static String getFieldText(String input){
     return input;
+  }
+  //Helps convert sout to displayTextArea
+  public void appendText(String text){
+    displayArea.append(text);
+    displayArea.setCaretPosition((displayArea.getDocument().getLength()));
+//    displayArea.update(displayArea.getGraphics());
   }
 
 }
