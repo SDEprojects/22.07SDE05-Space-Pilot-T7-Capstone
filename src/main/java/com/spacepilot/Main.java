@@ -3,6 +3,7 @@ package com.spacepilot;
 import com.google.gson.Gson;
 import com.spacepilot.controller.Controller;
 import com.spacepilot.model.Game;
+import com.spacepilot.view.ConsoleToGUI;
 import com.spacepilot.view.Gui;
 import com.spacepilot.view.View;
 import java.io.BufferedReader;
@@ -21,10 +22,10 @@ public class Main {
         BufferedReader reader = new BufferedReader(input))
     {
       do {
+        ConsoleToGUI ctg = new ConsoleToGUI();
         Game game = createNewGame(); // Model
-        Gui gui = new Gui(); // GUI
         game.setOver(false); // Set the current game's status to be not over
-        Controller controller = new Controller(game, reader, gui); // Controller
+        Controller controller = new Controller(game, reader); // Controller
         controller.play();
       } while (continuePlaying(reader));
     } catch (IOException | URISyntaxException | MidiUnavailableException |
