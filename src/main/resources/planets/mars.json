@@ -10,8 +10,5 @@
     "Chad",
     "Aria"
   ],
-  "arrayOfAstronautsOnPlanet": [],
-  "item": "gas mask",
-  "preReq": null,
-  "damageCondition": null
+  "arrayOfAstronautsOnPlanet": []
 }
