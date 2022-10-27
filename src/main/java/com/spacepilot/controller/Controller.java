@@ -6,7 +6,6 @@ import com.spacepilot.Main;
 import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
 import com.spacepilot.model.Music;
-import com.spacepilot.model.Person;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.View;
@@ -31,20 +30,25 @@ public class Controller {
   private String userInput; // variable used to save user input
   private int repairCounter = 0;
 
+  private int refuelCounter = 3;
+
+
   public Controller(Game game, BufferedReader reader) {
     this.game = game;
     this.reader = reader;
     this.userInput = "";
   }
 
+
   public void play()
-      throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException {
+      throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
     // create and set up game environment
     setUpGame();
+    // play music
+    Music.startBackgroundMusic();
     // display game's introduction with flash screen and story and prompt the user to continue
     gameIntro();
-    // play music
-    Music.playMusic();
+
     // while game is not over, allow the user to continue to play
     while (!game.isOver()) {
       // print current game info
@@ -57,7 +61,8 @@ public class Controller {
       nextMove(userCommand);
     }
     checkGameResult();
-    Music.stopMusic(); // Close sequencer so that the program can terminate
+
+    Music.stopAudio(); // Close sequencer so that the program can terminate
   }
 
   public void setUpGame() throws URISyntaxException, IOException {
@@ -97,7 +102,9 @@ public class Controller {
     View.printInstructions();
   }
 
-  public void nextMove(String[] command) throws IOException {
+  public void nextMove(String[] command) throws IOException, InterruptedException {
+    Spacecraft spacecraft = game.getSpacecraft();
+
     if (command[0].equals("quit")) {
       game.setOver(true);
 
@@ -111,31 +118,60 @@ public class Controller {
       loadSavedGame();
 
     } else if (command[0].equals("go")) {
+
+      if (spacecraft.getFuel() == 0) {
+        View.printYourSpacecraftIsOutOfFuelAndYouLose();
+        game.setOver(true);
+      }
       // if the user is trying to go to the current planet
       if (command[1].equals(game.getSpacecraft().getCurrentPlanet().getName())) {
         View.printSamePlanetAlert();
-      } else {
+      } else { //Check if planet exists or return null
         Planet destinationPlanet = returnPlanet(command[1]);
+        //this method will decrement fuel by 10 on each move
+
         if (destinationPlanet == null) {
           View.printInvalidDestination();
-        } else {
+        } else { //Check chances of random damage event
           String event = destinationPlanet.randomEncounter();
-          Spacecraft spacecraft = game.getSpacecraft();
+
           if (event != null) {
             // decrement spacecraft health by 1.
-            spacecraft.setHealth(spacecraft.getHealth() - 1);
+            spacecraft.setHealth(spacecraft.getHealth() - 15);
             // alert the user about the event
             View.printEventAlert(event);
           }
+          //Check if planet has prereq/damageCondition that causes damage to ship
+          String preReq = destinationPlanet.getPreReq();
+          if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
+            spacecraft.setHealth(spacecraft.getHealth() - 50);
+            String damageCondition = destinationPlanet.getDamageCondition();
+            View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
+          } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
+            //Call string to show that you avoided damage by having correct preReq in inventory
+            String damageCondition = destinationPlanet.getDamageCondition();
+            View.printDamageConditionAvoidedAlert(preReq, damageCondition);
+            //set planet preReq to null
+            destinationPlanet.setPreReq(null);
+            //set damageCondition to null
+            destinationPlanet.setDamageCondition(null);
+            //remove item from inventory as it's used.
+            spacecraft.getInventory().remove(preReq);
+
+          }
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
+          spacecraft.setFuel(spacecraft.getFuel() - 12.5);
+          Music.playMove();
+
           // decrement remaining days by 1 when user goes somewhere
           game.setRemainingDays(game.getRemainingDays() - 1);
           // check if the number of remaining days is less than 1
           // or if the spacecraft's health is less than 1
           if (game.getRemainingDays() < 1 || spacecraft.getHealth() < 1) {
-            // if so, set the game as over
             game.setOver(true);
           }
+          // if so, set the game as over
+
         }
       }
 
@@ -155,12 +191,12 @@ public class Controller {
         View.printNoEngineerAlert();
         return;
       }
-      if (repairCounter < 2) {
+      if (repairCounter < 3) {
         Engineer.repairSpacecraft(game.getSpacecraft());
         View.printRepair();
 
         repairCounter++;
-      } else if (repairCounter >= 2) {
+      } else if (repairCounter >= 3) {
         View.printRepairLimit();
       }
 
@@ -170,13 +206,23 @@ public class Controller {
     } else if (command[0].equals("unload")) {
       unloadPassengersOnEarth();
 
+    } else if (command[0].equals("refuel")) {
+      refuelShip();
+    } else if (command[0].equals("music")) {
+      Music.musicOnOff(command[1]);
+    } else if (command[0].equals("volume")) {
+      Music.volumeUpDown(command[1]);
+    } else if (command[0].equals("fx")) {
+      Music.FXOnOff(command[1]);
+    } else if (command[0].equals("track")) {
+      Music.trackChange(command[1]);
     } else { // invalid command message
       View.printInvalidCommandAlert();
     }
   }
 
   public void loadNewPassengers() {
-    Collection<Person> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
+    Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
     if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
       View.printNoAstronautsToLoad();
@@ -184,10 +230,23 @@ public class Controller {
     if (game.getSpacecraft().getCurrentPlanet().getName().equals("Earth")) {
       View.printCannotRemovePeopleFromEarth();
     }
+    //conditional to prevent player from loading passengers while preReq is still active.
+    String preReq = game.getSpacecraft().getCurrentPlanet().getPreReq();
+    List<String> inventory = game.getSpacecraft().getInventory();
+    if (preReq != null) {
+      View.printCantLoadWithoutPreReqAlert(preReq);
+      return;
+    }
     if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
         .getName().equals("Earth")) {
+      //adds astronauts from planet to spacecraft
       game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
-      arrayOfAstronautsOnCurrentPlanet.clear();
+
+      //gets item from planet, adds to spacecraft inventory
+      String item = game.getSpacecraft().getCurrentPlanet().getItem();
+      game.getSpacecraft().addToInventory(item);
+      game.getSpacecraft().getCurrentPlanet().setItem(null);
+
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       determineIfEngineerIsOnBoard();
     }
@@ -208,26 +267,61 @@ public class Controller {
     if (currentPlanet.getName().equals("Earth")) {
       currentPlanet.getArrayOfAstronautsOnPlanet().addAll(game.getSpacecraft().getPassengers());
       spacecraft.getPassengers().clear();
-      game.setOver(true);
+      checkGameResult();
+
+//      game.setOver(true);
     } else {
       View.printYouCantUnloadPassengersIfCurrentPlanetNotEarth();
     }
   }
 
+  public void refuelShip() {
+    Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
+    Spacecraft spacecraft = game.getSpacecraft();
+
+    if (!currentPlanet.getName().equals("Station")) {
+      View.printYouCanOnlyRefuelAtTheStation();
+    } else if (spacecraft.getFuel() == 100) {
+      View.printYourFuelTankIsFullAlready();
+    } else if (currentPlanet.getName().equals("Station") && refuelCounter == 0) {
+      View.printStationHasNoMoreFuelAvailable();
+    } else if (currentPlanet.getName().equals("Station") && refuelCounter > 0) {
+      spacecraft.setFuel(100);
+      refuelCounter--;
+      View.printSpacecraftHasBeenFilled();
+    }
+  }
+
+
   public void checkGameResult() {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
-        >= (double) 4 / 5;
-    View.printGameOverMessage(userWon);
-    game.setOver(true);
+        >= (double) 5 / 5;
+
+    if (!userWon) {
+      return;
+    } else if (userWon) {
+      game.setOver(true);
+      View.printGameOverMessage(userWon);
+    }
   }
 
   public void displayGameState() {
-    View.printGameState(game.calculateRemainingAstronautsViaTotalNumOfAstronauts(),
-        game.getRemainingDays(), game.getSpacecraft().getHealth(),
+    Spacecraft spacecraft = game.getSpacecraft();
+    View.printGameState(
         game.getSpacecraft().getCurrentPlanet().getName(),
-        game.getSpacecraft().getPassengers().size());
+        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
+        game.getSpacecraft().getCurrentPlanet().getItem(),
+        game.getSpacecraft().getHealth(),
+        game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet(
+            "earth").getNumOfAstronautsOnPlanet(),
+        game.getRemainingDays(),
+        game.getSpacecraft().getPassengers().size(),
+        returnPlanet("earth").getNumOfAstronautsOnPlanet(),
+        game.getSpacecraft().getInventory(),
+        game.getSpacecraft().getFuel(),
+        refuelCounter, repairCounter);
   }
 
   public void loadSavedGame() {
@@ -307,6 +401,12 @@ public class Controller {
     planetNames.add("/planets/moon.json");
     planetNames.add("/planets/mars.json");
     planetNames.add("/planets/mercury.json");
+    planetNames.add("/planets/uranus.json");
+    planetNames.add("/planets/venus.json");
+    planetNames.add("/planets/jupiter.json");
+    planetNames.add("/planets/saturn.json");
+    planetNames.add("/planets/neptune.json");
+    planetNames.add("/planets/station.json");
 
     for (String planetPath : planetNames) {
       try (Reader reader = new InputStreamReader(

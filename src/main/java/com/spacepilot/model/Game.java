@@ -10,6 +10,8 @@ public class Game {
   private int totalNumberOfAstronauts;
   private List<Planet> planets;
 
+
+
   public boolean isOver() { // Getter for isOver
     return isOver;
   }
@@ -51,10 +53,11 @@ public class Game {
   }
 
   public int calculateRemainingAstronautsViaTotalNumOfAstronauts() {
-    int totalNumberOfAstronauts = getTotalNumberOfAstronauts();
-    int numberOfAstronautsOnSc = spacecraft.getPassengers().size();
-    int remainingNumberOfAstronautsToPickUp = totalNumberOfAstronauts - numberOfAstronautsOnSc;
-    return remainingNumberOfAstronautsToPickUp;
+    int totalNumberOfAstronauts = getTotalNumberOfAstronauts()-spacecraft.getPassengers().size();
+    return totalNumberOfAstronauts;
   }
+
+
+
 
 }

@@ -11,8 +11,8 @@ public class Engineer extends Person {
   }
 
   public static void repairSpacecraft(Spacecraft spacecraft) {
-    int currentScHealth = spacecraft.getHealth();
-    spacecraft.setHealth(currentScHealth + 1);
+//    int currentScHealth = spacecraft.getHealth();
+    spacecraft.setHealth(100);
   }
 
 }

@@ -11,16 +11,38 @@ public class Planet {
   private int gravity;
   private int radius;
   private int mass;
-  private String[] names;
-  private final Collection<Person> arrayOfAstronautsOnPlanet = new ArrayList<>();
 
+  private String item;
+
+  private String[] names;
+  private String preReq;
+  private String damageCondition;
+
+  public String getPreReq() {
+    return preReq;
+  }
+
+  public void setPreReq(String preReq) {
+    this.preReq = preReq;
+  }
+
+  public String getDamageCondition() {
+    return damageCondition;
+  }
+
+  public void setDamageCondition(String damageCondition) {
+    this.damageCondition = damageCondition;
+  }
+
+  private final Collection<Object> arrayOfAstronautsOnPlanet = new ArrayList<Object>();
   Planet(String name, String event, int gravity, int radius, int mass) {
     this.name = name;
     this.event = event;
     this.gravity = gravity;
     this.radius = radius;
     this.mass = mass;
-    int totalNumOfAstronautsOnPlanet = new Random().nextInt(4);
+    this.item = item;
+    int totalNumOfAstronautsOnPlanet = new Random().nextInt(5);
 
     for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
       if (!name.equals("Earth")) {
@@ -51,13 +73,26 @@ public class Planet {
     return mass;
   }
 
+  public String getItem() {
+    return item;
+  }
+
+  public void setItem(String item) {
+    this.item = item;
+  }
+
   public int getNumOfAstronautsOnPlanet() {
     return arrayOfAstronautsOnPlanet.size();
   }
 
-  public Collection<Person> getArrayOfAstronautsOnPlanet() {
+  public Collection<Object> getArrayOfAstronautsOnPlanet() {
     return arrayOfAstronautsOnPlanet;
   }
+
+  public void removeAstronauts(Object passengerRemoved) {
+      arrayOfAstronautsOnPlanet.remove(passengerRemoved);
+  }
+
 
   public String randomEncounter() {
     Random rnd = new Random();
@@ -71,7 +106,7 @@ public class Planet {
   public void placeAstronauts(Planet currentPlanet) {
     Random rand = new Random();
     // random total number of astronauts on a planet
-    int totalNumOfAstronautsOnPlanet = rand.nextInt(3);
+    int totalNumOfAstronautsOnPlanet = rand.nextInt(5);
     // check to make sure the current planet is not Earth
     if (!name.equals("Earth")) {
       // place stranded astronauts to the planet
@@ -82,7 +117,7 @@ public class Planet {
         Person person;
         // if the random boolean was true
         if (randBool) {
-          // grab a random name
+          // grab a random names
           String randomName = names[rand.nextInt(4)];
           // create an engineer
           person = new Engineer(randomName, currentPlanet);

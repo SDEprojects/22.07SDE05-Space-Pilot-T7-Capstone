@@ -27,6 +27,7 @@ public class Main {
       } while (continuePlaying(reader));
     } catch (IOException | URISyntaxException | MidiUnavailableException |
              InvalidMidiDataException e) {
+    } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
   }
