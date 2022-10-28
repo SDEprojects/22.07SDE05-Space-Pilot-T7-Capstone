@@ -31,22 +31,26 @@ public class Controller {
   public static Game game; // model, where the current state of the game is stored
   private final BufferedReader reader; // buffered reader used to read in what user enters
   private String userInput; // variable used to save user input
-  private static int repairCounter = 0;
+  private Gui gui;
+  private int repairCounter = 0;
 
   private static int refuelCounter = 3;
   Gui gui = new Gui();
 
-  public Controller(Game game, BufferedReader reader) {
+  public Controller(Game game, BufferedReader reader, Gui gui) {
     this.game = game;
     this.reader = reader;
+    this.gui = gui;
     this.userInput = "";
   }
 
 
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
-
-    View.consoleToGUI(gui); //converts all strings to DisplayArea in Gui
+    //Starts GUI
+    gui.startGui();
+    //converts all strings to DisplayArea in Gui
+    View.consoleToGUI(gui);
     // create and set up game environment
     setUpGame();
     // play music
