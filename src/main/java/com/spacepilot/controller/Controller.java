@@ -10,6 +10,8 @@ import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.View;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,13 +28,13 @@ import javax.sound.midi.MidiUnavailableException;
 
 public class Controller {
 
-  private Game game; // model, where the current state of the game is stored
+  public static Game game; // model, where the current state of the game is stored
   private final BufferedReader reader; // buffered reader used to read in what user enters
   private String userInput; // variable used to save user input
-  private int repairCounter = 0;
+  private static int repairCounter = 0;
 
-  private int refuelCounter = 3;
-
+  private static int refuelCounter = 3;
+  Gui gui = new Gui();
 
   public Controller(Game game, BufferedReader reader) {
     this.game = game;
@@ -43,7 +45,7 @@ public class Controller {
 
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
-    Gui gui = new Gui();
+
     View.consoleToGUI(gui); //converts all strings to DisplayArea in Gui
     // create and set up game environment
     setUpGame();
@@ -53,21 +55,23 @@ public class Controller {
     gameIntro();
 
     // while game is not over, allow the user to continue to play
-    while (!game.isOver()) {
+//    while (!game.isOver()) {
       // print current game info
       displayGameState();
       // prompt the user to enter their next command (saved as userInput)
-      getUserInput("Please enter your next command");
+//      getUserInput("Please enter your next command");
       // parse the user input to get their command (verb and noun)
-      String[] userCommand = textParser(userInput);
+//      String[] userCommand = textParser(userInput);
       // execute their command and/or display information (e.g., list of commands, invalid command, etc.)
-      nextMove(userCommand);
-    }
-    checkGameResult();
+//      nextMove(userCommand);
+//    }
+//    checkGameResult();
 
 //    Music.stopAudio(); // Close sequencer so that the program can terminate
   }
 
+
+//KEEP DIS
   public void setUpGame() throws URISyntaxException, IOException {
     // create planets based on planets' json files and set them as the current game's planets
     game.setPlanets(createPlanets());
@@ -85,27 +89,28 @@ public class Controller {
     game.getSpacecraft().setCurrentPlanet(returnPlanet("earth"));
   }
 
+
   public void gameIntro() throws IOException {
     View.getGameTextJson();
     // display title
     View.printTitle();
     // prompt the user to press "y" to continue
-    do {
-      getUserInput("Enter y to continue");
-    } while (!userInput.equals("y"));
-    View.clearConsole(); // Note: clear console does not work on IntelliJ console
+//    do {
+//      getUserInput("Enter y to continue");
+//    } while (!userInput.equals("y"));
+//    View.clearConsole(); // Note: clear console does not work on IntelliJ console
     // display introductory background story
     View.printIntro();
     // prompt the user to press "y" to continue
-    do {
-      getUserInput("Enter y to continue");
-    } while (!userInput.equals("y"));
-    View.clearConsole(); // Note: clear console does not work on IntelliJ console
-    // display game instructions (how-to-play)
+//    do {
+//      getUserInput("Enter y to continue");
+//    } while (!userInput.equals("y"));
+//    View.clearConsole(); // Note: clear console does not work on IntelliJ console
+//    // display game instructions (how-to-play)
     View.printInstructions();
   }
 
-  public void nextMove(String[] command) throws IOException, InterruptedException {
+  public static void nextMove(String[] command) throws IOException, InterruptedException {
     Spacecraft spacecraft = game.getSpacecraft();
 
     if (command[0].equals("quit")) {
@@ -179,12 +184,6 @@ public class Controller {
       }
 
     } else if (command[0].equals("chat")) {
-      userInput = "";
-      while (userInput.length() < 1) {
-        View.printNPCDialoguePrompt();
-        // display line below until user inputs at least one char
-        getUserInput("What would you like to say to them?");
-      }
       View.printNPCDialogue();
 
     } else if (command[0].equals("repair")) {
@@ -219,12 +218,55 @@ public class Controller {
 //      Music.FXOnOff(command[1]);
     } else if (command[0].equals("track")) {
 //      Music.trackChange(command[1]);
-    } else { // invalid command message
+    } else if (command[0].equals("god")){
+//        godMode();
+    }else { // invalid command message
       View.printInvalidCommandAlert();
     }
   }
 
-  public void loadNewPassengers() {
+
+  //gives the user all the astronauts, items, and sets health and fuel to 100
+
+
+ public ActionListener godMode =  new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      for (Planet planet : game.getPlanets()) {
+//      loads all passengers
+        Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
+        game.getSpacecraft().addPassengers(astronauts);
+        planet.removeAllAstronauts();
+//      adds item from each planet
+        String item = planet.getItem();
+        game.getSpacecraft().addToInventory(item);
+        planet.setItem(null);
+      }
+      //      full health and fuel set to 100
+      game.getSpacecraft().setFuel(100);
+      game.getSpacecraft().setHealth(100);
+    }
+ };
+
+
+  public static void godMode(){
+      for (Planet planet : game.getPlanets()) {
+        Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
+        game.getSpacecraft().addPassengers(astronauts);
+        planet.removeAllAstronauts();
+//      adds item from each planet
+        String item = planet.getItem();
+        game.getSpacecraft().addToInventory(item);
+        planet.setItem(null);
+      }
+      //      full health and fuel set to 100
+      game.getSpacecraft().setFuel(100);
+      game.getSpacecraft().setHealth(100);
+  }
+
+
+
+  public static void loadNewPassengers() {
     Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
     if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
@@ -255,7 +297,7 @@ public class Controller {
     }
   }
 
-  public void determineIfEngineerIsOnBoard() {
+  public static void determineIfEngineerIsOnBoard() {
     if (game.getSpacecraft().getNumOfEngineersOnBoard() > 0) {
       View.printYouveGotAnEngineer();
     } else {
@@ -263,7 +305,7 @@ public class Controller {
     }
   }
 
-  public void unloadPassengersOnEarth() {
+  public static void unloadPassengersOnEarth() {
     Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
     Spacecraft spacecraft = game.getSpacecraft();
 
@@ -278,7 +320,7 @@ public class Controller {
     }
   }
 
-  public void refuelShip() {
+  public static void refuelShip() {
     Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
     Spacecraft spacecraft = game.getSpacecraft();
 
@@ -296,7 +338,7 @@ public class Controller {
   }
 
 
-  public void checkGameResult() {
+  public static void checkGameResult() {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
@@ -327,7 +369,7 @@ public class Controller {
         refuelCounter, repairCounter);
   }
 
-  public void loadSavedGame() {
+  public static void loadSavedGame() {
     try (Reader reader = Files.newBufferedReader(Paths.get("./saved-game.json"))) {
       Game savedGame = new Gson().fromJson(reader, Game.class);
       if (savedGame != null) { // if there is a saved game data
@@ -341,7 +383,7 @@ public class Controller {
     }
   }
 
-  public void saveGame(Game game) throws IOException {
+  public static void saveGame(Game game) throws IOException {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
     FileWriter writer = new FileWriter("saved-game.json");
@@ -353,14 +395,20 @@ public class Controller {
   /*
   HELPER METHODS
    */
-  private static String[] textParser(String text) {
+  public static void textParser(String text) {
     String[] result = new String[2];
     String[] splitText = text.split(" ");
     String verb = splitText[0]; // First word
     String noun = splitText[splitText.length - 1]; // Last word
     result[0] = verb;
     result[1] = noun;
-    return result;
+    try {
+      nextMove(result);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public void getUserInput(String prompt) throws IOException {
@@ -375,7 +423,7 @@ public class Controller {
 
   // Returns an instance of the desired planet when given a planet name
   // If the desired planet by the name does not exist, returns null
-  public Planet returnPlanet(String destination) {
+  public static Planet returnPlanet(String destination) {
     // capitalize the destination
     String planetName =
         destination.substring(0, 1).toUpperCase() + destination.substring(1).toLowerCase();

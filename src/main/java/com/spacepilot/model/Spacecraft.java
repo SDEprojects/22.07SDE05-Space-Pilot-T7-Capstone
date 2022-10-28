@@ -76,7 +76,7 @@ public class Spacecraft {
         break;
       }else{
         passengers.add(passenger);
-        currentPlanet.removeAstronauts(passenger);
+        currentPlanet.removeAstronaut(passenger);
       }
     }
   }
