@@ -5,7 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.spacepilot.Main;
 import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
-import com.spacepilot.model.Music;
+//import com.spacepilot.model.Music;
+import com.spacepilot.model.Person;
 import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
@@ -48,7 +49,7 @@ public class Controller {
     // create and set up game environment
     setUpGame();
     // play music
-    Music.startBackgroundMusic();
+//    Music.startBackgroundMusic();
     // display game's introduction with flash screen and story and prompt the user to continue
     gameIntro();
 
@@ -65,7 +66,7 @@ public class Controller {
     }
     checkGameResult();
 
-    Music.stopAudio(); // Close sequencer so that the program can terminate
+//    Music.stopAudio(); // Close sequencer so that the program can terminate
   }
 
   public void setUpGame() throws URISyntaxException, IOException {
@@ -164,7 +165,7 @@ public class Controller {
           }
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
           spacecraft.setFuel(spacecraft.getFuel() - 12.5);
-          Music.playMove();
+//          Music.playMove();
 
           // decrement remaining days by 1 when user goes somewhere
           game.setRemainingDays(game.getRemainingDays() - 1);
@@ -212,15 +213,25 @@ public class Controller {
     } else if (command[0].equals("refuel")) {
       refuelShip();
     } else if (command[0].equals("music")) {
-      Music.musicOnOff(command[1]);
+//      Music.musicOnOff(command[1]);
     } else if (command[0].equals("volume")) {
-      Music.volumeUpDown(command[1]);
+//      Music.volumeUpDown(command[1]);
     } else if (command[0].equals("fx")) {
-      Music.FXOnOff(command[1]);
+//      Music.FXOnOff(command[1]);
     } else if (command[0].equals("track")) {
-      Music.trackChange(command[1]);
-    } else { // invalid command message
+//      Music.trackChange(command[1]);
+    } else if (command[0].equals("god")){
+        loadAllPassengers();
+    }else { // invalid command message
       View.printInvalidCommandAlert();
+    }
+  }
+
+  private void loadAllPassengers() {
+    for( Planet planet : game.getPlanets()) {
+      Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
+      game.getSpacecraft().addPassengers(astronauts);
+      planet.removeAllAstronauts();
     }
   }
 
