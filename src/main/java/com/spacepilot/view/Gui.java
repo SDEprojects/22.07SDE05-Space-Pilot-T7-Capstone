@@ -1,6 +1,11 @@
 package com.spacepilot.view;
 
+import static com.spacepilot.controller.Controller.game;
+import static com.spacepilot.controller.Controller.loadSavedGame;
+
+import com.spacepilot.controller.Controller;
 import com.spacepilot.model.Music;
+import com.spacepilot.model.Planet;
 import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -12,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
+import java.io.IOException;
+import java.util.Collection;
 import javax.sound.sampled.FloatControl;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,6 +33,7 @@ import javax.swing.event.ChangeListener;
 
 public class Gui {
 
+  ChoiceHandler choiceHandler = new ChoiceHandler();
   static JSlider slider;
   static FloatControl gainControl;
   static float currentVolume;
@@ -89,7 +97,6 @@ public class Gui {
     scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     displayArea.setLineWrap(true);
-
 
     //Creating Panel for holding buttons on Center-Left
     controlPanel = new JPanel();
@@ -233,7 +240,15 @@ public class Gui {
     soundPanel.setVisible(true);
     playMusic();
 
+//God Moade button inputs "god" into controller using choice handler
+    godModeBtn.addActionListener(choiceHandler);
+    godModeBtn.setActionCommand("god");
+//Load button inputs "load" into controller
+    loadBtn.addActionListener(choiceHandler);
+    loadBtn.setActionCommand("load");
 
+    refuelBtn.addActionListener(choiceHandler);
+    refuelBtn.setActionCommand("refuel");
 
 
     //Adding Labels to the status panel
@@ -341,5 +356,13 @@ public class Gui {
     scrollPanel.setVisible(false);
     frame.add(soundPanel, BorderLayout.CENTER);
     soundPanel.setVisible(true);
+  }
+
+  public class ChoiceHandler implements ActionListener {
+
+    public void actionPerformed(ActionEvent event) {
+      String command = event.getActionCommand();
+      Controller.textParser(command);
+    }
   }
 }
