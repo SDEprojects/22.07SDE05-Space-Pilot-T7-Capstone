@@ -7,6 +7,7 @@ import com.spacepilot.controller.Controller;
 import com.spacepilot.model.Music;
 import com.spacepilot.model.Ticktock;
 import com.spacepilot.model.Planet;
+import com.spacepilot.model.Planet;
 import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
