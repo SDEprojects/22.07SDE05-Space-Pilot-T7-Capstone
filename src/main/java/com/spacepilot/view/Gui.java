@@ -1,73 +1,42 @@
 package com.spacepilot.view;
 
-import com.spacepilot.controller.Controller;
 import com.spacepilot.model.Music;
-import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
-import java.util.function.Consumer;
+import java.text.DecimalFormat;
 import javax.sound.sampled.FloatControl;
-import javax.swing.ImageIcon;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public class Gui {
 
-  static ChoiceHandler choiceHandler = new ChoiceHandler();
-  Font titleFont, normalFont;
+  private static JLabel oxygenTimeLeftLabel;
+  static Timer timer;
+  static int seconds;
+  static int minutes;
+  static String doubleDigitSeconds;
+  static String doubleDigitMinutes;
+  static DecimalFormat dFormat = new DecimalFormat("00");
   static JSlider slider;
   static FloatControl gainControl;
   static float currentVolume;
-  static JFrame frame;
-  static JPanel titleScreenPanel, titleBtnPanel, inputPanel, controlPanel, statusPanel, centralDisplayPanel, planetStatusPanel, menuPanel, soundPanel, mapPanel, gameOverPanel;
-  static JTextField inputTextField;
-  static JButton startBtn, continueBtn, goBtn, menuBtn, mapBtn, mainBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn, interactBtn, earthBtn, moonBtn, marsBtn, mercuryBtn, jupiterBtn, saturnBtn, venusBtn, uranusBtn, stationBtn, neptuneBtn;
-
-  static JTextArea displayArea;
-  public static JLabel titleLabel, currentPlanetLabel,damageConditionLabel,itemsOnPlanetLabel,numberOfAstronautsOnPlanetLabel,strandedAstronautsLabel,shipHealthLabel,fuelLevelLabel,inventoryLabel,repairsLeftLabel,gameOverLabel;
-  static JScrollPane scrollPanel;
-  static JProgressBar shipHealthBar, fuelLevelBar;
-  static Consumer<String> method;
-  static int health = 100;
-  static double fuel = 100;
-  public static final Color VERY_DARK_RED = new Color(153, 0, 0);
-  public static final Color DARK_ORANGE = new Color(255, 102, 0);
-
-
-
-//  public static void main(String[] args) {
-//
-////    new Gui();
-//      Gui gui = new Gui();
-////      System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
-//
-//  }
-
-  public Gui() {
-    createMenuPanel();
-    createMapPanel();
-
+  public static void main(String[] args) {
 
     //Different type of layouts to use on JPanels and JFrames as needed.
     BorderLayout borderLayout = new BorderLayout();
@@ -77,177 +46,129 @@ public class Gui {
     FlowLayout flowLayout = new FlowLayout();
 
     //Creating the outermost Main Frame
-    frame = new JFrame(
+    JFrame frame = new JFrame(
         "Main Panel"); //Create Frame for content //Default layout is BorderLayout
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Set closing event
 //    frame.pack(); //Sets size of frame on default
     frame.setSize(new Dimension(800, 500));
 
     //Creating the bottom panel for user input
-    inputPanel = new JPanel(); //Creates panel
-    inputTextField = new JTextField(20); //Creates input text field
+    JPanel inputPanel = new JPanel(); //Creates panel
+    JTextField inputTextField = new JTextField(20); //Creates input text field
     inputTextField.setSize(20, 5);
-    inputTextField.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        getFieldText(inputTextField.getText());
-      }
-    });
-    goBtn = new JButton("Go"); //Creates button
+    JButton goBtn = new JButton("Go"); //Creates button
     //Adding the Components to inputPanel using Flow Layout
     inputPanel.add(goBtn);
     inputPanel.add(inputTextField);
 
     //Creating TextArea for displaying output strings on Center-Right
-    displayArea = new JTextArea();
-    scrollPanel = new JScrollPane(displayArea); //scrollpane to let text scroll
-    displayArea.setEditable(false);//stop display from being edited
-    displayArea.setWrapStyleWord(true); //wrap at word boundaries, not characters
-    scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    displayArea.setLineWrap(true);
+    JTextArea displayArea = new JTextArea();
 
     //Creating Panel for holding buttons on Center-Left
-    controlPanel = new JPanel();
-    controlPanel.setBackground(Color.blue);
-    menuBtn = new JButton("Menu");
-    //    Event Listener for menu button to open new window w/menu options
-    menuBtn.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        showMenu();
-      }
-    });
-    mapBtn = new JButton("Map");
-    mapBtn.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        showMap();
-      }
-    });
-    mainBtn = new JButton("Main Screen");
-    mainBtn.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        showMain();
-      }
-    });
-    repairBtn = new JButton("Repair");
-    helpBtn = new JButton("Help");
-    loadBtn = new JButton("Load");
-    unloadBtn = new JButton("Unload");
-    refuelBtn = new JButton("Refuel");
-    interactBtn = new JButton("Interact");
-    godModeBtn = new JButton("GOD MODE");
+    JPanel controlPanel = new JPanel();
+    JButton menuBtn = new JButton("Menu");
+    JButton mapBtn = new JButton("Map");
+    JButton repairBtn = new JButton("Repair");
+    JButton oxygenBtn = new JButton("Use Oxygen");
+    JButton loadBtn = new JButton("Load");
+    JButton unloadBtn = new JButton("Unload");
+    JButton interactBtn = new JButton("Interact");
     controlPanel.setLayout(gridLayout); //Setting controlPanel to grid layout
     controlPanel.add(menuBtn); //Adding all buttons to control panel
     controlPanel.add(mapBtn);
-    controlPanel.add(mainBtn);
     controlPanel.add(repairBtn);
-    controlPanel.add(helpBtn);
+    controlPanel.add(oxygenBtn);
     controlPanel.add(loadBtn);
     controlPanel.add(unloadBtn);
-    controlPanel.add(refuelBtn);
-    controlPanel.add(godModeBtn);
     controlPanel.add(interactBtn);
 
-// When a user presses a button, the respective word is given to the Controller to use for function
-    godModeBtn.addActionListener(choiceHandler);
-    godModeBtn.setActionCommand("god");
-    loadBtn.addActionListener(choiceHandler);
-    loadBtn.setActionCommand("load");
-    unloadBtn.addActionListener(choiceHandler);
-    unloadBtn.setActionCommand("unload");
-    refuelBtn.addActionListener(choiceHandler);
-    refuelBtn.setActionCommand("refuel");
-    repairBtn.addActionListener(choiceHandler);
-    repairBtn.setActionCommand("repair");
-    helpBtn.addActionListener(choiceHandler);
-    helpBtn.setActionCommand("help");
-
-
     //Creating Top Panels for Status's
-    statusPanel = new JPanel();
-    statusPanel.setBackground(Color.gray);
-    statusPanel.setBounds(100, 15, 200, 30);
+    JPanel statusPanel = new JPanel();
     GridLayout panelGridLayout = new GridLayout(3, 2, 2, 3); //Created grid layout
     statusPanel.setLayout(panelGridLayout); //Set status panel to gridLayout
     //Creating the Labels and TextAreas(for updating and displaying text)
     //Left of Panel
-    currentPlanetLabel = new JLabel(
+    JLabel currentPlanetLabel = new JLabel(
         "Current Planet:"); //Labels can have string names and icons.
-    //    creating ship health bar
-    shipHealthBar = new JProgressBar(0, 100);
-    shipHealthBar.setForeground(VERY_DARK_RED);
-    shipHealthBar.setBackground(Color.gray);
-    shipHealthBar.setBorder(BorderFactory.createLineBorder(VERY_DARK_RED, 2));
-    shipHealthBar.getUI();
-    shipHealthBar.setUI(new BasicProgressBarUI() {
-      protected Color getSelectionBackground() { return Color.black; }
-      protected Color getSelectionForeground() { return Color.black; }
-    });
-    shipHealthBar.setValue(health);
-    shipHealthBar.setString("Health: " + health + "%");
-    shipHealthBar.setStringPainted(true);
-//    creating ship fuel level bar
-    fuelLevelBar = new JProgressBar(0, 100);
-    fuelLevelBar.setForeground(DARK_ORANGE);
-    fuelLevelBar.setBorder(BorderFactory.createLineBorder(DARK_ORANGE, 2));
-    fuelLevelBar.setBackground(Color.gray);
-    fuelLevelBar.getUI();
-    fuelLevelBar.setUI(new BasicProgressBarUI() {
-      protected Color getSelectionBackground() { return Color.black; }
-      protected Color getSelectionForeground() { return Color.black; }
-    });
-    fuelLevelBar.setValue((int) getFuel());
-    fuelLevelBar.setString("Fuel: " + getFuel() + "%");
-    fuelLevelBar.setStringPainted(true);
-    JTextArea fuelLevelText = new JTextArea("100");
-    inventoryLabel = new JLabel("Inventory:");
+    JTextArea currentPlanetText = new JTextArea("Pluto");
+    JLabel shipHealthLabel = new JLabel("Ship Health:");
+    JTextArea shipHealthText = new JTextArea("100");
+    JLabel passengersLabel = new JLabel("Passengers:");
+    JTextArea passengersText = new JTextArea("0/50");
+
+
     //Right of Panel
-    Ticktock.setOxygenTimeLeftLabel(new JLabel());
-    repairsLeftLabel = new JLabel("Repairs Left:");
-    strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
+    oxygenTimeLeftLabel = new JLabel();
+    JTextArea oxygenTimeLeftText = new JTextArea("some");
+    JLabel strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
+    JTextArea strandedAstronautsText = new JTextArea("2");
 
     // countdown Timer setup
-    Ticktock.getOxygenTimeLeftLabel().setText("Oxygen Time Remaining: 03:00");
-    Ticktock.setMinutes(3);
-    Ticktock.setSeconds(0);
-    Ticktock.ticktock();
-    Ticktock.getTimer().start();
+    oxygenTimeLeftLabel.setText("Oxygen Time Remaining: 03:00");
+    minutes = 3;
+    seconds = 0;
+    ticktock();
+    timer.start();
 
 //Music Panel added below with individual buttons that invoke audio actions
-    soundPanel = new JPanel();
+    JPanel musicPanel = new JPanel();
     //button plays and pauses current track
-    JButton playPauseBtn = new JButton("Play/Pause");
-    method = i -> Music.musicMute();
-    soundButtons(playPauseBtn, method, null);
-    soundPanel.add(playPauseBtn);
-    //button mutes and unMutes FX
-    JButton muteBtn = new JButton("Mute FX");
-    method = i -> Music.fxMute();
-    soundButtons(muteBtn, method, null);
-    soundPanel.add(muteBtn);
+    JButton volumeUpB = new JButton("Play/Pause");
+    volumeUpB.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Music.musicMute();
+      }
+    });
+    musicPanel.add(volumeUpB);
+    //button mutes and unmutes FX
+    JButton volumeDownB = new JButton("Mute FX");
+    volumeDownB.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Music.fxMute();
+      }
+    });
+    musicPanel.add(volumeDownB);
     //button plays track 1 as background music
     JButton track1B = new JButton("Track 1");
-    method = wavFile -> Music.track1(wavFile);
-    soundButtons(track1B, method, "Space_Chill.wav");
-    soundPanel.add(track1B);
+    track1B.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Music.track1();
+      }
+    });
+    musicPanel.add(track1B);
     //button plays track 2 as background music
     JButton track2B = new JButton("Track 2");
-    method = wavFile -> Music.track2(wavFile);
-    soundButtons(track2B, method, "Space_Ambient.wav");
-    soundPanel.add(track2B);
+    track2B.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Music.track2();
+      }
+    });
+    musicPanel.add(track2B);
     //button plays track 3 as background music
     JButton track3B = new JButton("Track 3");
-    method = wavFile -> Music.track3(wavFile);
-    soundButtons(track3B, method, "Space_Cinematic.wav");
-    soundPanel.add(track3B);
+    track3B.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Music.track3();
+      }
+    });
+    musicPanel.add(track3B);
     //button plays track 4 as background music
     JButton track4B = new JButton("Track 4");
-    method = wavFile -> Music.track4(wavFile);
-    soundButtons(track4B, method, "Space_Cyber.wav");
-    soundPanel.add(track4B);
+    track4B.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Music.track4();
+      }
+    });
+    musicPanel.add(track4B);
 //slider is implemented to adjust volume up and down for current background music
     slider = new JSlider(-40, 6);
-    soundPanel.add(slider);
+    musicPanel.add(slider);
     slider.addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent e) {
@@ -259,333 +180,73 @@ public class Gui {
 
       }
     });
-//    soundPanel.setVisible(true);
+    musicPanel.setVisible(true);
     playMusic();
-
 
 
 
 
     //Adding Labels to the status panel
     statusPanel.add(currentPlanetLabel);
-    statusPanel.add(Ticktock.getOxygenTimeLeftLabel());
-    statusPanel.add(shipHealthBar);
-    statusPanel.add(repairsLeftLabel);
+    statusPanel.add(oxygenTimeLeftLabel);
+    statusPanel.add(shipHealthLabel);
     statusPanel.add(strandedAstronautsLabel);
-    statusPanel.add(fuelLevelBar);
-    statusPanel.add(inventoryLabel);
+    statusPanel.add(passengersLabel);
 
-    //Creating planetStatusPanel and Labels
-    planetStatusPanel = new JPanel();
-    planetStatusPanel.setLayout(new GridLayout(1, 3, 3, 3)); //Layout to spread labels out
-    numberOfAstronautsOnPlanetLabel = new JLabel("# of Astronauts on Planet: ");
-    itemsOnPlanetLabel = new JLabel("Items on Planet:");
-    damageConditionLabel = new JLabel("Danger Condition: ");
-    planetStatusPanel.add(numberOfAstronautsOnPlanetLabel);
-    planetStatusPanel.add(itemsOnPlanetLabel);
-    planetStatusPanel.add(damageConditionLabel);
 
-    //Creating central Panel to hold DisplayArea and PlanetStatusDisplayArea
-    centralDisplayPanel = new JPanel();
-    centralDisplayPanel.setLayout(borderLayout);
-    centralDisplayPanel.add(scrollPanel, BorderLayout.CENTER);
-    centralDisplayPanel.add(planetStatusPanel, BorderLayout.PAGE_END);
+    //Attach panels to the outermost Main Frame
+    frame.add(statusPanel, BorderLayout.PAGE_START);
+    frame.add(displayArea, BorderLayout.CENTER);
+    frame.add(controlPanel, BorderLayout.LINE_END);
+    frame.add(inputPanel, BorderLayout.PAGE_END);
+    frame.add(musicPanel, BorderLayout.CENTER);
+
+    //Creating a menu
+    JMenu menu = new JMenu("Menu");
+      //Creating menu items
+    JMenuItem quit = new JMenuItem("Quit");
+    JMenuItem saveQuit = new JMenuItem("Save and Quit");
+    JMenuItem help = new JMenuItem("Help");
+    JMenuItem volume = new JMenuItem("Volume Placeholder");
+      //Adding items to menu
+    menu.add(quit);
+    menu.add(saveQuit);
+    menu.add(help);
+    menu.add(volume);
 
     //Centers a frame onscreen when it opens
     frame.setLocationRelativeTo(null);
 
-  }
-
-  //Starts gui frame by setting to visible and showing title screen
-  public void startGui(){
-    createTitleScreen();
-    frame.add(titleScreenPanel, BorderLayout.CENTER);
+    //Makes frame appear onscreen. Set to true.
     frame.setVisible(true);
   }
 
-  //Shows game screen once users moves on from titleScreen
-  public void startGameScreenPanels(){
-    //Attach panels to the outermost Main Frame
-    frame.remove(titleScreenPanel);
+  private static void ticktock() {
+    timer = new Timer(1000, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        seconds--;
+        doubleDigitSeconds = dFormat.format(seconds);
+        doubleDigitMinutes = dFormat.format(minutes);
+        oxygenTimeLeftLabel.setText("Oxygen Time Remaining: " +  doubleDigitMinutes + ":" + doubleDigitSeconds);
 
-    frame.add(statusPanel, BorderLayout.PAGE_START);
-    frame.add(centralDisplayPanel, BorderLayout.CENTER);
-    frame.add(controlPanel, BorderLayout.LINE_END);
-    frame.setVisible(true);
+        if (seconds == -1){
+          seconds = 59;
+          minutes --;
+          doubleDigitSeconds = dFormat.format(seconds);
+          doubleDigitMinutes = dFormat.format(minutes);
+          oxygenTimeLeftLabel.setText("Oxygen Time Remaining: " +  doubleDigitMinutes + ":" + doubleDigitSeconds);
+        }
+        if(minutes == 0 && seconds ==0){
+          timer.stop();
+        }
+
+      }
+    });
   }
-
-
-
-  //method to display status of current planet user is on.
-  public static void displayPlanetStatus(String item, String damageCondition, int numberOfAstronauts){
-    itemsOnPlanetLabel.setText("Items on Planet: " + (item == null ? "None" : item));
-    damageConditionLabel.setText("Damage Condition: " + (damageCondition == null ? "None" : damageCondition));
-    numberOfAstronautsOnPlanetLabel.setText("# Astronauts on Planet: " + numberOfAstronauts);
-  }
-
-
 
   public static void playMusic() {
     Music.playAudioMusic("Space_Chill.wav");
   }
 
-  //Helps convert sout to displayTextArea
-  public void appendText(String text) {
-    displayArea.append(text);
-    displayArea.setCaretPosition((displayArea.getDocument().getLength()));
-  }
-
-  public static String getFieldText(String input) {
-    return input;
-  }
-
-  public static void createMenuPanel() {
-
-    menuPanel = new JPanel(); //Create Panel for content
-
-    //Creating a menu
-    menuPanel.setBackground(Color.black);
-    //Creating menu buttons
-    soundSettingsBtn = new JButton("Sound Settings");
-    soundSettingsBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        soundSettings();
-      }
-    });
-    videoSettingsBtn = new JButton("Video Settings");
-    saveGameBtn = new JButton("Save");
-    loadSaveGameBtn = new JButton("Load Saved Game");
-    saveAndQuitGameBtn = new JButton("Quit Game");
-    menuPanel.add(soundSettingsBtn); //Adding all buttons to menu frame
-    menuPanel.add(videoSettingsBtn);
-    menuPanel.add(saveGameBtn);
-    menuPanel.add(loadSaveGameBtn);
-    menuPanel.add(saveAndQuitGameBtn);
-  }
-
-
-  public static void createMapPanel() {
-
-    mapPanel = new JPanel(); //Create Panel for content
-    //Creating a menu
-    mapPanel.setBackground(Color.black);
-    //Creating maps buttons to go to respective planets below
-    earthBtn = new JButton("Earth");
-    planetButtons(earthBtn, "go earth");
-    moonBtn = new JButton("Moon");
-    planetButtons(moonBtn, "go moon");
-    marsBtn = new JButton("Mars");
-    planetButtons(marsBtn, "go mars");
-    mercuryBtn = new JButton("Mercury");
-    planetButtons(mercuryBtn, "go mercury");
-    saturnBtn = new JButton("Saturn");
-    planetButtons(saturnBtn, "go saturn");
-    venusBtn = new JButton("Venus");
-    planetButtons(venusBtn, "go venus");
-    neptuneBtn = new JButton("Neptune");
-    planetButtons(neptuneBtn, "go neptune");
-    jupiterBtn = new JButton("Jupiter");
-    planetButtons(jupiterBtn, "go jupiter");
-    stationBtn = new JButton("Station");
-    planetButtons(stationBtn, "go station");
-    uranusBtn = new JButton("Uranus");
-    planetButtons(uranusBtn, "go uranus");
-    mapPanel.add(earthBtn); //Adding all buttons to menu frame
-    mapPanel.add(moonBtn);
-    mapPanel.add(marsBtn);
-    mapPanel.add(mercuryBtn);
-    mapPanel.add(jupiterBtn);
-    mapPanel.add(neptuneBtn);
-    mapPanel.add(venusBtn);
-    mapPanel.add(uranusBtn);
-    mapPanel.add(saturnBtn);
-    mapPanel.add(stationBtn);
-  }
-
-  //  these methods will show respective screens and hide the others in primary display area
-  public static void showMenu() {
-    soundPanel.setVisible(false);
-    scrollPanel.setVisible(false);
-    mapPanel.setVisible(false);
-    centralDisplayPanel.add(menuPanel, BorderLayout.CENTER);
-    menuPanel.setVisible(true);
-  }
-
-  public static void showMap() {
-    menuPanel.setVisible(false);
-    soundPanel.setVisible(false);
-    scrollPanel.setVisible(false);
-    centralDisplayPanel.add(mapPanel, BorderLayout.CENTER);
-    mapPanel.setVisible(true);
-  }
-
-  public static void showMain() {
-    menuPanel.setVisible(false);
-    soundPanel.setVisible(false);
-    mapPanel.setVisible(false);
-    centralDisplayPanel.add(scrollPanel, BorderLayout.CENTER);
-    scrollPanel.setVisible(true);
-  }
-
-  public static void soundSettings() {
-    menuPanel.setVisible(false);
-    scrollPanel.setVisible(false);
-    mapPanel.setVisible(false);
-    centralDisplayPanel.add(soundPanel, BorderLayout.CENTER);
-    soundPanel.setVisible(true);
-  }
-
-  public static class ChoiceHandler implements ActionListener {
-
-    public void actionPerformed(ActionEvent event) {
-      String command = event.getActionCommand();
-      Controller.textParser(command);
-    }
-  }
-
-  public static void goToPlanet(String planet) {
-    Controller.textParser(planet);
-    Controller.displayGameState();
-    mapPanel.setVisible(false);
-    scrollPanel.setVisible(true);
-  }
-
-  public static void planetButtons(JButton btn, String planet) {
-    btn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        goToPlanet(planet);
-      }
-    });
-  }
-
-  public static void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
-    btn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        musicMethod.accept(wavFile);
-      }
-    });
-  }
-  public void gameOverMenu(){
-    planetStatusPanel.setVisible(false);
-    centralDisplayPanel.setVisible(false);
-    statusPanel.setVisible(false);
-    controlPanel.setVisible(false);
-
-    gameOverPanel = new JPanel();
-    gameOverPanel.setLayout(new GridLayout(2, 1, 5, 4));
-    ImageIcon gameOverIcon = new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png"));
-    gameOverLabel = new JLabel();
-    gameOverLabel.setIcon(gameOverIcon);
-    gameOverPanel.add(gameOverLabel);
-    frame.add(gameOverPanel);
-
-
-    startBtn = new JButton("Start New Game");
-    continueBtn = new JButton("Continue Game");
-    titleBtnPanel = new JPanel();
-
-    continueBtn.addActionListener(choiceHandler);
-    continueBtn.setActionCommand("continue");
-
-    startBtn.setBackground(Color.black);
-    continueBtn.setBackground(Color.black);
-
-    gameOverPanel.add(startBtn);
-    gameOverPanel.add(continueBtn);
-    //Add btn listeners
-    startBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        startGameScreenPanels();
-      }
-    });
-    continueBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Controller.textParser("continue");
-        startGameScreenPanels();
-      }
-    });
-  }
-
-  public void createTitleScreen(){
-    //Create components
-
-    titleScreenPanel= new JPanel();
-    titleLabel  = new JLabel("Space Pilot", SwingConstants.CENTER); //centers label
-    titleFont = new Font("Times New Roman", Font.PLAIN, 90);
-    normalFont = new Font("Times New Roman", Font.PLAIN, 30);
-    startBtn = new JButton("Start Game");
-    continueBtn = new JButton("Continue Game");
-    titleBtnPanel = new JPanel();
-    //Set up titlePanel
-    titleScreenPanel.setLayout(new GridLayout(2, 1, 5, 4));
-    titleScreenPanel.setBackground(Color.black);
-    //Set up titleLabel
-    titleLabel.setFont(titleFont);
-    titleLabel.setForeground(Color.white);
-    //Set up titleButtons & Panel
-    startBtn.setBackground(Color.black);
-    continueBtn.setBackground(Color.black);
-    titleBtnPanel.setBackground(Color.black);
-    //Add components together
-    titleScreenPanel.add(titleLabel);
-    titleBtnPanel.add(startBtn);
-    titleBtnPanel.add(continueBtn);
-    titleScreenPanel.add(titleBtnPanel);
-
-    //Add btn listeners
-//
-    startBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        startGameScreenPanels();
-      }
-    });
-    continueBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Controller.textParser("continue");
-        startGameScreenPanels();
-      }
-    });
-
-  }
-
-  public static int getHealth() {
-    return health;
-  }
-
-  public static void setHealth(int health) {
-    Gui.health = health;
-  }
-
-  public static double getFuel() {
-    return fuel;
-  }
-
-  public static void setFuel(double fuel) {
-    Gui.fuel = fuel;
-  }
-
-  public static JProgressBar getFuelLevelBar() {
-    return fuelLevelBar;
-  }
-
-  public static void setFuelLevelBar(JProgressBar fuelLevelBar) {
-    Gui.fuelLevelBar = fuelLevelBar;
-  }
-
-  public static JProgressBar getShipHealthBar() {
-    return shipHealthBar;
-  }
-
-  public static void setShipHealthBar(JProgressBar shipHealthBar) {
-    Gui.shipHealthBar = shipHealthBar;
-  }
 }
-
-
