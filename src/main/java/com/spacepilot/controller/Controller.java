@@ -32,10 +32,9 @@ public class Controller {
   private final BufferedReader reader; // buffered reader used to read in what user enters
   private String userInput; // variable used to save user input
   private Gui gui;
-  private int repairCounter = 0;
+  private static int repairCounter = 0;
 
   private static int refuelCounter = 3;
-  Gui gui = new Gui();
 
   public Controller(Game game, BufferedReader reader, Gui gui) {
     this.game = game;
