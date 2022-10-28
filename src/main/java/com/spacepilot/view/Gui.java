@@ -51,7 +51,7 @@ public class Gui {
 //
 ////    new Gui();
 //      Gui gui = new Gui();
-//      System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
+////      System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
 //
 //  }
 
@@ -234,8 +234,8 @@ public class Gui {
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(scrollPaneDisplay, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
-    frame.add(inputPanel, BorderLayout.PAGE_END);
-    frame.add(musicPanel, BorderLayout.CENTER);
+    frame.add(musicPanel, BorderLayout.PAGE_END);
+//    frame.add(musicPanel, BorderLayout.CENTER);
 
     //Creating a menu
     menu = new JMenu("Menu");
