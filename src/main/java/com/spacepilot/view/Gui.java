@@ -4,7 +4,9 @@ import com.spacepilot.model.Music;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
 import javax.sound.sampled.FloatControl;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,9 +25,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultCaret;
 
 public class Gui {
 
@@ -39,12 +45,11 @@ public class Gui {
   static FloatControl gainControl;
   static float currentVolume;
   static JFrame frame;
-  static JPanel inputPanel, controlPanel, statusPanel;
+  static JPanel inputPanel, controlPanel, statusPanel, menuPanel;
   static JTextField inputTextField;
-  static JButton goBtn, menuBtn, mapBtn,repairBtn, oxygenBtn, loadBtn, unloadBtn,refuelBtn;
+  static JButton goBtn, menuBtn, mapBtn, repairBtn, oxygenBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn;
   static JTextArea displayArea;
-  static JLabel shipHealthLabel,fuelLevelLabel, inventoryLabel, repairsLeftLabel, strandedAstronautsLabel;
-  static JMenu menu;
+  static JLabel shipHealthLabel, fuelLevelLabel, inventoryLabel, repairsLeftLabel, strandedAstronautsLabel;
   static JScrollPane scrollPaneDisplay;
 
 //  public static void main(String[] args) {
@@ -55,7 +60,9 @@ public class Gui {
 //
 //  }
 
-  public Gui(){
+  public Gui() {
+    createFrame();
+
     //Different type of layouts to use on JPanels and JFrames as needed.
     BorderLayout borderLayout = new BorderLayout();
     GridBagLayout gridBagLayout = new GridBagLayout();
@@ -94,11 +101,16 @@ public class Gui {
     scrollPaneDisplay.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     displayArea.setLineWrap(true);
 
-
     //Creating Panel for holding buttons on Center-Left
     controlPanel = new JPanel();
     controlPanel.setBackground(Color.blue);
     menuBtn = new JButton("Menu");
+    //    Event Listener for menu button to open new window w/menu options
+    menuBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        showMenu();
+      }
+    });
     mapBtn = new JButton("Map");
     repairBtn = new JButton("Repair");
     oxygenBtn = new JButton("Use Oxygen");
@@ -130,7 +142,8 @@ public class Gui {
     inventoryLabel = new JLabel("Inventory:");
     JTextArea inventoryText = new JTextArea("[alien baby]");
     //Right of Panel
-    oxygenTimeLeftLabel = new JLabel();;
+    oxygenTimeLeftLabel = new JLabel();
+    ;
     JTextArea oxygenTimeLeftText = new JTextArea("some");
     repairsLeftLabel = new JLabel("Repairs Left:");
     JTextArea repairsLeftText = new JTextArea("2/3");
@@ -219,7 +232,6 @@ public class Gui {
 
 
 
-
     //Adding Labels to the status panel
     statusPanel.add(currentPlanetLabel);
     statusPanel.add(oxygenTimeLeftLabel);
@@ -229,26 +241,14 @@ public class Gui {
     statusPanel.add(strandedAstronautsLabel);
     statusPanel.add(inventoryLabel);
 
-
     //Attach panels to the outermost Main Frame
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(scrollPaneDisplay, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
     frame.add(musicPanel, BorderLayout.PAGE_END);
-//    frame.add(musicPanel, BorderLayout.CENTER);
+//    frame.add(menuPanel, BorderLayout.CENTER);
 
-    //Creating a menu
-    menu = new JMenu("Menu");
-      //Creating menu items
-    JMenuItem quit = new JMenuItem("Quit");
-    JMenuItem saveQuit = new JMenuItem("Save and Quit");
-    JMenuItem help = new JMenuItem("Help");
-    JMenuItem volume = new JMenuItem("Volume Placeholder");
-      //Adding items to menu
-    menu.add(quit);
-    menu.add(saveQuit);
-    menu.add(help);
-    menu.add(volume);
+
 
     //Centers a frame onscreen when it opens
     frame.setLocationRelativeTo(null);
@@ -264,16 +264,18 @@ public class Gui {
         seconds--;
         doubleDigitSeconds = dFormat.format(seconds);
         doubleDigitMinutes = dFormat.format(minutes);
-        oxygenTimeLeftLabel.setText("Oxygen Time Remaining: " +  doubleDigitMinutes + ":" + doubleDigitSeconds);
+        oxygenTimeLeftLabel.setText(
+            "Oxygen Time Remaining: " + doubleDigitMinutes + ":" + doubleDigitSeconds);
 
-        if (seconds == -1){
+        if (seconds == -1) {
           seconds = 59;
-          minutes --;
+          minutes--;
           doubleDigitSeconds = dFormat.format(seconds);
           doubleDigitMinutes = dFormat.format(minutes);
-          oxygenTimeLeftLabel.setText("Oxygen Time Remaining: " +  doubleDigitMinutes + ":" + doubleDigitSeconds);
+          oxygenTimeLeftLabel.setText(
+              "Oxygen Time Remaining: " + doubleDigitMinutes + ":" + doubleDigitSeconds);
         }
-        if(minutes == 0 && seconds ==0){
+        if (minutes == 0 && seconds == 0) {
           timer.stop();
         }
 
@@ -284,15 +286,54 @@ public class Gui {
   public static void playMusic() {
     Music.playAudioMusic("Space_Chill.wav");
   }
+
   //Helps convert sout to displayTextArea
-  public void appendText(String text){
+  public void appendText(String text) {
     displayArea.append(text);
     displayArea.setCaretPosition((displayArea.getDocument().getLength()));
 //    displayArea.update(displayArea.getGraphics());
   }
 
-  public static String getFieldText(String input){
+  public static String getFieldText(String input) {
     return input;
   }
 
+  public static void createFrame() {
+
+    menuPanel = new JPanel(); //Create Panel for content
+
+    //Creating a menu
+    menuPanel.setBackground(Color.black);
+    //Creating menu buttons
+    soundSettingsBtn = new JButton("Sound Settings");
+    videoSettingsBtn = new JButton("Video Settings");
+    saveGameBtn = new JButton("Save");
+    loadSaveGameBtn = new JButton("Load Saved Game");
+    saveAndQuitGameBtn = new JButton("Quit Game");
+    menuPanel.add(soundSettingsBtn); //Adding all buttons to menu frame
+    menuPanel.add(videoSettingsBtn);
+    menuPanel.add(saveGameBtn);
+    menuPanel.add(loadSaveGameBtn);
+    menuPanel.add(saveAndQuitGameBtn);
+
+
+  }
+  Boolean panelShow = true;
+  public void showMenu() {
+
+    if (panelShow) {
+      frame.remove(scrollPaneDisplay);
+      scrollPaneDisplay.setVisible(false);
+      frame.add(menuPanel, BorderLayout.CENTER);
+      menuPanel.setVisible(true);
+      panelShow = false;
+    } else {
+      frame.remove(menuPanel);
+      menuPanel.setVisible(false);
+      frame.add(scrollPaneDisplay, BorderLayout.CENTER);
+      scrollPaneDisplay.setVisible(true);
+      panelShow = true;
+
+    }
+  }
 }
