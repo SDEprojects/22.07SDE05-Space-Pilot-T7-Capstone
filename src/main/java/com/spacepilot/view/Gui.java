@@ -277,14 +277,14 @@ public class Gui {
     //Creating central Panel to hold DisplayArea and PlanetStatusDisplayArea
     centralDisplayPanel = new JPanel();
     centralDisplayPanel.setLayout(borderLayout);
-    centralDisplayPanel.add(scrollPaneDisplay, BorderLayout.CENTER);
+    centralDisplayPanel.add(scrollPanel, BorderLayout.CENTER);
     centralDisplayPanel.add(planetStatusPanel, BorderLayout.PAGE_END);
 
     //Attach panels to the outermost Main Frame
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
-    frame.add(soundPanel, BorderLayout.PAGE_END);
+//    frame.add(soundPanel, BorderLayout.PAGE_END);
 //    frame.add(menuPanel, BorderLayout.CENTER);
 
 
@@ -365,7 +365,7 @@ public class Gui {
   public static void showMenu() {
     soundPanel.setVisible(false);
     scrollPanel.setVisible(false);
-    frame.add(menuPanel, BorderLayout.CENTER);
+    centralDisplayPanel.add(menuPanel, BorderLayout.CENTER);
     menuPanel.setVisible(true);
   }
 
@@ -373,21 +373,21 @@ public class Gui {
       menuPanel.setVisible(false);
       soundPanel.setVisible(false);
     scrollPanel.setVisible(false);
-      frame.add(mapPanel, BorderLayout.CENTER);
+    centralDisplayPanel.add(mapPanel, BorderLayout.CENTER);
     mapPanel.setVisible(true);
   }
 
   public static void showMain() {
     menuPanel.setVisible(false);
     soundPanel.setVisible(false);
-    frame.add(scrollPanel, BorderLayout.CENTER);
+    centralDisplayPanel.add(scrollPanel, BorderLayout.CENTER);
     scrollPanel.setVisible(true);
   }
 
   public static void soundSettings() {
     menuPanel.setVisible(false);
     scrollPanel.setVisible(false);
-    frame.add(soundPanel, BorderLayout.CENTER);
+    centralDisplayPanel.add(soundPanel, BorderLayout.CENTER);
     soundPanel.setVisible(true);
   }
 
