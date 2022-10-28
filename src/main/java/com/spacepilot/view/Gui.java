@@ -4,34 +4,25 @@ import com.spacepilot.model.Music;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.PrintStream;
 import java.text.DecimalFormat;
 import javax.sound.sampled.FloatControl;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.DefaultCaret;
 
 public class Gui {
 
@@ -46,12 +37,15 @@ public class Gui {
   static FloatControl gainControl;
   static float currentVolume;
   static JFrame frame;
-  static JPanel inputPanel, controlPanel, statusPanel, menuPanel;
+  static JPanel inputPanel, controlPanel, statusPanel, menuPanel, soundPanel, mapPanel;
   static JTextField inputTextField;
-  static JButton goBtn, menuBtn, mapBtn, repairBtn, oxygenBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn;
+  static JButton goBtn, menuBtn, mapBtn, mainBtn,  repairBtn, oxygenBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn;
   static JTextArea displayArea;
   static JLabel shipHealthLabel, fuelLevelLabel, inventoryLabel, repairsLeftLabel, strandedAstronautsLabel;
-  static JScrollPane scrollPaneDisplay;
+  static JScrollPane scrollPanel;
+  static Boolean soundSettingsPanelShow = true;
+  static Boolean menuPanelShow = true;
+  static Boolean mapPanelShow = true;
 
 //  public static void main(String[] args) {
 //
@@ -62,7 +56,7 @@ public class Gui {
 //  }
 
   public Gui() {
-    createFrame();
+    createMenuPanel();
 
     //Different type of layouts to use on JPanels and JFrames as needed.
     BorderLayout borderLayout = new BorderLayout();
@@ -95,11 +89,11 @@ public class Gui {
 
     //Creating TextArea for displaying output strings on Center-Right
     displayArea = new JTextArea();
-    scrollPaneDisplay = new JScrollPane(displayArea); //scrollpane to let text scroll
+    scrollPanel = new JScrollPane(displayArea); //scrollpane to let text scroll
     displayArea.setEditable(false);//stop display from being edited
     displayArea.setWrapStyleWord(true); //wrap at word boundaries, not characters
-    scrollPaneDisplay.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    scrollPaneDisplay.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     displayArea.setLineWrap(true);
 
     //Creating Panel for holding buttons on Center-Left
@@ -113,6 +107,17 @@ public class Gui {
       }
     });
     mapBtn = new JButton("Map");
+    mapBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        showMap();
+      }
+    });
+    mainBtn = new JButton("Main Screen");
+    mainBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        showMain();
+      }
+    });
     repairBtn = new JButton("Repair");
     oxygenBtn = new JButton("Use Oxygen");
     loadBtn = new JButton("Load");
@@ -121,6 +126,7 @@ public class Gui {
     controlPanel.setLayout(gridLayout); //Setting controlPanel to grid layout
     controlPanel.add(menuBtn); //Adding all buttons to control panel
     controlPanel.add(mapBtn);
+    controlPanel.add(mainBtn);
     controlPanel.add(repairBtn);
     controlPanel.add(oxygenBtn);
     controlPanel.add(loadBtn);
@@ -159,7 +165,7 @@ public class Gui {
     timer.start();
 
 //Music Panel added below with individual buttons that invoke audio actions
-    JPanel musicPanel = new JPanel();
+    soundPanel = new JPanel();
     //button plays and pauses current track
     JButton volumeUpB = new JButton("Play/Pause");
     volumeUpB.addActionListener(new ActionListener() {
@@ -168,7 +174,7 @@ public class Gui {
         Music.musicMute();
       }
     });
-    musicPanel.add(volumeUpB);
+    soundPanel.add(volumeUpB);
     //button mutes and unmutes FX
     JButton volumeDownB = new JButton("Mute FX");
     volumeDownB.addActionListener(new ActionListener() {
@@ -177,7 +183,7 @@ public class Gui {
         Music.fxMute();
       }
     });
-    musicPanel.add(volumeDownB);
+    soundPanel.add(volumeDownB);
     //button plays track 1 as background music
     JButton track1B = new JButton("Track 1");
     track1B.addActionListener(new ActionListener() {
@@ -186,7 +192,7 @@ public class Gui {
         Music.track1();
       }
     });
-    musicPanel.add(track1B);
+    soundPanel.add(track1B);
     //button plays track 2 as background music
     JButton track2B = new JButton("Track 2");
     track2B.addActionListener(new ActionListener() {
@@ -195,7 +201,7 @@ public class Gui {
         Music.track2();
       }
     });
-    musicPanel.add(track2B);
+    soundPanel.add(track2B);
     //button plays track 3 as background music
     JButton track3B = new JButton("Track 3");
     track3B.addActionListener(new ActionListener() {
@@ -204,7 +210,7 @@ public class Gui {
         Music.track3();
       }
     });
-    musicPanel.add(track3B);
+    soundPanel.add(track3B);
     //button plays track 4 as background music
     JButton track4B = new JButton("Track 4");
     track4B.addActionListener(new ActionListener() {
@@ -213,10 +219,10 @@ public class Gui {
         Music.track4();
       }
     });
-    musicPanel.add(track4B);
+    soundPanel.add(track4B);
 //slider is implemented to adjust volume up and down for current background music
     slider = new JSlider(-40, 6);
-    musicPanel.add(slider);
+    soundPanel.add(slider);
     slider.addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent e) {
@@ -228,7 +234,7 @@ public class Gui {
 
       }
     });
-    musicPanel.setVisible(true);
+    soundPanel.setVisible(true);
     playMusic();
 
 
@@ -244,9 +250,9 @@ public class Gui {
 
     //Attach panels to the outermost Main Frame
     frame.add(statusPanel, BorderLayout.PAGE_START);
-    frame.add(scrollPaneDisplay, BorderLayout.CENTER);
+    frame.add(scrollPanel, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
-    frame.add(musicPanel, BorderLayout.PAGE_END);
+    frame.add(soundPanel, BorderLayout.PAGE_END);
 //    frame.add(menuPanel, BorderLayout.CENTER);
 
 
@@ -309,7 +315,7 @@ public class Gui {
     return input;
   }
 
-  public static void createFrame() {
+  public static void createMenuPanel() {
 
     menuPanel = new JPanel(); //Create Panel for content
 
@@ -317,6 +323,12 @@ public class Gui {
     menuPanel.setBackground(Color.black);
     //Creating menu buttons
     soundSettingsBtn = new JButton("Sound Settings");
+    soundSettingsBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        soundSettings();
+      }
+    });
     videoSettingsBtn = new JButton("Video Settings");
     saveGameBtn = new JButton("Save");
     loadSaveGameBtn = new JButton("Load Saved Game");
@@ -326,25 +338,44 @@ public class Gui {
     menuPanel.add(saveGameBtn);
     menuPanel.add(loadSaveGameBtn);
     menuPanel.add(saveAndQuitGameBtn);
-
-
   }
-  Boolean panelShow = true;
-  public void showMenu() {
 
-    if (panelShow) {
-      frame.remove(scrollPaneDisplay);
-      scrollPaneDisplay.setVisible(false);
-      frame.add(menuPanel, BorderLayout.CENTER);
-      menuPanel.setVisible(true);
-      panelShow = false;
-    } else {
-      frame.remove(menuPanel);
+  public static void createMapPanel() {
+
+    mapPanel = new JPanel(); //Create Panel for content
+    //Creating a menu
+    mapPanel.setBackground(Color.black);
+    //Creating menu buttons
+//    buttons go here
+  }
+
+//  these methods will show respective screens and hide the others in primary display area
+  public static void showMenu() {
+    soundPanel.setVisible(false);
+    scrollPanel.setVisible(false);
+    frame.add(menuPanel, BorderLayout.CENTER);
+    menuPanel.setVisible(true);
+  }
+
+  public static void showMap() {
       menuPanel.setVisible(false);
-      frame.add(scrollPaneDisplay, BorderLayout.CENTER);
-      scrollPaneDisplay.setVisible(true);
-      panelShow = true;
+      soundPanel.setVisible(false);
+    scrollPanel.setVisible(false);
+      frame.add(mapPanel, BorderLayout.CENTER);
+    mapPanel.setVisible(true);
+  }
 
-    }
+  public static void showMain() {
+    menuPanel.setVisible(false);
+    soundPanel.setVisible(false);
+    frame.add(scrollPanel, BorderLayout.CENTER);
+    scrollPanel.setVisible(true);
+  }
+
+  public static void soundSettings() {
+    menuPanel.setVisible(false);
+    scrollPanel.setVisible(false);
+    frame.add(soundPanel, BorderLayout.CENTER);
+    soundPanel.setVisible(true);
   }
 }
