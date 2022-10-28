@@ -22,8 +22,9 @@ public class Main {
     {
       do {
         Game game = createNewGame(); // Model
+        Gui gui = new Gui(); // GUI
         game.setOver(false); // Set the current game's status to be not over
-        Controller controller = new Controller(game, reader); // Controller
+        Controller controller = new Controller(game, reader, gui); // Controller
         controller.play();
       } while (continuePlaying(reader));
     } catch (IOException | URISyntaxException | MidiUnavailableException |
