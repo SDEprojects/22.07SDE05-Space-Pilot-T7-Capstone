@@ -27,7 +27,7 @@ import javax.sound.midi.MidiUnavailableException;
 
 public class Controller {
 
-  private Game game; // model, where the current state of the game is stored
+  public Game game; // model, where the current state of the game is stored
   private final BufferedReader reader; // buffered reader used to read in what user enters
   private String userInput; // variable used to save user input
   private int repairCounter = 0;
@@ -221,18 +221,28 @@ public class Controller {
     } else if (command[0].equals("track")) {
 //      Music.trackChange(command[1]);
     } else if (command[0].equals("god")){
-        loadAllPassengers();
+        godMode();
     }else { // invalid command message
       View.printInvalidCommandAlert();
     }
   }
 
-  private void loadAllPassengers() {
+
+//gives the user all the astronauts, items, and sets health and fuel to 100
+public void godMode() {
     for( Planet planet : game.getPlanets()) {
+//      loads all passengers
       Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
       game.getSpacecraft().addPassengers(astronauts);
       planet.removeAllAstronauts();
+//      adds item from each planet
+      String item = planet.getItem();
+      game.getSpacecraft().addToInventory(item);
+      planet.setItem(null);
     }
+    //      full health and fuel set to 100
+    game.getSpacecraft().setFuel(100);
+    game.getSpacecraft().setHealth(100);
   }
 
   public void loadNewPassengers() {
