@@ -1,6 +1,5 @@
 package com.spacepilot.view;
 
-import com.spacepilot.model.Music;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
@@ -11,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
-import javax.sound.sampled.FloatControl;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,12 +17,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class Gui {
 
@@ -35,9 +30,6 @@ public class Gui {
   static String doubleDigitSeconds;
   static String doubleDigitMinutes;
   static DecimalFormat dFormat = new DecimalFormat("00");
-  static JSlider slider;
-  static FloatControl gainControl;
-  static float currentVolume;
   static JFrame frame;
   static JPanel inputPanel, controlPanel, statusPanel;
   static JTextField inputTextField;
@@ -51,7 +43,7 @@ public class Gui {
 //
 ////    new Gui();
 //      Gui gui = new Gui();
-////      System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
+//      System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
 //
 //  }
 
@@ -93,6 +85,8 @@ public class Gui {
     scrollPaneDisplay.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     scrollPaneDisplay.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     displayArea.setLineWrap(true);
+
+
 
 
     //Creating Panel for holding buttons on Center-Left
@@ -144,82 +138,6 @@ public class Gui {
     ticktock();
     timer.start();
 
-//Music Panel added below with individual buttons that invoke audio actions
-    JPanel musicPanel = new JPanel();
-    //button plays and pauses current track
-    JButton volumeUpB = new JButton("Play/Pause");
-    volumeUpB.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Music.musicMute();
-      }
-    });
-    musicPanel.add(volumeUpB);
-    //button mutes and unmutes FX
-    JButton volumeDownB = new JButton("Mute FX");
-    volumeDownB.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Music.fxMute();
-      }
-    });
-    musicPanel.add(volumeDownB);
-    //button plays track 1 as background music
-    JButton track1B = new JButton("Track 1");
-    track1B.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Music.track1();
-      }
-    });
-    musicPanel.add(track1B);
-    //button plays track 2 as background music
-    JButton track2B = new JButton("Track 2");
-    track2B.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Music.track2();
-      }
-    });
-    musicPanel.add(track2B);
-    //button plays track 3 as background music
-    JButton track3B = new JButton("Track 3");
-    track3B.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Music.track3();
-      }
-    });
-    musicPanel.add(track3B);
-    //button plays track 4 as background music
-    JButton track4B = new JButton("Track 4");
-    track4B.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Music.track4();
-      }
-    });
-    musicPanel.add(track4B);
-//slider is implemented to adjust volume up and down for current background music
-    slider = new JSlider(-40, 6);
-    musicPanel.add(slider);
-    slider.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-
-        currentVolume = Music.currentVolume();
-        currentVolume = slider.getValue();
-        gainControl = Music.gainControl();
-        gainControl.setValue(currentVolume);
-
-      }
-    });
-    musicPanel.setVisible(true);
-    playMusic();
-
-
-
-
     //Adding Labels to the status panel
     statusPanel.add(currentPlanetLabel);
     statusPanel.add(oxygenTimeLeftLabel);
@@ -234,8 +152,7 @@ public class Gui {
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(scrollPaneDisplay, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
-    frame.add(musicPanel, BorderLayout.PAGE_END);
-//    frame.add(musicPanel, BorderLayout.CENTER);
+    frame.add(inputPanel, BorderLayout.PAGE_END);
 
     //Creating a menu
     menu = new JMenu("Menu");
@@ -255,6 +172,8 @@ public class Gui {
 
     //Makes frame appear onscreen. Set to true.
     frame.setVisible(true);
+
+
   }
 
   private static void ticktock() {
@@ -281,9 +200,6 @@ public class Gui {
     });
   }
 
-  public static void playMusic() {
-    Music.playAudioMusic("Space_Chill.wav");
-  }
   //Helps convert sout to displayTextArea
   public void appendText(String text){
     displayArea.append(text);
