@@ -10,7 +10,9 @@ import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -20,6 +22,7 @@ import java.text.DecimalFormat;
 import java.io.IOException;
 import java.util.Collection;
 import javax.sound.sampled.FloatControl;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,8 +31,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultCaret;
 
 public class Gui {
 
@@ -249,6 +256,7 @@ public class Gui {
 
     refuelBtn.addActionListener(choiceHandler);
     refuelBtn.setActionCommand("refuel");
+
 
 
     //Adding Labels to the status panel
