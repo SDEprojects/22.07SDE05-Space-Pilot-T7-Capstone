@@ -292,8 +292,12 @@ public class Gui {
     //Centers a frame onscreen when it opens
     frame.setLocationRelativeTo(null);
 
-    //Makes frame appear onscreen. Set to true.
+  }
+
+  //Starts gui frame by setting to visible
+  public void startGui(){
     frame.setVisible(true);
+
   }
 
 
