@@ -62,6 +62,8 @@ public class Controller {
       String[] userCommand = textParser(userInput);
       // execute their command and/or display information (e.g., list of commands, invalid command, etc.)
       nextMove(userCommand);
+//      gui.someActionThing();
+//      nextMove(gui.someActionThing());
     }
     checkGameResult();
 

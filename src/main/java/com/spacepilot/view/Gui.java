@@ -39,11 +39,12 @@ public class Gui {
   static FloatControl gainControl;
   static float currentVolume;
   static JFrame frame;
-  static JPanel inputPanel, controlPanel, statusPanel;
+  static JPanel inputPanel, controlPanel, statusPanel, centralDisplayPanel, planetStatusPanel;
   static JTextField inputTextField;
-  static JButton goBtn, menuBtn, mapBtn,repairBtn, oxygenBtn, loadBtn, unloadBtn,refuelBtn;
+  static JButton goBtn, menuBtn, mapBtn,repairBtn, oxygenBtn, loadBtn, unloadBtn,refuelBtn, interactBtn;
   static JTextArea displayArea;
-  static JLabel shipHealthLabel,fuelLevelLabel, inventoryLabel, repairsLeftLabel, strandedAstronautsLabel;
+  static JLabel shipHealthLabel,fuelLevelLabel, inventoryLabel, repairsLeftLabel, strandedAstronautsLabel, numberOfAstronautsOnPlanetLabel, itemsOnPlanetLabel,
+  damageConditionLabel;
   static JMenu menu;
   static JScrollPane scrollPaneDisplay;
 
@@ -105,6 +106,7 @@ public class Gui {
     loadBtn = new JButton("Load");
     unloadBtn = new JButton("Unload");
     refuelBtn = new JButton("Refuel");
+    interactBtn = new JButton("Interact");
     controlPanel.setLayout(gridLayout); //Setting controlPanel to grid layout
     controlPanel.add(menuBtn); //Adding all buttons to control panel
     controlPanel.add(mapBtn);
@@ -113,6 +115,7 @@ public class Gui {
     controlPanel.add(loadBtn);
     controlPanel.add(unloadBtn);
     controlPanel.add(refuelBtn);
+    controlPanel.add(interactBtn);
 
     //Creating Top Panels for Status's
     statusPanel = new JPanel();
@@ -218,8 +221,6 @@ public class Gui {
     playMusic();
 
 
-
-
     //Adding Labels to the status panel
     statusPanel.add(currentPlanetLabel);
     statusPanel.add(oxygenTimeLeftLabel);
@@ -229,13 +230,27 @@ public class Gui {
     statusPanel.add(strandedAstronautsLabel);
     statusPanel.add(inventoryLabel);
 
+    //Creating planetStatusPanel and Labels
+    planetStatusPanel = new JPanel();
+//    planetStatusPanel.setLayout(gridLayout);//Layout to stack the labels vertically. Can be removed.
+    numberOfAstronautsOnPlanetLabel = new JLabel("# of Astronauts on Planet: ");
+    itemsOnPlanetLabel = new JLabel("Items on Planet:");
+    damageConditionLabel = new JLabel("Danger Condition: ");
+    planetStatusPanel.add(numberOfAstronautsOnPlanetLabel);
+    planetStatusPanel.add(itemsOnPlanetLabel);
+    planetStatusPanel.add(damageConditionLabel);
+
+    //Creating central Panel to hold DisplayArea and PlanetStatusDisplayArea
+    centralDisplayPanel = new JPanel();
+    centralDisplayPanel.setLayout(borderLayout);
+    centralDisplayPanel.add(scrollPaneDisplay, BorderLayout.CENTER);
+    centralDisplayPanel.add(planetStatusPanel, BorderLayout.PAGE_END);
 
     //Attach panels to the outermost Main Frame
     frame.add(statusPanel, BorderLayout.PAGE_START);
-    frame.add(scrollPaneDisplay, BorderLayout.CENTER);
+    frame.add(centralDisplayPanel, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
     frame.add(musicPanel, BorderLayout.PAGE_END);
-//    frame.add(musicPanel, BorderLayout.CENTER);
 
     //Creating a menu
     menu = new JMenu("Menu");
@@ -293,6 +308,11 @@ public class Gui {
 
   public static String getFieldText(String input){
     return input;
+  }
+
+  public String someActionThing(){
+    String inputStr = "cat";
+    return inputStr;
   }
 
 }
