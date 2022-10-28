@@ -6,7 +6,6 @@ import com.spacepilot.Main;
 import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
 //import com.spacepilot.model.Music;
-import com.spacepilot.model.Person;
 import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
