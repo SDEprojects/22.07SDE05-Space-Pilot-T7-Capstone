@@ -5,6 +5,7 @@ import static com.spacepilot.controller.Controller.loadSavedGame;
 
 import com.spacepilot.controller.Controller;
 import com.spacepilot.model.Music;
+import com.spacepilot.model.Ticktock;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
@@ -15,6 +16,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintStream;
 import java.text.DecimalFormat;
 import java.io.IOException;
 import java.util.Collection;
@@ -28,7 +30,6 @@ import javax.swing.JSlider;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
