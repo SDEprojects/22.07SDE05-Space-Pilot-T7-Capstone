@@ -1,6 +1,7 @@
 package com.spacepilot.view;
 
 import com.spacepilot.model.Music;
+import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
@@ -9,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintStream;
 import java.text.DecimalFormat;
 import javax.sound.sampled.FloatControl;
 import javax.swing.JButton;
@@ -20,26 +22,19 @@ import javax.swing.JSlider;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class Gui {
 
-  private static JLabel oxygenTimeLeftLabel;
-  static Timer timer;
-  static int seconds;
-  static int minutes;
-  static String doubleDigitSeconds;
-  static String doubleDigitMinutes;
-  static DecimalFormat dFormat = new DecimalFormat("00");
   static JSlider slider;
   static FloatControl gainControl;
   static float currentVolume;
   static JFrame frame;
   static JPanel inputPanel, controlPanel, statusPanel, menuPanel, soundPanel, mapPanel;
   static JTextField inputTextField;
-  static JButton goBtn, menuBtn, mapBtn, mainBtn,  repairBtn, oxygenBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn;
+  static JButton goBtn, menuBtn, mapBtn, mainBtn,  repairBtn, oxygenBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn;
+  stati
   static JTextArea displayArea;
   static JLabel shipHealthLabel, fuelLevelLabel, inventoryLabel, repairsLeftLabel, strandedAstronautsLabel;
   static JScrollPane scrollPanel;
@@ -96,6 +91,7 @@ public class Gui {
     scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     displayArea.setLineWrap(true);
 
+
     //Creating Panel for holding buttons on Center-Left
     controlPanel = new JPanel();
     controlPanel.setBackground(Color.blue);
@@ -123,6 +119,7 @@ public class Gui {
     loadBtn = new JButton("Load");
     unloadBtn = new JButton("Unload");
     refuelBtn = new JButton("Refuel");
+    godModeBtn = new JButton("GOD MODE");
     controlPanel.setLayout(gridLayout); //Setting controlPanel to grid layout
     controlPanel.add(menuBtn); //Adding all buttons to control panel
     controlPanel.add(mapBtn);
@@ -132,6 +129,7 @@ public class Gui {
     controlPanel.add(loadBtn);
     controlPanel.add(unloadBtn);
     controlPanel.add(refuelBtn);
+    controlPanel.add(godModeBtn);
 
     //Creating Top Panels for Status's
     statusPanel = new JPanel();
@@ -149,8 +147,7 @@ public class Gui {
     inventoryLabel = new JLabel("Inventory:");
     JTextArea inventoryText = new JTextArea("[alien baby]");
     //Right of Panel
-    oxygenTimeLeftLabel = new JLabel();
-    ;
+    Ticktock.setOxygenTimeLeftLabel(new JLabel());
     JTextArea oxygenTimeLeftText = new JTextArea("some");
     repairsLeftLabel = new JLabel("Repairs Left:");
     JTextArea repairsLeftText = new JTextArea("2/3");
@@ -158,11 +155,11 @@ public class Gui {
     JTextArea strandedAstronautsText = new JTextArea("2");
 
     // countdown Timer setup
-    oxygenTimeLeftLabel.setText("Oxygen Time Remaining: 03:00");
-    minutes = 3;
-    seconds = 0;
-    ticktock();
-    timer.start();
+    Ticktock.getOxygenTimeLeftLabel().setText("Oxygen Time Remaining: 03:00");
+    Ticktock.setMinutes(3);
+    Ticktock.setSeconds(0);
+    Ticktock.ticktock();
+    Ticktock.getTimer().start();
 
 //Music Panel added below with individual buttons that invoke audio actions
     soundPanel = new JPanel();
@@ -239,14 +236,16 @@ public class Gui {
 
 
 
+
     //Adding Labels to the status panel
     statusPanel.add(currentPlanetLabel);
-    statusPanel.add(oxygenTimeLeftLabel);
+    statusPanel.add(Ticktock.getOxygenTimeLeftLabel());
     statusPanel.add(shipHealthLabel);
     statusPanel.add(repairsLeftLabel);
     statusPanel.add(fuelLevelLabel);
     statusPanel.add(strandedAstronautsLabel);
     statusPanel.add(inventoryLabel);
+
 
     //Attach panels to the outermost Main Frame
     frame.add(statusPanel, BorderLayout.PAGE_START);
@@ -264,31 +263,7 @@ public class Gui {
     frame.setVisible(true);
   }
 
-  private static void ticktock() {
-    timer = new Timer(1000, new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        seconds--;
-        doubleDigitSeconds = dFormat.format(seconds);
-        doubleDigitMinutes = dFormat.format(minutes);
-        oxygenTimeLeftLabel.setText(
-            "Oxygen Time Remaining: " + doubleDigitMinutes + ":" + doubleDigitSeconds);
 
-        if (seconds == -1) {
-          seconds = 59;
-          minutes--;
-          doubleDigitSeconds = dFormat.format(seconds);
-          doubleDigitMinutes = dFormat.format(minutes);
-          oxygenTimeLeftLabel.setText(
-              "Oxygen Time Remaining: " + doubleDigitMinutes + ":" + doubleDigitSeconds);
-        }
-        if (minutes == 0 && seconds == 0) {
-          timer.stop();
-        }
-
-      }
-    });
-  }
 
   public static void playMusic() {
     Music.playAudioMusic("Space_Chill.wav");
