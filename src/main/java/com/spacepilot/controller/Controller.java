@@ -6,6 +6,7 @@ import com.spacepilot.Main;
 import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
 //import com.spacepilot.model.Music;
+import com.spacepilot.model.Person;
 import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
@@ -219,8 +220,18 @@ public class Controller {
 //      Music.FXOnOff(command[1]);
     } else if (command[0].equals("track")) {
 //      Music.trackChange(command[1]);
-    } else { // invalid command message
+    } else if (command[0].equals("god")){
+        loadAllPassengers();
+    }else { // invalid command message
       View.printInvalidCommandAlert();
+    }
+  }
+
+  private void loadAllPassengers() {
+    for( Planet planet : game.getPlanets()) {
+      Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
+      game.getSpacecraft().addPassengers(astronauts);
+      planet.removeAllAstronauts();
     }
   }
 
