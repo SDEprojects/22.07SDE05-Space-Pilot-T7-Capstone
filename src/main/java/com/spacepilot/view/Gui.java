@@ -41,7 +41,7 @@ public class Gui {
   static JPanel inputPanel, controlPanel, statusPanel, menuPanel, soundPanel, mapPanel;
   static JTextField inputTextField;
   static JButton goBtn, menuBtn, mapBtn, mainBtn,  repairBtn, oxygenBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn;
-  stati
+
   static JTextArea displayArea;
   static JLabel shipHealthLabel, fuelLevelLabel, inventoryLabel, repairsLeftLabel, strandedAstronautsLabel;
   static JScrollPane scrollPanel;
