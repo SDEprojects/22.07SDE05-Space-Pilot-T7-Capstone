@@ -68,7 +68,7 @@ public final class Music {
 
   }
 
-  public static void musicMute() {
+  public static Void musicMute() {
     if (musicMute) {
       clip.stop();
       musicMute = false;
@@ -76,6 +76,7 @@ public final class Music {
       clip.start();
       musicMute = true;
     }
+    return null;
   }
 
   public static void fxMute() {
@@ -119,15 +120,17 @@ public final class Music {
 
   }
 
-  public static void track1 () {
+  public static String track1 (String wavFile) {
     clip.stop();
-    playAudioMusic("Space_Chill.wav");
+    playAudioMusic(wavFile);
     gainControl.setValue(-9.0f);
+    return null;
   }
-  public static void track2 () {
+  public static String track2 (String wavFile) {
     clip.stop();
-    playAudioMusic("Space_Ambient.wav");
+    playAudioMusic(wavFile);
     gainControl.setValue(-9.0f);
+    return null;
   }
   public static void track3 () {
     clip.stop();
