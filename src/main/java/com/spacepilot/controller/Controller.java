@@ -355,7 +355,7 @@ public class Controller {
     }
   }
 
-  public void displayGameState() {
+  public static void displayGameState() {
     Spacecraft spacecraft = game.getSpacecraft();
     View.printGameState(
         game.getSpacecraft().getCurrentPlanet().getName(),
@@ -371,6 +371,7 @@ public class Controller {
         game.getSpacecraft().getFuel(),
         refuelCounter, repairCounter);
   }
+
 
   public static void loadSavedGame() {
     try (Reader reader = Files.newBufferedReader(Paths.get("./saved-game.json"))) {
