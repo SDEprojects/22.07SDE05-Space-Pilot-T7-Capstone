@@ -277,6 +277,8 @@ public class Gui {
     frame.setVisible(true);
   }
 
+
+
   //method to display status of current planet user is on.
   public static void displayPlanetStatus(String item, String damageCondition, int numberOfAstronauts){
     itemsOnPlanetLabel.setText("Items on Planet: " + (item == null ? "None" : item));
