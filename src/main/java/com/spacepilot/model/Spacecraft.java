@@ -28,6 +28,7 @@ public class Spacecraft {
     return name;
   }
   public int getHealth() {
+    shipHealthLabel.setText("Ship Health: "  + health);
     return health;
   }
 
@@ -41,15 +42,18 @@ public class Spacecraft {
   }
 
   public void setHealth(int health) {
+    shipHealthLabel.setText("Ship Health: "  + health);
     this.health = health;
   }
 
   public double getFuel() {
+    fuelLevelLabel.setText("Fuel Level: " + fuel);
     return fuel;
   }
 
   public void setFuel(double fuel) {
     this.fuel = fuel;
+    fuelLevelLabel.setText("Fuel Level: " + fuel);
   }
 
   public void setCurrentPlanet(Planet currentPlanet) {
