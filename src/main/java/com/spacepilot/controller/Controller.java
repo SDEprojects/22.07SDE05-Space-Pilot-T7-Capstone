@@ -1,5 +1,8 @@
 package com.spacepilot.controller;
 
+import static com.spacepilot.view.Gui.repairsLeftLabel;
+import static com.spacepilot.view.Gui.strandedAstronautsLabel;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacepilot.Main;
@@ -59,8 +62,8 @@ public class Controller {
 
     // while game is not over, allow the user to continue to play
 //    while (!game.isOver()) {
-      // print current game info
-      displayGameState();
+//      // print current game info
+//      displayGameState();
       // prompt the user to enter their next command (saved as userInput)
 //      getUserInput("Please enter your next command");
       // parse the user input to get their command (verb and noun)
@@ -115,6 +118,7 @@ public class Controller {
 
   public static void nextMove(String[] command) throws IOException, InterruptedException {
     Spacecraft spacecraft = game.getSpacecraft();
+    dispayGameStatusPanel();
 
     if (command[0].equals("quit")) {
       game.setOver(true);
@@ -226,8 +230,19 @@ public class Controller {
     }else { // invalid command message
       View.printInvalidCommandAlert();
     }
+    dispayGameStatusPanel();
   }
 
+  private static void dispayGameStatusPanel() {
+    game.getSpacecraft().getHealth();
+    game.getSpacecraft().getFuel();
+    game.getSpacecraft().getInventory();
+    game.getSpacecraft().getCurrentPlanet();
+    repairsLeftLabel.setText("Repairs Left: " + repairCounter);
+    strandedAstronautsLabel.setText("Stranded Astronauts: "
+        +String.valueOf(game.calculateRemainingAstronautsViaTotalNumOfAstronauts()
+        - returnPlanet("earth").getNumOfAstronautsOnPlanet()));
+}
 
   //gives the user all the astronauts, items, and sets health and fuel to 100
 
@@ -363,6 +378,7 @@ public class Controller {
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() );
 
     Spacecraft spacecraft = game.getSpacecraft();
+
     View.printGameState(
         game.getSpacecraft().getCurrentPlanet().getName(),
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
