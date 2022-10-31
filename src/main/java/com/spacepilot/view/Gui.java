@@ -10,10 +10,13 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
+import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,12 +40,12 @@ public class Gui {
   static FloatControl gainControl;
   static float currentVolume;
   static JFrame frame;
-  static JPanel titleScreenPanel, titleBtnPanel, inputPanel, controlPanel, statusPanel, centralDisplayPanel, planetStatusPanel, menuPanel, soundPanel, mapPanel;
+  static JPanel titleScreenPanel, titleBtnPanel, inputPanel, controlPanel, statusPanel, centralDisplayPanel, planetStatusPanel, menuPanel, soundPanel, mapPanel, gameOverPanel;
   static JTextField inputTextField;
   static JButton startBtn, continueBtn, goBtn, menuBtn, mapBtn, mainBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn, interactBtn, earthBtn, moonBtn, marsBtn, mercuryBtn, jupiterBtn, saturnBtn, venusBtn, uranusBtn, stationBtn, neptuneBtn;
 
   static JTextArea displayArea;
-  public static JLabel titleLabel, currentPlanetLabel,damageConditionLabel,itemsOnPlanetLabel,numberOfAstronautsOnPlanetLabel,strandedAstronautsLabel,shipHealthLabel,fuelLevelLabel,inventoryLabel,repairsLeftLabel;
+  public static JLabel titleLabel, currentPlanetLabel,damageConditionLabel,itemsOnPlanetLabel,numberOfAstronautsOnPlanetLabel,strandedAstronautsLabel,shipHealthLabel,fuelLevelLabel,inventoryLabel,repairsLeftLabel,gameOverLabel;
   static JScrollPane scrollPanel;
   static JProgressBar shipHealthBar, fuelLevelBar;
   static Consumer<String> method;
@@ -200,11 +203,8 @@ public class Gui {
     inventoryLabel = new JLabel("Inventory:");
     //Right of Panel
     Ticktock.setOxygenTimeLeftLabel(new JLabel());
-    JTextArea oxygenTimeLeftText = new JTextArea("some");
     repairsLeftLabel = new JLabel("Repairs Left:");
-    JTextArea repairsLeftText = new JTextArea("2/3");
     strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
-    JTextArea strandedAstronautsText = new JTextArea("2");
 
     // countdown Timer setup
     Ticktock.getOxygenTimeLeftLabel().setText("Oxygen Time Remaining: 03:00");
@@ -298,7 +298,7 @@ public class Gui {
 
   //Starts gui frame by setting to visible and showing title screen
   public void startGui(){
-    createtitleScreen();
+    createTitleScreen();
     frame.add(titleScreenPanel, BorderLayout.CENTER);
     frame.setVisible(true);
   }
@@ -329,7 +329,7 @@ public class Gui {
     Music.playAudioMusic("Space_Chill.wav");
   }
 
-  //Helps convert sout prints to displayTextArea in Gui
+  //Helps convert sout to displayTextArea
   public void appendText(String text) {
     displayArea.append(text);
     displayArea.setCaretPosition((displayArea.getDocument().getLength()));
@@ -363,6 +363,7 @@ public class Gui {
     menuPanel.add(loadSaveGameBtn);
     menuPanel.add(saveAndQuitGameBtn);
   }
+
 
   public static void createMapPanel() {
 
@@ -467,8 +468,50 @@ public class Gui {
       }
     });
   }
+  public void gameOverMenu(){
+    planetStatusPanel.setVisible(false);
+    centralDisplayPanel.setVisible(false);
+    statusPanel.setVisible(false);
+    controlPanel.setVisible(false);
 
-  public void createtitleScreen(){
+    gameOverPanel = new JPanel();
+    gameOverPanel.setLayout(new GridLayout(2, 1, 5, 4));
+    ImageIcon gameOverIcon = new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png"));
+    gameOverLabel = new JLabel();
+    gameOverLabel.setIcon(gameOverIcon);
+    gameOverPanel.add(gameOverLabel);
+    frame.add(gameOverPanel);
+
+
+    startBtn = new JButton("Start New Game");
+    continueBtn = new JButton("Continue Game");
+    titleBtnPanel = new JPanel();
+
+    continueBtn.addActionListener(choiceHandler);
+    continueBtn.setActionCommand("continue");
+
+    startBtn.setBackground(Color.black);
+    continueBtn.setBackground(Color.black);
+
+    gameOverPanel.add(startBtn);
+    gameOverPanel.add(continueBtn);
+    //Add btn listeners
+    startBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        startGameScreenPanels();
+      }
+    });
+    continueBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Controller.textParser("continue");
+        startGameScreenPanels();
+      }
+    });
+  }
+
+  public void createTitleScreen(){
     //Create components
 
     titleScreenPanel= new JPanel();
