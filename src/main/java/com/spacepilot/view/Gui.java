@@ -4,11 +4,9 @@ import com.spacepilot.controller.Controller;
 import com.spacepilot.model.Music;
 import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -47,9 +45,9 @@ public class Gui {
   public static JLabel titleLabel, currentPlanetLabel,damageConditionLabel,itemsOnPlanetLabel,numberOfAstronautsOnPlanetLabel,strandedAstronautsLabel,shipHealthLabel,fuelLevelLabel,inventoryLabel,repairsLeftLabel;
   static JScrollPane scrollPanel;
   static JProgressBar shipHealthBar, fuelLevelBar;
-  Consumer<String> method;
+  static Consumer<String> method;
   static int health = 100;
-  static int fuel = 100;
+  static double fuel = 100;
   public static final Color VERY_DARK_RED = new Color(153, 0, 0);
   public static final Color DARK_ORANGE = new Color(255, 102, 0);
 
@@ -120,10 +118,6 @@ public class Gui {
     mapBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         showMap();
-
-        shipHealthBar.setValue(health - 10);
-        health -= 10;
-        shipHealthBar.setString("Health: " + health + "%");
       }
     });
     mainBtn = new JButton("Main Screen");
@@ -199,8 +193,8 @@ public class Gui {
       protected Color getSelectionBackground() { return Color.black; }
       protected Color getSelectionForeground() { return Color.black; }
     });
-    fuelLevelBar.setValue(fuel);
-    fuelLevelBar.setString("Fuel: " + fuel + "%");
+    fuelLevelBar.setValue((int) getFuel());
+    fuelLevelBar.setString("Fuel: " + getFuel() + "%");
     fuelLevelBar.setStringPainted(true);
     JTextArea fuelLevelText = new JTextArea("100");
     inventoryLabel = new JLabel("Inventory:");
@@ -461,9 +455,9 @@ public class Gui {
       @Override
       public void actionPerformed(ActionEvent e) {
         goToPlanet(planet);
-        fuelLevelBar.setValue((int) (fuel - 12.5));
-        fuel -= 12.5;
-        fuelLevelBar.setString("Fuel: " + fuel + "%");
+//        fuelLevelBar.setValue((int) (fuel - 12.5));
+//        fuel -= 12.5;
+//        fuelLevelBar.setString("Fuel: " + fuel + "%");
       }
     });
   }
@@ -526,6 +520,30 @@ public class Gui {
 
   public static void setHealth(int health) {
     Gui.health = health;
+  }
+
+  public static double getFuel() {
+    return fuel;
+  }
+
+  public static void setFuel(double fuel) {
+    Gui.fuel = fuel;
+  }
+
+  public static JProgressBar getFuelLevelBar() {
+    return fuelLevelBar;
+  }
+
+  public static void setFuelLevelBar(JProgressBar fuelLevelBar) {
+    Gui.fuelLevelBar = fuelLevelBar;
+  }
+
+  public static JProgressBar getShipHealthBar() {
+    return shipHealthBar;
+  }
+
+  public static void setShipHealthBar(JProgressBar shipHealthBar) {
+    Gui.shipHealthBar = shipHealthBar;
   }
 }
 
