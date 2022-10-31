@@ -1,5 +1,7 @@
 package com.spacepilot.view;
 
+import static com.spacepilot.view.Gui.strandedAstronautsLabel;
+
 import com.google.gson.Gson;
 import com.spacepilot.Main;
 import com.spacepilot.controller.Controller;
@@ -72,6 +74,7 @@ public class View {
     if(itemOnPlanet == null){
       itemOnPlanet = "No Item";
     }
+
     System.out.println();
     System.out.println("Current Planet: " + planetName);
     System.out.println("Astronauts on " + planetName + ": " + astrosOnPlanet);
