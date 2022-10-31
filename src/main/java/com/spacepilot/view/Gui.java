@@ -10,10 +10,13 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
+import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -200,11 +203,8 @@ public class Gui {
     inventoryLabel = new JLabel("Inventory:");
     //Right of Panel
     Ticktock.setOxygenTimeLeftLabel(new JLabel());
-    JTextArea oxygenTimeLeftText = new JTextArea("some");
     repairsLeftLabel = new JLabel("Repairs Left:");
-    JTextArea repairsLeftText = new JTextArea("2/3");
     strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
-    JTextArea strandedAstronautsText = new JTextArea("2");
 
     // countdown Timer setup
     Ticktock.getOxygenTimeLeftLabel().setText("Oxygen Time Remaining: 03:00");
@@ -329,7 +329,7 @@ public class Gui {
     Music.playAudioMusic("Space_Chill.wav");
   }
 
-  //Helps convert sout prints to displayTextArea in Gui
+  //Helps convert sout to displayTextArea
   public void appendText(String text) {
     displayArea.append(text);
     displayArea.setCaretPosition((displayArea.getDocument().getLength()));
@@ -363,6 +363,7 @@ public class Gui {
     menuPanel.add(loadSaveGameBtn);
     menuPanel.add(saveAndQuitGameBtn);
   }
+
 
   public static void createMapPanel() {
 
@@ -466,6 +467,24 @@ public class Gui {
         musicMethod.accept(wavFile);
       }
     });
+  }
+  public void gameOverMenu(){
+    centralDisplayPanel.remove(scrollPanel);
+    ImageIcon gameOverIcon = new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png"));
+    JLabel gameOverLabel = new JLabel();
+    gameOverLabel.setIcon(gameOverIcon);
+    centralDisplayPanel.add(gameOverLabel,BorderLayout.CENTER);
+    startBtn = new JButton("Start New Game");
+    continueBtn = new JButton("Continue Game");
+    titleBtnPanel = new JPanel();
+
+    startBtn.setBackground(Color.black);
+    continueBtn.setBackground(Color.black);
+    titleBtnPanel.setBackground(Color.black);
+
+    titleBtnPanel.add(startBtn);
+    titleBtnPanel.add(continueBtn);
+    centralDisplayPanel.add(titleBtnPanel);
   }
 
   public void createtitleScreen(){
