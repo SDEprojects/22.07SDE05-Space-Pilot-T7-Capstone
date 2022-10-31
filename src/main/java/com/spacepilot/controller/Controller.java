@@ -151,13 +151,19 @@ public class Controller {
           if (event != null) {
             // decrement spacecraft health by 1.
             spacecraft.setHealth(spacecraft.getHealth() - 15);
+            Gui.getShipHealthBar().setValue(Gui.getHealth() - 15);
+            Gui.setHealth(Gui.getHealth() - 15);
+            Gui.getShipHealthBar().setString("Health" + Gui.getHealth() + "%");
             // alert the user about the event
             View.printEventAlert(event);
           }
           //Check if planet has prereq/damageCondition that causes damage to ship
           String preReq = destinationPlanet.getPreReq();
           if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
-            spacecraft.setHealth(spacecraft.getHealth() - 50);
+            Gui.getShipHealthBar().setValue(Gui.getHealth() - 50);
+            Gui.setHealth(Gui.getHealth() - 50);
+            Gui.getShipHealthBar().setString("Health" + Gui.getHealth() + "%");
+//            spacecraft.setHealth(spacecraft.getHealth() - 50);
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
           } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
@@ -173,7 +179,10 @@ public class Controller {
 
           }
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
-          spacecraft.setFuel(spacecraft.getFuel() - 12.5);
+          Gui.getFuelLevelBar().setValue((int) (Gui.getFuel() - 12.5));
+          Gui.setFuel(Gui.getFuel() - 12.5);
+          Gui.getFuelLevelBar().setString("Fuel: " + Gui.getFuel() + "%");
+
 //          Music.playMove();
 
           // decrement remaining days by 1 when user goes somewhere
@@ -198,8 +207,13 @@ public class Controller {
         View.printNoEngineerAlert();
         return;
       }
-      if (repairCounter < 3) {
-        Engineer.repairSpacecraft(game.getSpacecraft());
+
+      if (Gui.getHealth() == 100) {
+        View.printYourHealthisFullAlready();
+      } else if (repairCounter < 3) {
+        Gui.getShipHealthBar().setValue(100);
+        Gui.setHealth(100);
+        Gui.getShipHealthBar().setString("Health: " + Gui.getHealth() + "%");
         View.printRepair();
 
         repairCounter++;
@@ -265,21 +279,20 @@ public class Controller {
  };
 
 
-  public static void godMode(){
-      for (Planet planet : game.getPlanets()) {
-        Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
-        game.getSpacecraft().addPassengers(astronauts);
-        planet.removeAllAstronauts();
+  public static void godMode() {
+    for (Planet planet : game.getPlanets()) {
+      Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
+      game.getSpacecraft().addPassengers(astronauts);
+      planet.removeAllAstronauts();
 //      adds item from each planet
-        String item = planet.getItem();
-        game.getSpacecraft().addToInventory(item);
-        planet.setItem(null);
-      }
-      //      full health and fuel set to 100
-      game.getSpacecraft().setFuel(100);
-      game.getSpacecraft().setHealth(100);
+      String item = planet.getItem();
+      game.getSpacecraft().addToInventory(item);
+      planet.setItem(null);
+    }
+    //      full health and fuel set to 100
+    game.getSpacecraft().setFuel(100);
+    game.getSpacecraft().setHealth(100);
   }
-
 
 
   public static void loadNewPassengers() {
@@ -338,16 +351,17 @@ public class Controller {
 
   public static void refuelShip() {
     Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
-    Spacecraft spacecraft = game.getSpacecraft();
 
     if (!currentPlanet.getName().equals("Station")) {
       View.printYouCanOnlyRefuelAtTheStation();
-    } else if (spacecraft.getFuel() == 100) {
+    } else if (Gui.getFuel() == 100) {
       View.printYourFuelTankIsFullAlready();
     } else if (currentPlanet.getName().equals("Station") && refuelCounter == 0) {
       View.printStationHasNoMoreFuelAvailable();
     } else if (currentPlanet.getName().equals("Station") && refuelCounter > 0) {
-      spacecraft.setFuel(100);
+      Gui.getFuelLevelBar().setValue(100);
+      Gui.setFuel(100);
+      Gui.getFuelLevelBar().setString("Fuel: " + Gui.getFuel() + "%");
       refuelCounter--;
       View.printSpacecraftHasBeenFilled();
     }
