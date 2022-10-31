@@ -72,16 +72,6 @@ public final class Music {
     }
   }
 
-  public static void FXOnOff(String command) {
-    if (command.equals("off")) {
-      setFxOnOff(0);
-    }
-    if (command.equals("on")) {
-      setFxOnOff(1);
-    } else {
-      View.printFXOnlyOnAndOffCommandsAreAllowed();
-    }
-  }
 
   public static void startAudio() throws InterruptedException {
     clip2.start();
@@ -98,11 +88,6 @@ public final class Music {
     clip.start();
     clip.loop(Clip.LOOP_CONTINUOUSLY);
     clip.wait();
-  }
-
-  public static void playMove() {
-    playAudioFX("Spacecraft_Move.wav");
-
   }
 
   public static String track1 (String wavFile) {
