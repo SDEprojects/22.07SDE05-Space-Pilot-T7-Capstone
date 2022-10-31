@@ -14,10 +14,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
@@ -25,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public class Gui {
 
@@ -41,8 +44,14 @@ public class Gui {
   static JTextArea displayArea;
   public static JLabel titleLabel, currentPlanetLabel,damageConditionLabel,itemsOnPlanetLabel,numberOfAstronautsOnPlanetLabel,strandedAstronautsLabel,shipHealthLabel,fuelLevelLabel,inventoryLabel,repairsLeftLabel;
   static JScrollPane scrollPanel;
+  static JProgressBar shipHealthBar, fuelLevelBar;
+  static Consumer<String> method;
+  static int health = 100;
+  static double fuel = 100;
+  public static final Color VERY_DARK_RED = new Color(153, 0, 0);
+  public static final Color DARK_ORANGE = new Color(255, 102, 0);
 
-  Consumer<String> method;
+
 
 //  public static void main(String[] args) {
 //
@@ -55,6 +64,7 @@ public class Gui {
   public Gui() {
     createMenuPanel();
     createMapPanel();
+
 
     //Different type of layouts to use on JPanels and JFrames as needed.
     BorderLayout borderLayout = new BorderLayout();
@@ -152,14 +162,41 @@ public class Gui {
 
     //Creating Top Panels for Status's
     statusPanel = new JPanel();
+    statusPanel.setBackground(Color.gray);
+    statusPanel.setBounds(100, 15, 200, 30);
     GridLayout panelGridLayout = new GridLayout(3, 2, 2, 3); //Created grid layout
     statusPanel.setLayout(panelGridLayout); //Set status panel to gridLayout
     //Creating the Labels and TextAreas(for updating and displaying text)
     //Left of Panel
     currentPlanetLabel = new JLabel(
-        "Current Planet: Earth"); //Labels can have string names and icons.
-    shipHealthLabel = new JLabel("Ship Health: 100");
-    fuelLevelLabel = new JLabel("Fuel Level: 100");
+        "Current Planet:"); //Labels can have string names and icons.
+    //    creating ship health bar
+    shipHealthBar = new JProgressBar(0, 100);
+    shipHealthBar.setForeground(VERY_DARK_RED);
+    shipHealthBar.setBackground(Color.gray);
+    shipHealthBar.setBorder(BorderFactory.createLineBorder(VERY_DARK_RED, 2));
+    shipHealthBar.getUI();
+    shipHealthBar.setUI(new BasicProgressBarUI() {
+      protected Color getSelectionBackground() { return Color.black; }
+      protected Color getSelectionForeground() { return Color.black; }
+    });
+    shipHealthBar.setValue(health);
+    shipHealthBar.setString("Health: " + health + "%");
+    shipHealthBar.setStringPainted(true);
+//    creating ship fuel level bar
+    fuelLevelBar = new JProgressBar(0, 100);
+    fuelLevelBar.setForeground(DARK_ORANGE);
+    fuelLevelBar.setBorder(BorderFactory.createLineBorder(DARK_ORANGE, 2));
+    fuelLevelBar.setBackground(Color.gray);
+    fuelLevelBar.getUI();
+    fuelLevelBar.setUI(new BasicProgressBarUI() {
+      protected Color getSelectionBackground() { return Color.black; }
+      protected Color getSelectionForeground() { return Color.black; }
+    });
+    fuelLevelBar.setValue((int) getFuel());
+    fuelLevelBar.setString("Fuel: " + getFuel() + "%");
+    fuelLevelBar.setStringPainted(true);
+    JTextArea fuelLevelText = new JTextArea("100");
     inventoryLabel = new JLabel("Inventory:");
     //Right of Panel
     Ticktock.setOxygenTimeLeftLabel(new JLabel());
@@ -232,10 +269,10 @@ public class Gui {
     //Adding Labels to the status panel
     statusPanel.add(currentPlanetLabel);
     statusPanel.add(Ticktock.getOxygenTimeLeftLabel());
-    statusPanel.add(shipHealthLabel);
+    statusPanel.add(shipHealthBar);
     statusPanel.add(repairsLeftLabel);
-    statusPanel.add(fuelLevelLabel);
     statusPanel.add(strandedAstronautsLabel);
+    statusPanel.add(fuelLevelBar);
     statusPanel.add(inventoryLabel);
 
     //Creating planetStatusPanel and Labels
@@ -474,6 +511,37 @@ public class Gui {
 
   }
 
+  public static int getHealth() {
+    return health;
+  }
+
+  public static void setHealth(int health) {
+    Gui.health = health;
+  }
+
+  public static double getFuel() {
+    return fuel;
+  }
+
+  public static void setFuel(double fuel) {
+    Gui.fuel = fuel;
+  }
+
+  public static JProgressBar getFuelLevelBar() {
+    return fuelLevelBar;
+  }
+
+  public static void setFuelLevelBar(JProgressBar fuelLevelBar) {
+    Gui.fuelLevelBar = fuelLevelBar;
+  }
+
+  public static JProgressBar getShipHealthBar() {
+    return shipHealthBar;
+  }
+
+  public static void setShipHealthBar(JProgressBar shipHealthBar) {
+    Gui.shipHealthBar = shipHealthBar;
+  }
 }
 
 

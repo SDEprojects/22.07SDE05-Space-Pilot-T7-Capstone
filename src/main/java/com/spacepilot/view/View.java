@@ -230,6 +230,11 @@ public class View {
   public static void printYourFuelTankIsFullAlready() {
     System.out.println(ANSI_RED + "Your spacecraft is already full." + ANSI_RESET);
   }
+
+  public static void printYourHealthisFullAlready() {
+    System.out.println(ANSI_RED + "Your health is already full." + ANSI_RESET);
+  }
+
   public static void printRepair() {
     System.out.println();
     System.out.println(ANSI_GREEN + "Spacecraft repair was successful." + ANSI_RESET);
