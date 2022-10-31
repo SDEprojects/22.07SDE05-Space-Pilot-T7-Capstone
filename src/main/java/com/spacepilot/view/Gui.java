@@ -1,13 +1,7 @@
 package com.spacepilot.view;
 
-import static com.spacepilot.controller.Controller.game;
-import static com.spacepilot.controller.Controller.loadSavedGame;
-
 import com.spacepilot.controller.Controller;
 import com.spacepilot.model.Music;
-import com.spacepilot.model.Ticktock;
-import com.spacepilot.model.Planet;
-import com.spacepilot.model.Planet;
 import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -17,11 +11,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Console;
-import java.io.PrintStream;
-import java.text.DecimalFormat;
-import java.io.IOException;
-import java.util.Collection;
 import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
 import javax.swing.JButton;
@@ -44,17 +33,10 @@ public class Gui {
   static JFrame frame;
   static JPanel inputPanel, controlPanel, statusPanel, centralDisplayPanel, planetStatusPanel, menuPanel, soundPanel, mapPanel;
   static JTextField inputTextField;
-  static JButton goBtn, menuBtn, mapBtn, mainBtn, repairBtn, oxygenBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn, interactBtn, earthBtn, moonBtn, marsBtn, mercuryBtn, jupiterBtn, saturnBtn, venusBtn, uranusBtn, stationBtn, neptuneBtn;
+  static JButton goBtn, menuBtn, mapBtn, mainBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn, interactBtn, earthBtn, moonBtn, marsBtn, mercuryBtn, jupiterBtn, saturnBtn, venusBtn, uranusBtn, stationBtn, neptuneBtn;
 
   static JTextArea displayArea;
-  static JLabel shipHealthLabel;
-  static JLabel fuelLevelLabel;
-  static JLabel inventoryLabel;
-  static JLabel repairsLeftLabel;
-  static JLabel strandedAstronautsLabel;
-  public static JLabel numberOfAstronautsOnPlanetLabel;
-  public static JLabel itemsOnPlanetLabel;
-  public static JLabel damageConditionLabel;
+  public static JLabel currentPlanetLabel,damageConditionLabel,itemsOnPlanetLabel,numberOfAstronautsOnPlanetLabel,strandedAstronautsLabel,shipHealthLabel,fuelLevelLabel,inventoryLabel,repairsLeftLabel;
   static JScrollPane scrollPanel;
 
   Consumer<String> method;
@@ -132,7 +114,7 @@ public class Gui {
       }
     });
     repairBtn = new JButton("Repair");
-    oxygenBtn = new JButton("Use Oxygen");
+    helpBtn = new JButton("Help");
     loadBtn = new JButton("Load");
     unloadBtn = new JButton("Unload");
     refuelBtn = new JButton("Refuel");
@@ -143,12 +125,27 @@ public class Gui {
     controlPanel.add(mapBtn);
     controlPanel.add(mainBtn);
     controlPanel.add(repairBtn);
-    controlPanel.add(oxygenBtn);
+    controlPanel.add(helpBtn);
     controlPanel.add(loadBtn);
     controlPanel.add(unloadBtn);
     controlPanel.add(refuelBtn);
     controlPanel.add(godModeBtn);
     controlPanel.add(interactBtn);
+
+// When a user presses a button, the respective word is given to the Controller to use for function
+    godModeBtn.addActionListener(choiceHandler);
+    godModeBtn.setActionCommand("god");
+    loadBtn.addActionListener(choiceHandler);
+    loadBtn.setActionCommand("load");
+    unloadBtn.addActionListener(choiceHandler);
+    unloadBtn.setActionCommand("unload");
+    refuelBtn.addActionListener(choiceHandler);
+    refuelBtn.setActionCommand("refuel");
+    repairBtn.addActionListener(choiceHandler);
+    repairBtn.setActionCommand("repair");
+    helpBtn.addActionListener(choiceHandler);
+    helpBtn.setActionCommand("help");
+
 
     //Creating Top Panels for Status's
     statusPanel = new JPanel();
@@ -156,15 +153,11 @@ public class Gui {
     statusPanel.setLayout(panelGridLayout); //Set status panel to gridLayout
     //Creating the Labels and TextAreas(for updating and displaying text)
     //Left of Panel
-    JLabel currentPlanetLabel = new JLabel(
-        "Current Planet:"); //Labels can have string names and icons.
-    JTextArea currentPlanetText = new JTextArea("Pluto");
-    shipHealthLabel = new JLabel("Ship Health:");
-    JTextArea shipHealthText = new JTextArea("100");
-    fuelLevelLabel = new JLabel("Fuel Level:");
-    JTextArea fuelLevelText = new JTextArea("100");
+    currentPlanetLabel = new JLabel(
+        "Current Planet: Earth"); //Labels can have string names and icons.
+    shipHealthLabel = new JLabel("Ship Health: 100");
+    fuelLevelLabel = new JLabel("Fuel Level: 100");
     inventoryLabel = new JLabel("Inventory:");
-    JTextArea inventoryText = new JTextArea("[alien baby]");
     //Right of Panel
     Ticktock.setOxygenTimeLeftLabel(new JLabel());
     JTextArea oxygenTimeLeftText = new JTextArea("some");
@@ -229,15 +222,9 @@ public class Gui {
     soundPanel.setVisible(true);
     playMusic();
 
-//God Mode button inputs "god" into controller using choice handler
-    godModeBtn.addActionListener(choiceHandler);
-    godModeBtn.setActionCommand("god");
-//Load button inputs "load" into controller
-    loadBtn.addActionListener(choiceHandler);
-    loadBtn.setActionCommand("load");
 
-    refuelBtn.addActionListener(choiceHandler);
-    refuelBtn.setActionCommand("refuel");
+
+
 
     //Adding Labels to the status panel
     statusPanel.add(currentPlanetLabel);
@@ -269,13 +256,15 @@ public class Gui {
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
 
+
+
     //Centers a frame onscreen when it opens
     frame.setLocationRelativeTo(null);
 
   }
 
   //Starts gui frame by setting to visible
-  public void startGui() {
+  public void startGui(){
     frame.setVisible(true);
 
   }
@@ -286,6 +275,7 @@ public class Gui {
     damageConditionLabel.setText("Damage Condition: " + (damageCondition == null ? "None" : damageCondition));
     numberOfAstronautsOnPlanetLabel.setText("# Astronauts on Planet: " + numberOfAstronauts);
   }
+
 
 
   public static void playMusic() {
