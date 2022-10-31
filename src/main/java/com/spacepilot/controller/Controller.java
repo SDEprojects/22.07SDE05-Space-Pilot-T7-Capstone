@@ -238,7 +238,7 @@ public class Controller {
     } else if (command[0].equals("track")) {
 //      Music.trackChange(command[1]);
     } else if (command[0].equals("god")){
-//        godMode();
+        godMode();
     }else { // invalid command message
       View.printInvalidCommandAlert();
     }
