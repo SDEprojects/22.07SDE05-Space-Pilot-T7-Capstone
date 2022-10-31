@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -21,22 +22,24 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class Gui {
 
   static ChoiceHandler choiceHandler = new ChoiceHandler();
+  Font titleFont, normalFont;
   static JSlider slider;
   static FloatControl gainControl;
   static float currentVolume;
   static JFrame frame;
-  static JPanel inputPanel, controlPanel, statusPanel, centralDisplayPanel, planetStatusPanel, menuPanel, soundPanel, mapPanel;
+  static JPanel titleScreenPanel, titleBtnPanel, inputPanel, controlPanel, statusPanel, centralDisplayPanel, planetStatusPanel, menuPanel, soundPanel, mapPanel;
   static JTextField inputTextField;
-  static JButton goBtn, menuBtn, mapBtn, mainBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn, interactBtn, earthBtn, moonBtn, marsBtn, mercuryBtn, jupiterBtn, saturnBtn, venusBtn, uranusBtn, stationBtn, neptuneBtn;
+  static JButton startBtn, continueBtn, goBtn, menuBtn, mapBtn, mainBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn, interactBtn, earthBtn, moonBtn, marsBtn, mercuryBtn, jupiterBtn, saturnBtn, venusBtn, uranusBtn, stationBtn, neptuneBtn;
 
   static JTextArea displayArea;
-  public static JLabel currentPlanetLabel,damageConditionLabel,itemsOnPlanetLabel,numberOfAstronautsOnPlanetLabel,strandedAstronautsLabel,shipHealthLabel,fuelLevelLabel,inventoryLabel,repairsLeftLabel;
+  public static JLabel titleLabel, currentPlanetLabel,damageConditionLabel,itemsOnPlanetLabel,numberOfAstronautsOnPlanetLabel,strandedAstronautsLabel,shipHealthLabel,fuelLevelLabel,inventoryLabel,repairsLeftLabel;
   static JScrollPane scrollPanel;
 
   Consumer<String> method;
@@ -219,7 +222,7 @@ public class Gui {
 
       }
     });
-    soundPanel.setVisible(true);
+//    soundPanel.setVisible(true);
     playMusic();
 
 
@@ -251,23 +254,30 @@ public class Gui {
     centralDisplayPanel.add(scrollPanel, BorderLayout.CENTER);
     centralDisplayPanel.add(planetStatusPanel, BorderLayout.PAGE_END);
 
-    //Attach panels to the outermost Main Frame
-    frame.add(statusPanel, BorderLayout.PAGE_START);
-    frame.add(centralDisplayPanel, BorderLayout.CENTER);
-    frame.add(controlPanel, BorderLayout.LINE_END);
-
-
-
     //Centers a frame onscreen when it opens
     frame.setLocationRelativeTo(null);
 
   }
 
-  //Starts gui frame by setting to visible
+  //Starts gui frame by setting to visible and showing title screen
   public void startGui(){
+    createtitleScreen();
+    frame.add(titleScreenPanel, BorderLayout.CENTER);
     frame.setVisible(true);
-
   }
+
+  //Shows game screen once users moves on from titleScreen
+  public void startGameScreenPanels(){
+    //Attach panels to the outermost Main Frame
+    frame.remove(titleScreenPanel);
+
+    frame.add(statusPanel, BorderLayout.PAGE_START);
+    frame.add(centralDisplayPanel, BorderLayout.CENTER);
+    frame.add(controlPanel, BorderLayout.LINE_END);
+    frame.setVisible(true);
+  }
+
+
 
   //method to display status of current planet user is on.
   public static void displayPlanetStatus(String item, String damageCondition, int numberOfAstronauts){
@@ -419,6 +429,49 @@ public class Gui {
         musicMethod.accept(wavFile);
       }
     });
+  }
+
+  public void createtitleScreen(){
+    //Create components
+
+    titleScreenPanel= new JPanel();
+    titleLabel  = new JLabel("Space Pilot", SwingConstants.CENTER); //centers label
+    titleFont = new Font("Times New Roman", Font.PLAIN, 90);
+    normalFont = new Font("Times New Roman", Font.PLAIN, 30);
+    startBtn = new JButton("Start Game");
+    continueBtn = new JButton("Continue Game");
+    titleBtnPanel = new JPanel();
+    //Set up titlePanel
+    titleScreenPanel.setLayout(new GridLayout(2, 1, 5, 4));
+    titleScreenPanel.setBackground(Color.black);
+    //Set up titleLabel
+    titleLabel.setFont(titleFont);
+    titleLabel.setForeground(Color.white);
+    //Set up titleButtons & Panel
+    startBtn.setBackground(Color.black);
+    continueBtn.setBackground(Color.black);
+    titleBtnPanel.setBackground(Color.black);
+    //Add components together
+    titleScreenPanel.add(titleLabel);
+    titleBtnPanel.add(startBtn);
+    titleBtnPanel.add(continueBtn);
+    titleScreenPanel.add(titleBtnPanel);
+
+    //Add btn listeners
+    startBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        startGameScreenPanels();
+      }
+    });
+    continueBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Controller.textParser("continue");
+        startGameScreenPanels();
+      }
+    });
+
   }
 
 }
