@@ -236,7 +236,7 @@ public class Gui {
 
     //Creating planetStatusPanel and Labels
     planetStatusPanel = new JPanel();
-//    planetStatusPanel.setLayout(gridLayout);//Layout to stack the labels vertically. Can be removed.
+    planetStatusPanel.setLayout(new GridLayout(1, 3, 3, 3)); //Layout to spread labels out
     numberOfAstronautsOnPlanetLabel = new JLabel("# of Astronauts on Planet: ");
     itemsOnPlanetLabel = new JLabel("Items on Planet:");
     damageConditionLabel = new JLabel("Danger Condition: ");
@@ -254,8 +254,6 @@ public class Gui {
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
-//    frame.add(soundPanel, BorderLayout.PAGE_END);
-//    frame.add(menuPanel, BorderLayout.CENTER);
 
 
 
@@ -270,17 +268,23 @@ public class Gui {
 
   }
 
+  //method to display status of current planet user is on.
+  public static void displayPlanetStatus(String item, String damageCondition, int numberOfAstronauts){
+    itemsOnPlanetLabel.setText("Items on Planet: " + (item == null ? "None" : item));
+    damageConditionLabel.setText("Damage Condition: " + (damageCondition == null ? "None" : damageCondition));
+    numberOfAstronautsOnPlanetLabel.setText("# Astronauts on Planet: " + numberOfAstronauts);
+  }
+
 
 
   public static void playMusic() {
     Music.playAudioMusic("Space_Chill.wav");
   }
 
-  //Helps convert sout to displayTextArea
+  //Helps convert sout prints to displayTextArea in Gui
   public void appendText(String text) {
     displayArea.append(text);
     displayArea.setCaretPosition((displayArea.getDocument().getLength()));
-//    displayArea.update(displayArea.getGraphics());
   }
 
   public static String getFieldText(String input) {
