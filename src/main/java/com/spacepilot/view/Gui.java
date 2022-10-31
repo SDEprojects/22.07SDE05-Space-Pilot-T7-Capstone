@@ -33,7 +33,7 @@ public class Gui {
   static JFrame frame;
   static JPanel inputPanel, controlPanel, statusPanel, centralDisplayPanel, planetStatusPanel, menuPanel, soundPanel, mapPanel;
   static JTextField inputTextField;
-  static JButton goBtn, menuBtn, mapBtn, mainBtn, repairBtn, oxygenBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn, interactBtn, earthBtn, moonBtn, marsBtn, mercuryBtn, jupiterBtn, saturnBtn, venusBtn, uranusBtn, stationBtn, neptuneBtn;
+  static JButton goBtn, menuBtn, mapBtn, mainBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, soundSettingsBtn, videoSettingsBtn, saveGameBtn, loadSaveGameBtn, saveAndQuitGameBtn, godModeBtn, interactBtn, earthBtn, moonBtn, marsBtn, mercuryBtn, jupiterBtn, saturnBtn, venusBtn, uranusBtn, stationBtn, neptuneBtn;
 
   static JTextArea displayArea;
   public static JLabel currentPlanetLabel,damageConditionLabel,itemsOnPlanetLabel,numberOfAstronautsOnPlanetLabel,strandedAstronautsLabel,shipHealthLabel,fuelLevelLabel,inventoryLabel,repairsLeftLabel;
@@ -114,7 +114,7 @@ public class Gui {
       }
     });
     repairBtn = new JButton("Repair");
-    oxygenBtn = new JButton("Use Oxygen");
+    helpBtn = new JButton("Help");
     loadBtn = new JButton("Load");
     unloadBtn = new JButton("Unload");
     refuelBtn = new JButton("Refuel");
@@ -125,7 +125,7 @@ public class Gui {
     controlPanel.add(mapBtn);
     controlPanel.add(mainBtn);
     controlPanel.add(repairBtn);
-    controlPanel.add(oxygenBtn);
+    controlPanel.add(helpBtn);
     controlPanel.add(loadBtn);
     controlPanel.add(unloadBtn);
     controlPanel.add(refuelBtn);
@@ -143,7 +143,8 @@ public class Gui {
     refuelBtn.setActionCommand("refuel");
     repairBtn.addActionListener(choiceHandler);
     repairBtn.setActionCommand("repair");
-
+    helpBtn.addActionListener(choiceHandler);
+    helpBtn.setActionCommand("help");
 
 
     //Creating Top Panels for Status's
