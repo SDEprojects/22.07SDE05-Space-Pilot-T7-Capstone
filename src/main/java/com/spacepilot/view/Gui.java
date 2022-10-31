@@ -206,21 +206,13 @@ public class Gui {
     soundPanel.add(track2B);
     //button plays track 3 as background music
     JButton track3B = new JButton("Track 3");
-    track3B.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Music.track3();
-      }
-    });
+    Consumer<String> method3 = i -> Music.track3(i);
+    soundButtons(track3B, method3, "Space_Cinematic.wav");
     soundPanel.add(track3B);
     //button plays track 4 as background music
     JButton track4B = new JButton("Track 4");
-    track4B.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Music.track4();
-      }
-    });
+    Consumer<String> method4 = i -> Music.track4(i);
+    soundButtons(track4B, method4, "Space_Cyber.wav");
     soundPanel.add(track4B);
 //slider is implemented to adjust volume up and down for current background music
     slider = new JSlider(-40, 6);
