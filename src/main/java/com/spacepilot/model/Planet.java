@@ -134,4 +134,8 @@ public class Planet {
     }
   }
 
+  public void showDangerCond(){
+
+  }
+
 }
