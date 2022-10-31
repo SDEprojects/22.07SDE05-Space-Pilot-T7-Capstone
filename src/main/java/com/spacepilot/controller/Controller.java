@@ -272,8 +272,6 @@ public class Controller {
     game.getSpacecraft().setHealth(100);
   }
 
-
-
   public static void loadNewPassengers() {
     Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
@@ -367,22 +365,6 @@ public class Controller {
         game.getSpacecraft().getCurrentPlanet().getItem(),
         game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() );
-
-    Spacecraft spacecraft = game.getSpacecraft();
-
-    View.printGameState(
-        game.getSpacecraft().getCurrentPlanet().getName(),
-        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
-        game.getSpacecraft().getCurrentPlanet().getItem(),
-        game.getSpacecraft().getHealth(),
-        game.calculateRemainingAstronautsViaTotalNumOfAstronauts() - returnPlanet(
-            "earth").getNumOfAstronautsOnPlanet(),
-        game.getRemainingDays(),
-        game.getSpacecraft().getPassengers().size(),
-        returnPlanet("earth").getNumOfAstronautsOnPlanet(),
-        game.getSpacecraft().getInventory(),
-        game.getSpacecraft().getFuel(),
-        refuelCounter, repairCounter);
   }
 
 
