@@ -98,8 +98,6 @@ public class Controller {
 
   public void gameIntro() throws IOException {
     View.getGameTextJson();
-    // display title
-    View.printTitle();
     // prompt the user to press "y" to continue
 //    do {
 //      getUserInput("Enter y to continue");
