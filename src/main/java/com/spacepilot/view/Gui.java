@@ -254,13 +254,6 @@ public class Gui {
     centralDisplayPanel.add(scrollPanel, BorderLayout.CENTER);
     centralDisplayPanel.add(planetStatusPanel, BorderLayout.PAGE_END);
 
-    //Attach panels to the outermost Main Frame
-//    frame.add(statusPanel, BorderLayout.PAGE_START);
-//    frame.add(centralDisplayPanel, BorderLayout.CENTER);
-//    frame.add(controlPanel, BorderLayout.LINE_END);
-
-
-
     //Centers a frame onscreen when it opens
     frame.setLocationRelativeTo(null);
 
