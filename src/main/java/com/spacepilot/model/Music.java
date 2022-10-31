@@ -52,23 +52,8 @@ public final class Music {
     }
   }
 
-  public static void musicOnOff(String command) {
-    if (command.equals("off")) {
-      clip.stop();
-      clip.flush();
-    }
-    if (command.equals("on")) {
-      clip.stop();
-      clip.flush();
-      startBackgroundMusic();
-    } else {
-      View.printMusicOnlyOnAndOffCommandsAreAllowed();
-    }
 
-
-  }
-
-  public static void musicMute() {
+  public static Void musicMute() {
     if (musicMute) {
       clip.stop();
       musicMute = false;
@@ -76,6 +61,7 @@ public final class Music {
       clip.start();
       musicMute = true;
     }
+    return null;
   }
 
   public static void fxMute() {
@@ -86,16 +72,6 @@ public final class Music {
     }
   }
 
-  public static void FXOnOff(String command) {
-    if (command.equals("off")) {
-      setFxOnOff(0);
-    }
-    if (command.equals("on")) {
-      setFxOnOff(1);
-    } else {
-      View.printFXOnlyOnAndOffCommandsAreAllowed();
-    }
-  }
 
   public static void startAudio() throws InterruptedException {
     clip2.start();
@@ -114,52 +90,27 @@ public final class Music {
     clip.wait();
   }
 
-  public static void playMove() {
-    playAudioFX("Spacecraft_Move.wav");
-
-  }
-
-  public static void track1 () {
+  public static String track1 (String wavFile) {
     clip.stop();
-    playAudioMusic("Space_Chill.wav");
+    playAudioMusic(wavFile);
+    gainControl.setValue(-9.0f);
+    return null;
+  }
+  public static String track2 (String wavFile) {
+    clip.stop();
+    playAudioMusic(wavFile);
+    gainControl.setValue(-9.0f);
+    return null;
+  }
+  public static void track3 (String wavFile) {
+    clip.stop();
+    playAudioMusic(wavFile);
     gainControl.setValue(-9.0f);
   }
-  public static void track2 () {
+  public static void track4 (String wavFile) {
     clip.stop();
-    playAudioMusic("Space_Ambient.wav");
+    playAudioMusic(wavFile);
     gainControl.setValue(-9.0f);
-  }
-  public static void track3 () {
-    clip.stop();
-    playAudioMusic("Space_Cinematic.wav");
-    gainControl.setValue(-9.0f);
-  }
-  public static void track4 () {
-    clip.stop();
-    playAudioMusic("Space_Cyber.wav");
-    gainControl.setValue(-9.0f);
-  }
-  public static void trackChange(String command) {
-    gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-    if (command.equals("1")) {
-      clip.stop();
-      playAudioMusic("Space_Chill.wav");
-      gainControl.setValue(-9.0f);
-    } else if (command.equals("2")) {
-      clip.stop();
-      playAudioMusic("Space_Ambient.wav");
-      gainControl.setValue(-9.0f);
-    } else if (command.equals("3")) {
-      clip.stop();
-      playAudioMusic("Space_Cinematic.wav");
-      gainControl.setValue(-9.0f);
-    } else if (command.equals("4")) {
-      clip.stop();
-      playAudioMusic("Space_Cyber.wav");
-      gainControl.setValue(-9.0f);
-    } else {
-      View.printTheTrackNumberDoesNotExist();
-    }
   }
 
   public static void startBackgroundMusic() {
@@ -175,46 +126,6 @@ public final class Music {
       setMusicOnOff(0);
       gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
       gainControl.setValue(-9.0f);
-    }
-  }
-
-  public static void volumeUpDown(String command) {
-    gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-    if (command.equals("0")) {
-      gainControl.setValue(gainControl.getMinimum());
-      clip.start();
-    } else if (command.equals("1")) {
-      gainControl.setValue(-21.0f);
-      clip.start();
-    } else if (command.equals("2")) {
-      gainControl.setValue(-18.0f);
-      clip.start();
-    } else if (command.equals("3")) {
-      gainControl.setValue(-15.0f);
-      clip.start();
-    } else if (command.equals("4")) {
-      gainControl.setValue(-12.0f);
-      clip.start();
-    } else if (command.equals("5")) {
-      gainControl.setValue(-9.0f);
-      clip.start();
-    } else if (command.equals("6")) {
-      gainControl.setValue(-6.0f);
-      clip.start();
-    } else if (command.equals("7")) {
-      gainControl.setValue(-3.0f);
-      clip.start();
-    } else if (command.equals("8")) {
-      gainControl.setValue(0.0f);
-      clip.start();
-    } else if (command.equals("9")) {
-      gainControl.setValue(3.0f);
-      clip.start();
-    } else if (command.equals("10")) {
-      gainControl.setValue(gainControl.getMaximum());
-      clip.start();
-    } else {
-      View.printTheVolumeNumberDoesNotExist();
     }
   }
 
