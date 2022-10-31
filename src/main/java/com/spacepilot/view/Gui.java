@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -24,7 +25,6 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicProgressBarUI;
@@ -455,9 +455,6 @@ public class Gui {
       @Override
       public void actionPerformed(ActionEvent e) {
         goToPlanet(planet);
-//        fuelLevelBar.setValue((int) (fuel - 12.5));
-//        fuel -= 12.5;
-//        fuelLevelBar.setString("Fuel: " + fuel + "%");
       }
     });
   }
