@@ -371,6 +371,12 @@ public class Controller {
   }
 
   public static void displayGameState() {
+    //Calls Gui method to display current status of planet user is on.
+    Gui.displayPlanetStatus(
+        game.getSpacecraft().getCurrentPlanet().getItem(),
+        game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
+        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() );
+
     Spacecraft spacecraft = game.getSpacecraft();
 
     View.printGameState(
@@ -467,6 +473,7 @@ public class Controller {
   }
 
   public static List<Planet> createPlanets() throws URISyntaxException, IOException {
+
     List<Planet> planets = new ArrayList<>();
     List<String> planetNames = new ArrayList<>();
     planetNames.add("/planets/earth.json");
