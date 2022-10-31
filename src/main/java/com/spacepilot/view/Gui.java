@@ -333,8 +333,7 @@ public class Gui {
     mapPanel = new JPanel(); //Create Panel for content
     //Creating a menu
     mapPanel.setBackground(Color.black);
-    //Creating menu buttons
-//    buttons go here
+    //Creating maps buttons to go to respective planets below
     earthBtn = new JButton("Earth");
     planetButtons(earthBtn, "go earth");
     moonBtn = new JButton("Moon");
