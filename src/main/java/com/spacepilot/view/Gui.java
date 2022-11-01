@@ -538,6 +538,7 @@ public class Gui {
     titleScreenPanel.add(titleBtnPanel);
 
     //Add btn listeners
+//
     startBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
