@@ -7,7 +7,6 @@ import com.spacepilot.model.Game;
 import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
-import com.spacepilot.view.Gui.ChoiceHandler;
 import com.spacepilot.view.View;
 import java.io.BufferedReader;
 import java.io.FileWriter;

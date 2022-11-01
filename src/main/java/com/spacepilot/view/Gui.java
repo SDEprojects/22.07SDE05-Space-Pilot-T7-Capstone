@@ -44,10 +44,6 @@ public class Gui {
   private Controller controllerField;
 
 
-
-
-
-  private Consumer<String> method2;
   private JPanel titleScreenPanel, titleBtnPanel, controlPanel, statusPanel, centralDisplayPanel,
        planetStatusPanel, menuPanel, soundPanel, mapPanel, gameOverPanel;
   private  JLabel titleLabel, currentPlanetLabel, damageConditionLabel, itemsOnPlanetLabel,
@@ -58,19 +54,6 @@ public class Gui {
   private int health = 100;
   private double fuel = 100;
   private Font normalFont;
-
-  ChoiceHandler choiceHandler = new ChoiceHandler();
-
-  Controller controller = new Controller(this);
-
-  public String getUserInput() {
-    return userInput;
-  }
-
-  private String userInput = "";
-
-
-
 
   public Gui() {
 
@@ -269,24 +252,12 @@ public class Gui {
     mainBtn = new JButton("Main Screen");
 
     // When a user presses a button, the respective word is given to the Controller to use for function
-//    godModeBtn.addActionListener(choiceHandler);
-//    godModeBtn.setActionCommand("god");
-//    loadBtn.addActionListener(choiceHandler);
-//    loadBtn.setActionCommand("load");
-//    unloadBtn.addActionListener(choiceHandler);
-//    unloadBtn.setActionCommand("unload");
-//    refuelBtn.addActionListener(choiceHandler);
-//    refuelBtn.setActionCommand("refuel");
-//    repairBtn.addActionListener(choiceHandler);
-//    repairBtn.setActionCommand("repair");
-//    helpBtn.addActionListener(choiceHandler);
-//    helpBtn.setActionCommand("help");
-      chaChaRealSmooth(godModeBtn,method2,"god");
-      chaChaRealSmooth(loadBtn,method2,"load");
-      chaChaRealSmooth(unloadBtn,method2,"unload");
-      chaChaRealSmooth(refuelBtn,method2,"refuel");
-      chaChaRealSmooth(repairBtn,method2,"repair");
-      chaChaRealSmooth(helpBtn,method2,"help");
+      chaChaRealSmooth(godModeBtn,"god");
+      chaChaRealSmooth(loadBtn,"load");
+      chaChaRealSmooth(unloadBtn,"unload");
+      chaChaRealSmooth(refuelBtn,"refuel");
+      chaChaRealSmooth(repairBtn,"repair");
+      chaChaRealSmooth(helpBtn,"help");
     //Event Listener for menu button to open new window w/menu options
     menuBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -351,27 +322,9 @@ public class Gui {
         showGameScreenPanels();
       }
     });
-//    continueBtn.addActionListener(new ActionListener() {
-//      @Override
-//      public void actionPerformed(ActionEvent e) {
-//
-//      }
-//    });
-//    method2 = i -> getMethod2();
-    chaChaRealSmooth(continueBtn,method2,"continue");
+    chaChaRealSmooth(continueBtn,"continue");
   }
 
-  public void chaChaRealSmooth(JButton btn, Consumer<String> stringConsumer, String command){
-    btn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-//        stringConsumer.accept();
-            controllerField.textParser(command);
-//        showGameScreenPanels();
-      }
-    });
-
-  }
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
     btn.addActionListener(new ActionListener() {
       @Override
@@ -406,7 +359,7 @@ public class Gui {
     menuPanel.add(saveAndQuitGameBtn);
   }
 
-  public  void createMapPanel() {
+  public void createMapPanel() {
     mapPanel = new JPanel(); //Create Panel for content
     //Creating a menu
     mapPanel.setBackground(Color.black);
@@ -537,7 +490,6 @@ public class Gui {
     frame.setVisible(true);
   }
 
-
   public static void playMusic() {
     Music.playAudioMusic("Space_Chill.wav");
   }
@@ -548,16 +500,20 @@ public class Gui {
     displayArea.setCaretPosition((displayArea.getDocument().getLength()));
   }
 
-  //Takes button actions as input and sends to Controller textParser()
-  public class ChoiceHandler implements ActionListener {
 
-    public void actionPerformed(ActionEvent event) {
-      String command = event.getActionCommand();
-//      Controller.textParser(command);
-    }
+  //Takes button actions as input and sends to Controller textParser()
+  public void chaChaRealSmooth(JButton btn, String command){
+    btn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        controllerField.textParser(command);
+      }
+    });
+
   }
 
-//  STATUS UPDATES
+
+  //  STATUS UPDATES
   public void displayPlanetStatus(String item, String damageCondition, int numberOfAstronauts){
     itemsOnPlanetLabel.setText("Items on Planet: " + (item == null ? "None" : item));
     damageConditionLabel.setText("Damage Condition: " + (damageCondition == null ? "None" : damageCondition));
@@ -596,38 +552,30 @@ public class Gui {
   public  int getHealth() {
     return health;
   }
-
   public void setHealth(int health) {
     this.health = health;
   }
-
   public double getFuel() {
     return fuel;
   }
-
   public void setFuel(double fuel) {
     this.fuel = fuel;
   }
-
   public JProgressBar getFuelLevelBar() {
     return fuelLevelBar;
   }
-
   public void setFuelLevelBar(JProgressBar fuelLevelBar) {
     this.fuelLevelBar = fuelLevelBar;
   }
-
   public JProgressBar getShipHealthBar() {
     return shipHealthBar;
   }
-
   public void setShipHealthBar(JProgressBar shipHealthBar) {
     this.shipHealthBar = shipHealthBar;
   }
   public JLabel getStrandedAstronautsLabel() {
     return strandedAstronautsLabel;
   }
-
   public JLabel getRepairsLeftLabel() {
     return repairsLeftLabel;
   }
@@ -639,13 +587,6 @@ public class Gui {
   }
   public JLabel getInventoryLabel() {
     return inventoryLabel;
-  }
-  public Consumer<String> getMethod2() {
-    return method2;
-  }
-
-  public void setMethod2(Consumer<String> method2) {
-    this.method2 = method2;
   }
 
   public void setControllerField(Controller controllerField) {
