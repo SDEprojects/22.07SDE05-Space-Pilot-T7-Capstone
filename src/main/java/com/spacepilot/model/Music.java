@@ -9,22 +9,24 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public final class Music {
-
   private static Clip clip;
   private static Clip clip2;
-  private static FloatControl gainControl;
-  static int musicOnOff = 1;
-
-  static int fxOnOff = 1;
-
+  public static FloatControl gainControl;
+  private static int musicOnOff = 1;
+  private static int fxOnOff = 1;
   private static String volume = "5";
+
+  private static Boolean mute = false;
+  private static Boolean musicMute = true;
+  private static Boolean fxMute = true;
+  private static URL audio;
 
 
   public static void playAudioFX(String soundFile) {
-    if (fxOnOff == 1) {
+    if (fxOnOff == 1 || fxMute) {
 
       try {
-        URL audio = Music.class.getResource("/" + soundFile);
+        audio = com.spacepilot.model.Music.class.getResource("/" + soundFile);
 
         AudioInputStream audioInput = AudioSystem.getAudioInputStream(audio);
         clip2 = AudioSystem.getClip();
@@ -40,7 +42,7 @@ public final class Music {
   public static void playAudioMusic(String soundFile) {
 
     try {
-      URL audio = Music.class.getResource("/" + soundFile);
+      audio = com.spacepilot.model.Music.class.getResource("/" + soundFile);
       AudioInputStream audioInput = AudioSystem.getAudioInputStream(audio);
       clip = AudioSystem.getClip();
       clip.open(audioInput);
@@ -50,30 +52,26 @@ public final class Music {
     }
   }
 
-  public static void musicOnOff(String command) {
-    if (command.equals("off")) {
+
+  public static Void musicMute() {
+    if (musicMute) {
       clip.stop();
-      clip.flush();
+      musicMute = false;
+    } else if (!musicMute) {
+      clip.start();
+      musicMute = true;
     }
-    if (command.equals("on")) {
-      clip.stop();
-      clip.flush();
-      startBackgroundMusic();
-    } else {
-      View.printMusicOnlyOnAndOffCommandsAreAllowed();
+    return null;
+  }
+
+  public static void fxMute() {
+    if (fxMute) {
+      fxMute = false;
+    } else if (!fxMute) {
+      fxMute = true;
     }
   }
 
-  public static void FXOnOff(String command) {
-    if (command.equals("off")) {
-      setFxOnOff(0);
-    }
-    if (command.equals("on")) {
-      setFxOnOff(1);
-    } else {
-      View.printFXOnlyOnAndOffCommandsAreAllowed();
-    }
-  }
 
   public static void startAudio() throws InterruptedException {
     clip2.start();
@@ -92,33 +90,27 @@ public final class Music {
     clip.wait();
   }
 
-  public static void playMove() {
-    playAudioFX("Spacecraft_Move.wav");
-
+  public static String track1 (String wavFile) {
+    clip.stop();
+    playAudioMusic(wavFile);
+    gainControl.setValue(-9.0f);
+    return null;
   }
-
-
-  public static void trackChange(String command) {
-    gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-    if (command.equals("1")) {
-      clip.stop();
-      playAudioMusic("Space_Chill.wav");
-      gainControl.setValue(-9.0f);
-    } else if (command.equals("2")) {
-      clip.stop();
-      playAudioMusic("Space_Ambient.wav");
-      gainControl.setValue(-9.0f);
-    } else if (command.equals("3")) {
-      clip.stop();
-      playAudioMusic("Space_Cinematic.wav");
-      gainControl.setValue(-9.0f);
-    } else if (command.equals("4")) {
-      clip.stop();
-      playAudioMusic("Space_Cyber.wav");
-      gainControl.setValue(-9.0f);
-    } else {
-      View.printTheTrackNumberDoesNotExist();
-    }
+  public static String track2 (String wavFile) {
+    clip.stop();
+    playAudioMusic(wavFile);
+    gainControl.setValue(-9.0f);
+    return null;
+  }
+  public static void track3 (String wavFile) {
+    clip.stop();
+    playAudioMusic(wavFile);
+    gainControl.setValue(-9.0f);
+  }
+  public static void track4 (String wavFile) {
+    clip.stop();
+    playAudioMusic(wavFile);
+    gainControl.setValue(-9.0f);
   }
 
   public static void startBackgroundMusic() {
@@ -135,56 +127,24 @@ public final class Music {
       gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
       gainControl.setValue(-9.0f);
     }
-
-
   }
 
-  public static void volumeUpDown(String command) {
+  public static float currentVolume(){
+    float currentVolume = 0;
+    return currentVolume;
+  }
+
+  public static FloatControl gainControl(){
     gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-    if (command.equals("0")) {
-      gainControl.setValue(gainControl.getMinimum());
-      clip.start();
-    } else if (command.equals("1")) {
-      gainControl.setValue(-21.0f);
-      clip.start();
-    } else if (command.equals("2")) {
-      gainControl.setValue(-18.0f);
-      clip.start();
-    } else if (command.equals("3")) {
-      gainControl.setValue(-15.0f);
-      clip.start();
-    } else if (command.equals("4")) {
-      gainControl.setValue(-12.0f);
-      clip.start();
-    } else if (command.equals("5")) {
-      gainControl.setValue(-9.0f);
-      clip.start();
-    } else if (command.equals("6")) {
-      gainControl.setValue(-6.0f);
-      clip.start();
-    } else if (command.equals("7")) {
-      gainControl.setValue(-3.0f);
-      clip.start();
-    } else if (command.equals("8")) {
-      gainControl.setValue(0.0f);
-      clip.start();
-    } else if (command.equals("9")) {
-      gainControl.setValue(3.0f);
-      clip.start();
-    } else if (command.equals("10")) {
-      gainControl.setValue(gainControl.getMaximum());
-      clip.start();
-    } else {
-      View.printTheVolumeNumberDoesNotExist();
-    }
+    return gainControl;
   }
+
 
   public static int getMusicOnOff() {
     return musicOnOff;
   }
-
   public static void setMusicOnOff(int musicOnOff) {
-    Music.musicOnOff = musicOnOff;
+    com.spacepilot.model.Music.musicOnOff = musicOnOff;
   }
 
   public static String getVolume() {
@@ -200,7 +160,7 @@ public final class Music {
   }
 
   public static void setFxOnOff(int fxOnOff) {
-    Music.fxOnOff = fxOnOff;
+    com.spacepilot.model.Music.fxOnOff = fxOnOff;
   }
 
 }

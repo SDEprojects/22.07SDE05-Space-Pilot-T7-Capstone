@@ -89,8 +89,11 @@ public class Planet {
     return arrayOfAstronautsOnPlanet;
   }
 
-  public void removeAstronauts(Object passengerRemoved) {
+  public void removeAstronaut(Object passengerRemoved) {
       arrayOfAstronautsOnPlanet.remove(passengerRemoved);
+  }
+  public void removeAllAstronauts(){
+    arrayOfAstronautsOnPlanet.removeAll(arrayOfAstronautsOnPlanet);
   }
 
 
@@ -129,6 +132,10 @@ public class Planet {
         arrayOfAstronautsOnPlanet.add(person);
       }
     }
+  }
+
+  public void showDangerCond(){
+
   }
 
 }
