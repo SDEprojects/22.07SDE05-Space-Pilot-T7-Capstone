@@ -1,6 +1,5 @@
 package com.spacepilot.view;
 
-import static com.spacepilot.view.Gui.strandedAstronautsLabel;
 
 import com.google.gson.Gson;
 import com.spacepilot.Main;

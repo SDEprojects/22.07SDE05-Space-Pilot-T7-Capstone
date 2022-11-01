@@ -34,7 +34,7 @@ public class Planet {
     this.damageCondition = damageCondition;
   }
 
-  private final Collection<Object> arrayOfAstronautsOnPlanet = new ArrayList<Object>();
+  private Collection<Object> arrayOfAstronautsOnPlanet = new ArrayList<Object>();
   Planet(String name, String event, int gravity, int radius, int mass) {
     this.name = name;
     this.event = event;

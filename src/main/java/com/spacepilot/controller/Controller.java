@@ -1,20 +1,14 @@
 package com.spacepilot.controller;
 
-import static com.spacepilot.view.Gui.repairsLeftLabel;
-import static com.spacepilot.view.Gui.strandedAstronautsLabel;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacepilot.Main;
-import com.spacepilot.model.Engineer;
 import com.spacepilot.model.Game;
-//import com.spacepilot.model.Music;
 import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
+import com.spacepilot.view.Gui.ChoiceHandler;
 import com.spacepilot.view.View;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,26 +26,30 @@ import javax.sound.midi.MidiUnavailableException;
 public class Controller {
 
   public static Game game; // model, where the current state of the game is stored
-  private final BufferedReader reader; // buffered reader used to read in what user enters
-  private String userInput; // variable used to save user input
-  private static Gui gui;
-  private static int repairCounter = 0;
+  private BufferedReader reader; // buffered reader used to read in what user enters
+  private Gui gui;
+  private int repairCounter = 0;
 
-  private static int refuelCounter = 3;
+  private int refuelCounter = 3;
+
 
   public Controller(Game game, BufferedReader reader, Gui gui) {
-    this.game = game;
     this.reader = reader;
     this.gui = gui;
-    this.userInput = "";
+    this.game = game;
   }
 
+  public Controller(Gui gui) {
+    this.gui = gui;
+
+  }
 
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
-    //Starts GUI
-    gui.startGui();
-    //converts all strings to DisplayArea in Gui
+    //Starts gui
+    gui.showGuiStart();
+//    gui.setMethod2(text -> textParser(text));
+    //converts all strings to DisplayArea in gui
     View.consoleToGUI(gui);
     // create and set up game environment
     setUpGame();
@@ -93,10 +91,11 @@ public class Controller {
     game.setSpacecraft(createSpacecraft());
     // set the current spacecraft's current planet to be Earth
     game.getSpacecraft().setCurrentPlanet(returnPlanet("earth"));
+
   }
 
 
-  public void gameIntro() throws IOException {
+  public void gameIntro() throws IOException, InterruptedException {
     View.getGameTextJson();
     // prompt the user to press "y" to continue
 //    do {
@@ -112,11 +111,34 @@ public class Controller {
 //    View.clearConsole(); // Note: clear console does not work on IntelliJ console
 //    // display game instructions (how-to-play)
     View.printInstructions();
+
+//    while(!game.isOver()) {
+//      String input = gui.getUserInput();
+//      textParser(input);
+//      Thread.sleep(3000);
+//    }
+
   }
 
-  public static void nextMove(String[] command) throws IOException, InterruptedException {
+  public void textParser(String text) {
+    String[] result = new String[2];
+    String[] splitText = text.split(" ");
+    String verb = splitText[0]; // First word
+    String noun = splitText[splitText.length - 1]; // Last word
+    result[0] = verb;
+    result[1] = noun;
+    try {
+      nextMove(result);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void nextMove(String[] command) throws IOException, InterruptedException {
     Spacecraft spacecraft = game.getSpacecraft();
-    dispayGameStatusPanel();
+    displayGameStatusPanel();
 
     if (command[0].equals("quit")) {
       game.setOver(true);
@@ -151,18 +173,18 @@ public class Controller {
           if (event != null) {
             // decrement spacecraft health by 1.
             spacecraft.setHealth(spacecraft.getHealth() - 15);
-            Gui.getShipHealthBar().setValue(Gui.getHealth() - 15);
-            Gui.setHealth(Gui.getHealth() - 15);
-            Gui.getShipHealthBar().setString("Health" + Gui.getHealth() + "%");
+            gui.getShipHealthBar().setValue(gui.getHealth() - 15);
+            gui.setHealth(gui.getHealth() - 15);
+            gui.getShipHealthBar().setString("Health" + gui.getHealth() + "%");
             // alert the user about the event
             View.printEventAlert(event);
           }
           //Check if planet has prereq/damageCondition that causes damage to ship
           String preReq = destinationPlanet.getPreReq();
           if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
-            Gui.getShipHealthBar().setValue(Gui.getHealth() - 50);
-            Gui.setHealth(Gui.getHealth() - 50);
-            Gui.getShipHealthBar().setString("Health" + Gui.getHealth() + "%");
+            gui.getShipHealthBar().setValue(gui.getHealth() - 50);
+            gui.setHealth(gui.getHealth() - 50);
+            gui.getShipHealthBar().setString("Health" + gui.getHealth() + "%");
 //            spacecraft.setHealth(spacecraft.getHealth() - 50);
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
@@ -179,9 +201,9 @@ public class Controller {
 
           }
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
-          Gui.getFuelLevelBar().setValue((int) (Gui.getFuel() - 12.5));
-          Gui.setFuel(Gui.getFuel() - 12.5);
-          Gui.getFuelLevelBar().setString("Fuel: " + Gui.getFuel() + "%");
+          gui.getFuelLevelBar().setValue((int) (gui.getFuel() - 12.5));
+          gui.setFuel(gui.getFuel() - 12.5);
+          gui.getFuelLevelBar().setString("Fuel: " + gui.getFuel() + "%");
 
 //          Music.playMove();
 
@@ -208,12 +230,12 @@ public class Controller {
         return;
       }
 
-      if (Gui.getHealth() == 100) {
+      if (gui.getHealth() == 100) {
         View.printYourHealthisFullAlready();
       } else if (repairCounter < 3) {
-        Gui.getShipHealthBar().setValue(100);
-        Gui.setHealth(100);
-        Gui.getShipHealthBar().setString("Health: " + Gui.getHealth() + "%");
+        gui.getShipHealthBar().setValue(100);
+        gui.setHealth(100);
+        gui.getShipHealthBar().setString("Health: " + gui.getHealth() + "%");
         View.printRepair();
 
         repairCounter++;
@@ -242,22 +264,20 @@ public class Controller {
     }else { // invalid command message
       View.printInvalidCommandAlert();
     }
-    dispayGameStatusPanel();
+    displayGameStatusPanel();
   }
 
-  private static void dispayGameStatusPanel() {
-    game.getSpacecraft().getHealth();
-    game.getSpacecraft().getFuel();
-    game.getSpacecraft().getInventory();
-    game.getSpacecraft().getCurrentPlanet();
-    repairsLeftLabel.setText("Repairs Left: " + repairCounter);
-    strandedAstronautsLabel.setText("Stranded Astronauts: "
-        +String.valueOf(game.calculateRemainingAstronautsViaTotalNumOfAstronauts()
-        - returnPlanet("earth").getNumOfAstronautsOnPlanet()));
-}
+  private  void displayGameStatusPanel() {
+
+    Collection<String> inventory = game.getSpacecraft().getInventory();
+    Planet planet = game.getSpacecraft().getCurrentPlanet();
+    int strandedAstos = game.calculateRemainingAstronautsViaTotalNumOfAstronauts()
+        - returnPlanet("earth").getNumOfAstronautsOnPlanet();
+    gui.displayGameStatus(inventory, planet, repairCounter, strandedAstos);
+  }
 
   //gives the user all the astronauts, items, and sets health and fuel to 100
-  public static void godMode(){
+  public void godMode(){
       for (Planet planet : game.getPlanets()) {
         Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
         game.getSpacecraft().addPassengers(astronauts);
@@ -272,7 +292,7 @@ public class Controller {
     game.getSpacecraft().setHealth(100);
   }
 
-  public static void loadNewPassengers() {
+  public  void loadNewPassengers() {
     Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
     if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
@@ -303,7 +323,7 @@ public class Controller {
     }
   }
 
-  public static void determineIfEngineerIsOnBoard() {
+  public  void determineIfEngineerIsOnBoard() {
     if (game.getSpacecraft().getNumOfEngineersOnBoard() > 0) {
       View.printYouveGotAnEngineer();
     } else {
@@ -311,7 +331,7 @@ public class Controller {
     }
   }
 
-  public static void unloadPassengersOnEarth() {
+  public void unloadPassengersOnEarth() {
     Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
     Spacecraft spacecraft = game.getSpacecraft();
 
@@ -326,26 +346,26 @@ public class Controller {
     }
   }
 
-  public static void refuelShip() {
+  public void refuelShip() {
     Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
 
     if (!currentPlanet.getName().equals("Station")) {
       View.printYouCanOnlyRefuelAtTheStation();
-    } else if (Gui.getFuel() == 100) {
+    } else if (gui.getFuel() == 100) {
       View.printYourFuelTankIsFullAlready();
     } else if (currentPlanet.getName().equals("Station") && refuelCounter == 0) {
       View.printStationHasNoMoreFuelAvailable();
     } else if (currentPlanet.getName().equals("Station") && refuelCounter > 0) {
-      Gui.getFuelLevelBar().setValue(100);
-      Gui.setFuel(100);
-      Gui.getFuelLevelBar().setString("Fuel: " + Gui.getFuel() + "%");
+      gui.getFuelLevelBar().setValue(100);
+      gui.setFuel(100);
+      gui.getFuelLevelBar().setString("Fuel: " + gui.getFuel() + "%");
       refuelCounter--;
       View.printSpacecraftHasBeenFilled();
     }
   }
 
 
-  public static void checkGameResult() {
+  public void checkGameResult() {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
@@ -359,9 +379,9 @@ public class Controller {
     }
   }
 
-  public static void displayGameState() {
-    //Calls Gui method to display current status of planet user is on.
-    Gui.displayPlanetStatus(
+  public void displayGameState() {
+    //Calls gui method to display current status of planet user is on.
+    gui.displayPlanetStatus(
         game.getSpacecraft().getCurrentPlanet().getItem(),
         game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() );
@@ -391,34 +411,23 @@ public class Controller {
     View.printSaveGameMessage();
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   /*
   HELPER METHODS
    */
-  public static void textParser(String text) {
-    String[] result = new String[2];
-    String[] splitText = text.split(" ");
-    String verb = splitText[0]; // First word
-    String noun = splitText[splitText.length - 1]; // Last word
-    result[0] = verb;
-    result[1] = noun;
-    try {
-      nextMove(result);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
-  }
 
-  public void getUserInput(String prompt) throws IOException {
-    // clear previous user input
-    userInput = "";
-
-    // print the prompt message
-    View.printUserInputPrompt(prompt);
-    // sanitize user response (turn it into lower-case and trim whitespaces) and save it to userInput
-    userInput = reader.readLine().trim().toLowerCase();
-  }
 
   // Returns an instance of the desired planet when given a planet name
   // If the desired planet by the name does not exist, returns null

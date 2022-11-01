@@ -1,16 +1,11 @@
 package com.spacepilot.model;
 
-import static com.spacepilot.view.Gui.currentPlanetLabel;
-import static com.spacepilot.view.Gui.fuelLevelLabel;
-import static com.spacepilot.view.Gui.inventoryLabel;
-import static com.spacepilot.view.Gui.shipHealthLabel;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class Spacecraft {
-
   private String name;
   private int health;
   private Planet currentPlanet;
@@ -24,6 +19,9 @@ public class Spacecraft {
   private int spacecraftCapacity = 50;
   private double fuel;
 
+  public Spacecraft() {
+  }
+
   public String getName() {
     return name;
   }
@@ -32,7 +30,7 @@ public class Spacecraft {
   }
 
   public Planet getCurrentPlanet() {
-    currentPlanetLabel.setText("Current Planet: " + currentPlanet.getName());
+
     return currentPlanet;
   }
 
@@ -54,7 +52,6 @@ public class Spacecraft {
 
   public void setCurrentPlanet(Planet currentPlanet) {
     this.currentPlanet = currentPlanet;
-    currentPlanetLabel.setText("Current Planet: " + currentPlanet.getName());
   }
 
   public void setPassengers(Collection<Object> passengers) {
@@ -66,13 +63,12 @@ public class Spacecraft {
   }
 
   public List<String> getInventory() {
-    inventoryLabel.setText("Inventory: " + inventory);
     return inventory;
   }
 
   public void setInventory(List<String> inventory) {
     this.inventory = inventory;
-    inventoryLabel.setText("Inventory: " + inventory);
+
   }
 
 

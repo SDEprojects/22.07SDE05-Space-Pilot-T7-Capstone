@@ -26,6 +26,7 @@ public class Main {
         Gui gui = new Gui(); // GUI
         game.setOver(false); // Set the current game's status to be not over
         Controller controller = new Controller(game, reader, gui); // Controller
+        gui.setControllerField(controller);
         controller.play();
       } while (continuePlaying(reader));
     } catch (IOException | URISyntaxException | MidiUnavailableException |
