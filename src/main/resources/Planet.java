@@ -45,7 +45,7 @@ public class Planet {
     int totalNumOfAstronautsOnPlanet = new Random().nextInt(5);
 
     for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
-      if (!name.equals("Earth") && !name.equals("Orbit") && !name.equals("Station")) {
+      if (!name.equals("Earth")) {
         if (i == 3) {
           Person engineerOnThisPlanet = new Engineer();
           arrayOfAstronautsOnPlanet.add(engineerOnThisPlanet);
@@ -111,7 +111,7 @@ public class Planet {
     // random total number of astronauts on a planet
     int totalNumOfAstronautsOnPlanet = rand.nextInt(5);
     // check to make sure the current planet is not Earth
-    if (!name.equals("Earth")) {
+    if (!name.equals("Earth") && !name.equals("Orbit")) {
       // place stranded astronauts to the planet
       for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
         // create a random boolean
@@ -130,12 +130,11 @@ public class Planet {
         }
         // add either engineer or non-engineer to the array of astronauts on this planet
         arrayOfAstronautsOnPlanet.add(person);
+        ;
+
       }
     }
   }
-
-  public void showDangerCond(){
-
   }
 
-}
+
