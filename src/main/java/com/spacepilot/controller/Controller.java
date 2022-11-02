@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacepilot.Main;
 import com.spacepilot.model.Game;
+import com.spacepilot.model.Ticktock;
 import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
@@ -147,11 +148,19 @@ public class Controller {
           }
           //Check if planet has prereq/damageCondition that causes damage to ship
           String preReq = destinationPlanet.getPreReq();
-          if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
-            gui.getShipHealthBar().setValue(gui.getHealth() - 50);
-            gui.setHealth(gui.getHealth() - 50);
-            gui.getShipHealthBar().setString("Health" + gui.getHealth() + "%");
-//            spacecraft.setHealth(spacecraft.getHealth() - 50);
+
+          spacecraft.setCurrentPlanet(returnPlanet(command[1]));
+
+          if (command[1].equals("orbit") && !gui.getTicktock().getHealthTickerBoolean()) {
+            gui.getTicktock().getHealthTimer().stop();
+            gui.getTicktock().setHealthTickerBoolean(true);
+          } else if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
+            if (command[1].equals("venus")
+                || command[1].equals("uranus")) {
+              gui.getTicktock().healthTickTimer();
+              gui.getTicktock().getHealthTimer().start();
+              gui.getTicktock().setHealthTickerBoolean(false);
+            }
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
           } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
@@ -164,23 +173,8 @@ public class Controller {
             destinationPlanet.setDamageCondition(null);
             //remove item from inventory as it's used.
             spacecraft.getInventory().remove(preReq);
-
           }
-          spacecraft.setCurrentPlanet(returnPlanet(command[1]));
-          gui.getFuelLevelBar().setValue((int) (gui.getFuel() - 12.5));
-          gui.setFuel(gui.getFuel() - 12.5);
-          gui.getFuelLevelBar().setString("Fuel: " + gui.getFuel() + "%");
-
-          // decrement remaining days by 1 when user goes somewhere
-          game.setRemainingDays(game.getRemainingDays() - 1);
-          // check if the number of remaining days is less than 1
-          // or if the spacecraft's health is less than 1
-          if (game.getRemainingDays() < 1 || spacecraft.getHealth() < 1) {
-            game.setOver(true);
-          }
-          // if so, set the game as over
         }
-
       }
 
     } else if (command[0].equals("chat")) {
@@ -217,7 +211,9 @@ public class Controller {
       refuelShip();
     } else if (command[0].equals("god")){
         godMode();
-    }else { // invalid command message
+    } else if (command[0].equals("interact")) {
+      interactAlien();
+    } else { // invalid command message
       View.printInvalidCommandAlert();
     }
 
@@ -225,7 +221,6 @@ public class Controller {
     displayCurrentPlanetStatus();
     displayGameStatusPanel();
     checkGameResult();
-
   }
 
   public void displayCurrentPlanetStatus() {
@@ -275,7 +270,7 @@ public class Controller {
     }
   }
 
-  public  void determineIfEngineerIsOnBoard() {
+  public void determineIfEngineerIsOnBoard() {
     if (game.getSpacecraft().getNumOfEngineersOnBoard() > 0) {
       View.printYouveGotAnEngineer();
     } else {
@@ -312,6 +307,27 @@ public class Controller {
       gui.getFuelLevelBar().setString("Fuel: " + gui.getFuel() + "%");
       refuelCounter--;
       View.printSpacecraftHasBeenFilled();
+    }
+  }
+
+  public void interactAlien() {
+    Spacecraft spacecraft = game.getSpacecraft();
+    Planet destinationPlanet = returnPlanet(spacecraft.getCurrentPlanet().getName());
+    String preReq = destinationPlanet.getPreReq();
+    if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
+      gui.getShipHealthBar().setValue(gui.getHealth() - 45);
+      gui.setHealth(gui.getHealth() - 45);
+      gui.getShipHealthBar().setString("Health" + gui.getHealth() + "%");
+    } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
+      //Call string to show that you avoided damage by having correct preReq in inventory
+      String damageCondition = destinationPlanet.getDamageCondition();
+      View.printDamageConditionAvoidedAlert(preReq, damageCondition);
+      //set planet preReq to null
+      destinationPlanet.setPreReq(null);
+      //set damageCondition to null
+      destinationPlanet.setDamageCondition(null);
+      //remove item from inventory as it's used.
+      spacecraft.getInventory().remove(preReq);
     }
   }
 
@@ -416,6 +432,8 @@ public class Controller {
     planetNames.add("/planets/saturn.json");
     planetNames.add("/planets/neptune.json");
     planetNames.add("/planets/station.json");
+    planetNames.add("/planets/orbit.json");
+
 
     for (String planetPath : planetNames) {
       try (Reader reader = new InputStreamReader(

@@ -1,5 +1,6 @@
 package com.spacepilot.model;
 
+import com.spacepilot.view.Gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -9,15 +10,16 @@ import javax.swing.Timer;
 public class Ticktock {
 
 
-  private static Timer timer;
-  private static int seconds;
-  private static int minutes;
-  private static String doubleDigitSeconds;
-  private static String doubleDigitMinutes;
-  private static DecimalFormat dFormat = new DecimalFormat("00");
-  private static JLabel oxygenTimeLeftLabel;
+  private Timer timer, healthTimer;
+  private int seconds;
+  private int minutes;
+  private String doubleDigitSeconds;
+  private String doubleDigitMinutes;
+  private DecimalFormat dFormat = new DecimalFormat("00");
+  private JLabel oxygenTimeLeftLabel;
+  private Boolean healthTickerBoolean = true;
 
-  public static void ticktock() {
+  public void ticktock() {
     timer = new Timer(1000, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -40,60 +42,88 @@ public class Ticktock {
       }
     });
   }
-  public static Timer getTimer() {
+
+  public void healthTickTimer() {
+    healthTimer = new Timer(250, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Gui.getShipHealthBar().setValue(Gui.getHealth() - 1);
+        Gui.setHealth(Gui.getHealth() - 1);
+        Gui.getShipHealthBar().setString("Health" + Gui.getHealth() + "%");
+
+      }
+    });
+  }
+  public Timer getTimer() {
     return timer;
   }
 
-  public static void setTimer(Timer timer) {
-    Ticktock.timer = timer;
+  public void setTimer(Timer timer) {
+    this.timer = timer;
   }
 
-  public static int getSeconds() {
+  public int getSeconds() {
     return seconds;
   }
 
-  public static void setSeconds(int seconds) {
-    Ticktock.seconds = seconds;
+  public void setSeconds(int seconds) {
+    this.seconds = seconds;
   }
 
-  public static int getMinutes() {
+  public int getMinutes() {
     return minutes;
   }
 
-  public static void setMinutes(int minutes) {
-    Ticktock.minutes = minutes;
+  public void setMinutes(int minutes) {
+    this.minutes = minutes;
   }
 
-  public static String getDoubleDigitSeconds() {
+  public String getDoubleDigitSeconds() {
     return doubleDigitSeconds;
   }
 
-  public static void setDoubleDigitSeconds(String doubleDigitSeconds) {
-    Ticktock.doubleDigitSeconds = doubleDigitSeconds;
+  public void setDoubleDigitSeconds(String doubleDigitSeconds) {
+    this.doubleDigitSeconds = doubleDigitSeconds;
   }
 
-  public static String getDoubleDigitMinutes() {
+  public String getDoubleDigitMinutes() {
     return doubleDigitMinutes;
   }
 
-  public static void setDoubleDigitMinutes(String doubleDigitMinutes) {
-    Ticktock.doubleDigitMinutes = doubleDigitMinutes;
+  public void setDoubleDigitMinutes(String doubleDigitMinutes) {
+    this.doubleDigitMinutes = doubleDigitMinutes;
   }
 
-  public static DecimalFormat getdFormat() {
+  public DecimalFormat getdFormat() {
     return dFormat;
   }
 
-  public static void setdFormat(DecimalFormat dFormat) {
-    Ticktock.dFormat = dFormat;
+  public void setdFormat(DecimalFormat dFormat) {
+    this.dFormat = dFormat;
   }
 
-  public static JLabel getOxygenTimeLeftLabel() {
+  public JLabel getOxygenTimeLeftLabel() {
     return oxygenTimeLeftLabel;
   }
 
-  public static void setOxygenTimeLeftLabel(JLabel oxygenTimeLeftLabel) {
-    Ticktock.oxygenTimeLeftLabel = oxygenTimeLeftLabel;
+  public void setOxygenTimeLeftLabel(JLabel oxygenTimeLeftLabel) {
+    this.oxygenTimeLeftLabel = oxygenTimeLeftLabel;
+  }
+
+  public Timer getHealthTimer() {
+    return healthTimer;
+  }
+
+  public void setHealthTimer(Timer healthTimer) {
+    this.healthTimer = healthTimer;
+  }
+
+  public Boolean getHealthTickerBoolean() {
+    return healthTickerBoolean;
+  }
+
+  public void setHealthTickerBoolean(Boolean healthTickerBoolean) {
+    this.healthTickerBoolean = healthTickerBoolean;
   }
 
 }
