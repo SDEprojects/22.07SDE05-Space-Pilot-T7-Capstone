@@ -73,6 +73,7 @@ public class Gui {
     frame = new JFrame("Main Panel"); //Create Frame for content //Default layout is BorderLayout
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Set closing event
     frame.setSize(new Dimension(1140, 900));
+    frame.setResizable(false);
 
     //Centers a frame onscreen when it opens
     frame.setLocationRelativeTo(null);
