@@ -128,21 +128,21 @@ public class ImageUI {
 
   public void generateScreen(){
     //Earth Scene 1
-    createBackgroundPanel(1, "earth.jpeg");
-    createMapObject(1, 0, 50, 499, 499, "spaceship-499x499.png");
-    createObject(1, 400, 350, 647, 385, "building2.png", "load");
+    createBackgroundPanel(1, "backgrounds/earth.jpeg");
+    createMapObject(1, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+    createObject(1, 400, 350, 647, 385, "backgrounds/building2.png", "load");
 
     //Planet Scene 2
-    createBackgroundPanel(2, "planetBlue-1024x640.jpeg");
-    createObject(2, 800, 400, 200, 200, "astronaut_origin_thumbnail.png", "load");
-    createMapObject(2, 0, 50, 499, 499, "spaceship-499x499.png");
-    createObject(2, 500, 200, 280, 320, "alien_thumbnail.png", "load");
+    createBackgroundPanel(2, "backgrounds/planetBlue-1024x640.jpeg");
+    createObject(2, 800, 400, 200, 200, "backgrounds/astronaut_origin_thumbnail.png", "load");
+    createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+    createObject(2, 500, 200, 280, 320, "backgrounds/alien_thumbnail.png", "load");
 //    bgPanel[1].add(bgLabel[1]);
 
     //Station Scene 3
-    createBackgroundPanel(3, "station.jpg");
-    createMapObject(3, 0, 50, 499, 499, "spaceship-499x499.png");
-    createObject(3, 720, 300, 233, 320, "gas1.png", "refuel");
+    createBackgroundPanel(3, "backgrounds/station.jpg");
+    createMapObject(3, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+    createObject(3, 720, 300, 233, 320, "backgrounds/gas1.png", "refuel");
 
 
     addUpdateToPanel();
@@ -150,14 +150,14 @@ public class ImageUI {
 
   public void showPlanetScreen1(){
     bgPanel[1].setVisible(false);
-    bgPanel[2].setVisible(true);
     bgPanel[3].setVisible(false);
+    bgPanel[2].setVisible(true);
   }
 
   public void showEarthScreen2(){
-    bgPanel[1].setVisible(true);
     bgPanel[2].setVisible(false);
     bgPanel[3].setVisible(false);
+    bgPanel[1].setVisible(true);
   }
 
   public void showStationScreen3(){

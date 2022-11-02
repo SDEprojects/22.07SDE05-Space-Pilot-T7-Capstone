@@ -539,6 +539,7 @@ public class Gui {
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
+    imageUI.showPlanetScreen1(); //Gets earth background screen.
     frame.setVisible(true);
   }
 
