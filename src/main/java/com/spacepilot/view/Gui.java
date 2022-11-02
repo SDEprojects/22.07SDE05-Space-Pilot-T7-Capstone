@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
+import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,6 +28,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -508,17 +510,17 @@ public class Gui {
 
   public void showMenu() {
     soundPanel.setVisible(false);
-    scrollPanel.setVisible(false);
     mapPanel.setVisible(false);
-    centralDisplayPanel.add(menuPanel, BorderLayout.CENTER);
+    centralDisplayPanel.setVisible(false);
+    frame.add(menuPanel, BorderLayout.CENTER);
     menuPanel.setVisible(true);
   }
 
   public void showMap() {
     menuPanel.setVisible(false);
     soundPanel.setVisible(false);
-    scrollPanel.setVisible(false);
-    centralDisplayPanel.add(mapPanel, BorderLayout.CENTER);
+    centralDisplayPanel.setVisible(false);
+    frame.add(mapPanel, BorderLayout.CENTER);
     mapPanel.setVisible(true);
   }
 
@@ -526,8 +528,8 @@ public class Gui {
     menuPanel.setVisible(false);
     soundPanel.setVisible(false);
     mapPanel.setVisible(false);
-    centralDisplayPanel.add(scrollPanel, BorderLayout.CENTER);
-    scrollPanel.setVisible(true);
+    frame.add(centralDisplayPanel, BorderLayout.CENTER);
+    centralDisplayPanel.setVisible(true);
   }
 
   public void showGameScreenPanels() {
