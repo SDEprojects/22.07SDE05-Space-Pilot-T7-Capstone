@@ -28,8 +28,9 @@ public class Controller {
   private BufferedReader reader; // buffered reader used to read in what user enters
   private Gui gui;
   private int repairCounter = 0;
-
   private int refuelCounter = 3;
+  private String userInput;
+
 
 
   public Controller(Game game, BufferedReader reader, Gui gui) {
@@ -38,39 +39,22 @@ public class Controller {
     this.game = game;
   }
 
-  public Controller(Gui gui) {
-    this.gui = gui;
-
-  }
-
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
     //Starts gui
     gui.showGuiStart();
-//    gui.setMethod2(text -> textParser(text));
-    //converts all strings to DisplayArea in gui
     View.consoleToGUI(gui);
+
     // create and set up game environment
     setUpGame();
-    // play music
-//    Music.startBackgroundMusic();
+
     // display game's introduction with flash screen and story and prompt the user to continue
     gameIntro();
+    displayCurrentPlanetStatus();
+    displayGameStatusPanel();
+    userInput ="";
+    textParser(userInput);
 
-    // while game is not over, allow the user to continue to play
-//    while (!game.isOver()) {
-//      // print current game info
-//      displayGameState();
-      // prompt the user to enter their next command (saved as userInput)
-//      getUserInput("Please enter your next command");
-      // parse the user input to get their command (verb and noun)
-//      String[] userCommand = textParser(userInput);
-      // execute their command and/or display information (e.g., list of commands, invalid command, etc.)
-//      nextMove(userCommand);
-//    }
-//    checkGameResult();
-
-//    Music.stopAudio(); // Close sequencer so that the program can terminate
   }
 
 
@@ -93,30 +77,14 @@ public class Controller {
 
   }
 
-
   public void gameIntro() throws IOException, InterruptedException {
     View.getGameTextJson();
-    // prompt the user to press "y" to continue
-//    do {
-//      getUserInput("Enter y to continue");
-//    } while (!userInput.equals("y"));
-//    View.clearConsole(); // Note: clear console does not work on IntelliJ console
+
     // display introductory background story
     View.printIntro();
-    // prompt the user to press "y" to continue
-//    do {
-//      getUserInput("Enter y to continue");
-//    } while (!userInput.equals("y"));
-//    View.clearConsole(); // Note: clear console does not work on IntelliJ console
-//    // display game instructions (how-to-play)
+
+    // display game instructions (how-to-play)
     View.printInstructions();
-
-//    while(!game.isOver()) {
-//      String input = gui.getUserInput();
-//      textParser(input);
-//      Thread.sleep(3000);
-//    }
-
   }
 
   public void textParser(String text) {
@@ -137,7 +105,6 @@ public class Controller {
 
   public void nextMove(String[] command) throws IOException, InterruptedException {
     Spacecraft spacecraft = game.getSpacecraft();
-    displayGameStatusPanel();
 
     if (command[0].equals("quit")) {
       game.setOver(true);
@@ -204,8 +171,6 @@ public class Controller {
           gui.setFuel(gui.getFuel() - 12.5);
           gui.getFuelLevelBar().setString("Fuel: " + gui.getFuel() + "%");
 
-//          Music.playMove();
-
           // decrement remaining days by 1 when user goes somewhere
           game.setRemainingDays(game.getRemainingDays() - 1);
           // check if the number of remaining days is less than 1
@@ -214,8 +179,8 @@ public class Controller {
             game.setOver(true);
           }
           // if so, set the game as over
-
         }
+
       }
 
     } else if (command[0].equals("chat")) {
@@ -250,46 +215,34 @@ public class Controller {
 
     } else if (command[0].equals("refuel")) {
       refuelShip();
-    } else if (command[0].equals("music")) {
-//      Music.musicOnOff(command[1]);
-    } else if (command[0].equals("volume")) {
-//      Music.volumeUpDown(command[1]);
-    } else if (command[0].equals("fx")) {
-//      Music.FXOnOff(command[1]);
-    } else if (command[0].equals("track")) {
-//      Music.trackChange(command[1]);
     } else if (command[0].equals("god")){
         godMode();
     }else { // invalid command message
       View.printInvalidCommandAlert();
     }
+
+    //update status and check if we won or lost
+    displayCurrentPlanetStatus();
     displayGameStatusPanel();
+    checkGameResult();
+
   }
 
+  public void displayCurrentPlanetStatus() {
+    //Calls gui method to display current status of planet user is on.
+    gui.displayPlanetStatus(
+        game.getSpacecraft().getCurrentPlanet().getItem(),
+        game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
+        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() );
+  }
   private  void displayGameStatusPanel() {
-
     Collection<String> inventory = game.getSpacecraft().getInventory();
     Planet planet = game.getSpacecraft().getCurrentPlanet();
     int strandedAstos = game.calculateRemainingAstronautsViaTotalNumOfAstronauts()
-        - returnPlanet("earth").getNumOfAstronautsOnPlanet();
+        - returnPlanet("Earth").getNumOfAstronautsOnPlanet();
     gui.displayGameStatus(inventory, planet, repairCounter, strandedAstos);
   }
 
-  //gives the user all the astronauts, items, and sets health and fuel to 100
-  public void godMode(){
-      for (Planet planet : game.getPlanets()) {
-        Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
-        game.getSpacecraft().addPassengers(astronauts);
-        planet.removeAllAstronauts();
-//      adds item from each planet
-      String item = planet.getItem();
-      game.getSpacecraft().addToInventory(item);
-      planet.setItem(null);
-    }
-    //      full health and fuel set to 100
-    game.getSpacecraft().setFuel(100);
-    game.getSpacecraft().setHealth(100);
-  }
 
   public  void loadNewPassengers() {
     Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
@@ -339,7 +292,6 @@ public class Controller {
       spacecraft.getPassengers().clear();
       checkGameResult();
 
-//      game.setOver(true);
     } else {
       View.printYouCantUnloadPassengersIfCurrentPlanetNotEarth();
     }
@@ -363,7 +315,23 @@ public class Controller {
     }
   }
 
+  //gives the user all the astronauts, items, and sets health and fuel to 100
+  public void godMode(){
+    for (Planet planet : game.getPlanets()) {
+      Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
+      game.getSpacecraft().addPassengers(astronauts);
+      planet.removeAllAstronauts();
+      // adds item from each planet
+      String item = planet.getItem();
+      game.getSpacecraft().addToInventory(item);
+      planet.setItem(null);
+    }
+    //full health and fuel set to 100
+    game.getSpacecraft().setFuel(100);
+    game.getSpacecraft().setHealth(100);
+  }
 
+//TODO: Expand checkGameResult to have all fail conditions
   public void checkGameResult() {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
@@ -377,15 +345,6 @@ public class Controller {
       View.printGameOverMessage(userWon);
     }
   }
-
-  public void displayGameState() {
-    //Calls gui method to display current status of planet user is on.
-    gui.displayPlanetStatus(
-        game.getSpacecraft().getCurrentPlanet().getItem(),
-        game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
-        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() );
-  }
-
 
   public static void loadSavedGame() {
     try (Reader reader = Files.newBufferedReader(Paths.get("./saved-game.json"))) {
@@ -409,16 +368,6 @@ public class Controller {
     writer.close();
     View.printSaveGameMessage();
   }
-
-
-
-
-
-
-
-
-
-
 
 
 

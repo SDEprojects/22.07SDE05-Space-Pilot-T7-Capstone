@@ -252,12 +252,12 @@ public class Gui {
     mainBtn = new JButton("Main Screen");
 
     // When a user presses a button, the respective word is given to the Controller to use for function
-      chaChaRealSmooth(godModeBtn,"god");
-      chaChaRealSmooth(loadBtn,"load");
-      chaChaRealSmooth(unloadBtn,"unload");
-      chaChaRealSmooth(refuelBtn,"refuel");
-      chaChaRealSmooth(repairBtn,"repair");
-      chaChaRealSmooth(helpBtn,"help");
+      chaChaRealSmooth(godModeBtn,"god",false);
+      chaChaRealSmooth(loadBtn,"load",false);
+      chaChaRealSmooth(unloadBtn,"unload",false);
+      chaChaRealSmooth(refuelBtn,"refuel",false);
+      chaChaRealSmooth(repairBtn,"repair",false);
+      chaChaRealSmooth(helpBtn,"help",false);
     //Event Listener for menu button to open new window w/menu options
     menuBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -322,7 +322,7 @@ public class Gui {
         showGameScreenPanels();
       }
     });
-    chaChaRealSmooth(continueBtn,"continue");
+    chaChaRealSmooth(continueBtn,"continue",false);
   }
 
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
@@ -365,25 +365,25 @@ public class Gui {
     mapPanel.setBackground(Color.black);
     //Creating maps buttons to go to respective planets below
     JButton earthBtn = new JButton("Earth");
-    planetButtons(earthBtn, "go earth");
+    chaChaRealSmooth(earthBtn,"go earth",true);
     JButton moonBtn = new JButton("Moon");
-    planetButtons(moonBtn, "go moon");
+    chaChaRealSmooth(moonBtn,"go moon",true);
     JButton marsBtn = new JButton("Mars");
-    planetButtons(marsBtn, "go mars");
+    chaChaRealSmooth(marsBtn,"go mars",true);
     JButton mercuryBtn = new JButton("Mercury");
-    planetButtons(mercuryBtn, "go mercury");
+    chaChaRealSmooth(mercuryBtn,"go mercury",true);
     JButton saturnBtn = new JButton("Saturn");
-    planetButtons(saturnBtn, "go saturn");
+    chaChaRealSmooth(saturnBtn,"go saturn",true);
     JButton venusBtn = new JButton("Venus");
-    planetButtons(venusBtn, "go venus");
+    chaChaRealSmooth(venusBtn,"go venus",true);
     JButton neptuneBtn = new JButton("Neptune");
-    planetButtons(neptuneBtn, "go neptune");
+    chaChaRealSmooth(neptuneBtn,"go neptune",true);
     JButton jupiterBtn = new JButton("Jupiter");
-    planetButtons(jupiterBtn, "go jupiter");
+    chaChaRealSmooth(jupiterBtn,"go jupiter",true);
     JButton stationBtn = new JButton("Station");
-    planetButtons(stationBtn, "go station");
+    chaChaRealSmooth(stationBtn,"go station",true);
     JButton uranusBtn = new JButton("Uranus");
-    planetButtons(uranusBtn, "go uranus");
+    chaChaRealSmooth(uranusBtn,"go uranus",true);
     mapPanel.add(earthBtn); //Adding all buttons to menu frame
     mapPanel.add(moonBtn);
     mapPanel.add(marsBtn);
@@ -490,9 +490,8 @@ public class Gui {
     frame.setVisible(true);
   }
 
-  public static void playMusic() {
-    Music.playAudioMusic("Space_Chill.wav");
-  }
+
+
 
   //Converts sout from terminal to displayTextArea instead
   public void appendText(String text) {
@@ -502,15 +501,24 @@ public class Gui {
 
 
   //Takes button actions as input and sends to Controller textParser()
-  public void chaChaRealSmooth(JButton btn, String command){
+  public void chaChaRealSmooth(JButton btn, String command,Boolean planet){
     btn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         controllerField.textParser(command);
+        if (!planet) {
+          return;
+        }
+        mapPanel.setVisible(false);
+        scrollPanel.setVisible(true);
       }
     });
-
   }
+
+  public static void playMusic() {
+    Music.playAudioMusic("Space_Chill.wav");
+  }
+
 
 
   //  STATUS UPDATES
@@ -524,24 +532,6 @@ public class Gui {
     currentPlanetLabel.setText("Current Planet: " + planet.getName());
     repairsLeftLabel.setText("Repairs Left: " + repairsLeft);
     strandedAstronautsLabel.setText("Stranded Astronauts: " + strandedAstros);
-  }
-
-
-
-  public void planetButtons(JButton btn, String planet) {
-    btn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        goToPlanet(planet);
-      }
-    });
-  }
-
-  public void goToPlanet(String planet) {
-//    Controller.textParser(planet);
-//    Controller.displayGameState();
-    mapPanel.setVisible(false);
-    scrollPanel.setVisible(true);
   }
 
 
@@ -564,29 +554,8 @@ public class Gui {
   public JProgressBar getFuelLevelBar() {
     return fuelLevelBar;
   }
-  public void setFuelLevelBar(JProgressBar fuelLevelBar) {
-    this.fuelLevelBar = fuelLevelBar;
-  }
   public JProgressBar getShipHealthBar() {
     return shipHealthBar;
-  }
-  public void setShipHealthBar(JProgressBar shipHealthBar) {
-    this.shipHealthBar = shipHealthBar;
-  }
-  public JLabel getStrandedAstronautsLabel() {
-    return strandedAstronautsLabel;
-  }
-  public JLabel getRepairsLeftLabel() {
-    return repairsLeftLabel;
-  }
-  public JLabel getCurrentPlanetLabel() {
-    return currentPlanetLabel;
-  }
-  public JLabel getTitleLabel() {
-    return titleLabel;
-  }
-  public JLabel getInventoryLabel() {
-    return inventoryLabel;
   }
 
   public void setControllerField(Controller controllerField) {
