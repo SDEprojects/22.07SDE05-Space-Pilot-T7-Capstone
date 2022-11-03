@@ -47,7 +47,7 @@ public class Gui {
   private JSlider slider;
   private Consumer<String> method;
   private Controller controllerField;
-  private JPanel titleScreenPanel, titleBtnPanel, controlPanel, statusPanel, centralDisplayPanel,
+  private JPanel titleScreenPanel, titleBtnPanel, controlPanel, statusPanel, centralDisplayPanel, inventoryPanel, rightSidePanel,
       planetStatusPanel, menuPanel, soundPanel, mapPanel;
   private JLabel titleLabel, currentPlanetLabel, damageConditionLabel, itemsOnPlanetLabel,
       numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel;
@@ -329,9 +329,17 @@ public class Gui {
   }
 
   private void createRightSideControlPanel(GridLayout gridLayout) {
-    //CREATING PANEL ON THE RIGHT TO HOLD BUTTONS
-    controlPanel = new JPanel();
+    //CREATING PANEL ON THE RIGHT TO HOLD BUTTONS AND INVENTORY
+    rightSidePanel = new JPanel(gridLayout); //holds controlPanel and inventoryPanel
+    controlPanel = new JPanel(); //holds gui buttons
+    inventoryPanel = new JPanel(new GridLayout(5, 1, 2, 1)); // will hold inventory images
+
+    //setting color
     controlPanel.setBackground(Color.blue);
+
+    //Creating label for inventory Panel and adding it
+    JLabel inventoryLabel = new JLabel("Inventory", SwingConstants.CENTER);
+    inventoryPanel.add(inventoryLabel);
 
     //creating buttons right panel
     mapBtn = new JButton("Go Orbit");
@@ -373,6 +381,10 @@ public class Gui {
       }
     });
 
+    //Adding inventory and control to rightSide panel
+    rightSidePanel.add(controlPanel);
+    rightSidePanel.add(inventoryPanel);
+
     //adding button to right panel: Control Panel
     controlPanel.setLayout(gridLayout); //Setting controlPanel to grid layout
     controlPanel.add(menuBtn);
@@ -380,11 +392,11 @@ public class Gui {
     controlPanel.add(mainBtn);
     controlPanel.add(repairBtn);
     controlPanel.add(helpBtn);
-    controlPanel.add(loadBtn);
-    controlPanel.add(unloadBtn);
-    controlPanel.add(refuelBtn);
+//    controlPanel.add(loadBtn);
+//    controlPanel.add(unloadBtn);
+//    controlPanel.add(refuelBtn);
     controlPanel.add(godModeBtn);
-    controlPanel.add(interactBtn);
+//    controlPanel.add(interactBtn);
   }
 
   //TODO
@@ -639,7 +651,7 @@ public class Gui {
     frame.remove(titleScreenPanel);
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
-    frame.add(controlPanel, BorderLayout.LINE_END);
+    frame.add(rightSidePanel, BorderLayout.LINE_END);
     imageUI.showEarthScreen2(); //Gets earth background screen.
     frame.setVisible(true);
   }
