@@ -66,6 +66,42 @@ public class Controller {
 
   }
 
+//METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
+
+  public void startGameInitialization(){
+    try (Reader input =
+        new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(input))
+    {
+      Game game = createNewGame(); // Model
+
+//      Gui gui = new Gui(); // GUI
+      this.gui = new Gui();
+//      game.setOver(false); // Set the current game's status to be not over
+//      Controller controller = new Controller(game, reader, gui); // Controller
+
+//      gui.setControllerField(controller);
+//      controller.play();
+      play();
+    } catch (IOException | URISyntaxException | MidiUnavailableException |
+             InvalidMidiDataException e) {
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  //method to create a new game
+public static Game createNewGame() {
+  // create a reader
+  try (Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/game.json")))
+  {
+    // convert JSON file to Game and return the Game instance
+    return new Gson().fromJson(reader, Game.class);
+  } catch (IOException e) {
+    throw new RuntimeException(e);
+  }
+}
+
 
 //KEEP DIS
   public void setUpGame() throws URISyntaxException, IOException {
