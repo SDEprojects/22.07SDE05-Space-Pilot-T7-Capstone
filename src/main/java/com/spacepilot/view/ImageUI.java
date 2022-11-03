@@ -132,8 +132,7 @@ public class ImageUI {
     createObject(2, 800, 400, 200, 200, "backgrounds/astronaut.png",
         loadRunnableListener);
     createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(2, 500, 200, 280, 320, "backgrounds/extremeCold.png", interactRunnableListener);
-
+    createObject(2, 450, 100, 400, 500, "backgrounds/extremeCold.png", interactRunnableListener);
 //    createObject(2, 500, 200, 280, 320, "backgrounds/blueAlien.png", interactRunnableListener);
 //    createObject(2, 500, 200, 280, 320, "backgrounds/poisonGas.png", interactRunnableListener);
 //    createObject(2, 500, 200, 280, 320, "backgrounds/greenAlien.png", interactRunnableListener);

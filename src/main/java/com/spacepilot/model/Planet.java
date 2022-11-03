@@ -35,7 +35,7 @@ public class Planet {
   }
 
   private Collection<Object> arrayOfAstronautsOnPlanet = new ArrayList<Object>();
-  Planet(String name, String event, int gravity, int radius, int mass) {
+  Planet(String name, String event, int gravity, int radius, int mass, String item) {
     this.name = name;
     this.event = event;
     this.gravity = gravity;
