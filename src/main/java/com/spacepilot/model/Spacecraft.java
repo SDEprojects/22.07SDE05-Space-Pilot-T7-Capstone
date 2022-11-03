@@ -17,7 +17,7 @@ public class Spacecraft {
   private List<String> inventory = new ArrayList<>();
 
   private int spacecraftCapacity = 50;
-  private double fuel;
+  private int fuel;
 
   public Spacecraft() {
   }
@@ -42,11 +42,11 @@ public class Spacecraft {
     this.health = health;
   }
 
-  public double getFuel() {
+  public int getFuel() {
     return fuel;
   }
 
-  public void setFuel(double fuel) {
+  public void setFuel(int fuel) {
     this.fuel = fuel;
   }
 

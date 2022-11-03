@@ -8,6 +8,8 @@ import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.Gui;
 import com.spacepilot.view.View;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
+import javax.swing.Timer;
 
 public class Controller {
 
@@ -30,6 +33,9 @@ public class Controller {
   private int repairCounter = 0;
   private int refuelCounter = 3;
   private String userInput;
+
+  private Timer healthTimer;
+  private Boolean healthTimerForPlanetBoolean = true;
 
 
   public Controller(Game game, BufferedReader reader, Gui gui) {
@@ -128,16 +134,10 @@ public class Controller {
 
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
-    //creates all the different Gui components/sections
 
     //CONSUMER TIPS
-//    gui.setMovePlanetsListenerConsumer(new Consumer<String>() {
-//      @Override
-//      public void accept(String s) {
-//        textParser(s);
-//      }
-//    });
 
+    //creates all the different Gui components/sections
     gui.createSectionsOfGui();
 
     //starts Gui and shows titleScreen
@@ -171,6 +171,11 @@ public class Controller {
     displayGameStatusPanel();
 
     //Reset fuel and health
+    Spacecraft spacecraft = game.getSpacecraft();
+    gui.getFuelLevelBar().setValue(spacecraft.getFuel());
+    gui.getFuelLevelBar().setString("Fuel: " + spacecraft.getFuel() + "%");
+    gui.getShipHealthBar().setValue(spacecraft.getHealth());
+    gui.getShipHealthBar().setString("Health: " +  spacecraft.getHealth() + "%");
     //needs to connect health and fuel to spacecraft model
 
     //Reset timer to 3 minutes
@@ -249,8 +254,8 @@ public class Controller {
     if (command[0].equals("quit")) {
       System.exit(0);
     } else if (command[0].equals("help")) {
-      View.printInstructions();
-//      newGameInitialization();//creates new game?
+//      View.printInstructions();
+      newGameInitialization();//creates new game?
 
     } else if (command[0].equals("save")) {
       saveGame(game);
@@ -278,10 +283,9 @@ public class Controller {
 
           if (event != null) {
             // decrement spacecraft health by 1.
+            gui.getShipHealthBar().setValue(spacecraft.getHealth() - 15);
             spacecraft.setHealth(spacecraft.getHealth() - 15);
-            gui.getShipHealthBar().setValue(gui.getHealth() - 15);
-            gui.setHealth(gui.getHealth() - 15);
-            gui.getShipHealthBar().setString("Health" + gui.getHealth() + "%");
+            gui.getShipHealthBar().setString("Health" + spacecraft.getHealth() + "%");
             // alert the user about the event
             View.printEventAlert(event);
           }
@@ -289,16 +293,20 @@ public class Controller {
           String preReq = destinationPlanet.getPreReq();
 
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
-
-          if (command[1].equals("orbit") && !gui.getTicktock().getHealthTickerBoolean()) {
-            gui.getTicktock().getHealthTimer().stop();
-            gui.getTicktock().setHealthTickerBoolean(true);
+          if (!command[1].equals("orbit")){
+            gui.getFuelLevelBar().setValue((spacecraft.getFuel() - 10));
+            spacecraft.setFuel((spacecraft.getFuel() - 10));
+            gui.getFuelLevelBar().setString("Fuel" + spacecraft.getFuel() + "%");
+          }
+          if (command[1].equals("orbit") && !healthTimerForPlanetBoolean) {
+            healthTimer.stop();
+            healthTimerForPlanetBoolean = true;
           } else if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
             if (command[1].equals("venus")
                 || command[1].equals("uranus")) {
-              gui.getTicktock().healthTickTimer();
-              gui.getTicktock().getHealthTimer().start();
-              gui.getTicktock().setHealthTickerBoolean(false);
+              healthTickTimer();
+              healthTimer.start();
+              healthTimerForPlanetBoolean = false;
             }
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
@@ -327,12 +335,12 @@ public class Controller {
         return;
       }
 
-      if (gui.getHealth() == 100) {
+      if (spacecraft.getHealth() == 100) {
         View.printYourHealthisFullAlready();
       } else if (repairCounter < 3) {
         gui.getShipHealthBar().setValue(100);
-        gui.setHealth(100);
-        gui.getShipHealthBar().setString("Health: " + gui.getHealth() + "%");
+        spacecraft.setHealth(100);
+        gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
         View.printRepair();
 
         repairCounter++;
@@ -434,17 +442,18 @@ public class Controller {
 
   public void refuelShip() {
     Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
+    Spacecraft spacecraft = game.getSpacecraft();
 
     if (!currentPlanet.getName().equals("Station")) {
       View.printYouCanOnlyRefuelAtTheStation();
-    } else if (gui.getFuel() == 100) {
+    } else if (spacecraft.getFuel() == 100) {
       View.printYourFuelTankIsFullAlready();
     } else if (currentPlanet.getName().equals("Station") && refuelCounter == 0) {
       View.printStationHasNoMoreFuelAvailable();
     } else if (currentPlanet.getName().equals("Station") && refuelCounter > 0) {
       gui.getFuelLevelBar().setValue(100);
-      gui.setFuel(100);
-      gui.getFuelLevelBar().setString("Fuel: " + gui.getFuel() + "%");
+      spacecraft.setFuel(100);
+      gui.getFuelLevelBar().setString("Fuel: " + spacecraft.getFuel() + "%");
       refuelCounter--;
       View.printSpacecraftHasBeenFilled();
     }
@@ -462,9 +471,9 @@ public class Controller {
     Planet destinationPlanet = returnPlanet(spacecraft.getCurrentPlanet().getName());
     String preReq = destinationPlanet.getPreReq();
     if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
-      gui.getShipHealthBar().setValue(gui.getHealth() - 45);
-      gui.setHealth(gui.getHealth() - 45);
-      gui.getShipHealthBar().setString("Health" + gui.getHealth() + "%");
+      gui.getShipHealthBar().setValue(spacecraft.getHealth() - 45);
+      spacecraft.setHealth(spacecraft.getHealth() - 45);
+      gui.getShipHealthBar().setString("Health" + spacecraft.getHealth() + "%");
     } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
       //Call string to show that you avoided damage by having correct preReq in inventory
       String damageCondition = destinationPlanet.getDamageCondition();
@@ -509,4 +518,21 @@ public class Controller {
     }
   }
 
+  public void healthTickTimer() {
+    Spacecraft spacecraft = game.getSpacecraft();
+    healthTimer = new Timer(250, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        gui.getShipHealthBar().setValue((spacecraft.getHealth() - 1));
+        spacecraft.setHealth( (spacecraft.getHealth() - 1));
+        gui.getShipHealthBar().setString("Health" + spacecraft.getHealth() + "%");
+      }
+    });
+  }
+public void updateFuel(){
+  Spacecraft spacecraft = game.getSpacecraft();
+  gui.getFuelLevelBar().setValue((spacecraft.getFuel() - 10));
+  spacecraft.setFuel((spacecraft.getFuel() - 10));
+  gui.getFuelLevelBar().setString("Fuel" + spacecraft.getFuel() + "%");
+}
 }
