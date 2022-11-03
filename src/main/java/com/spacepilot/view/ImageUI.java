@@ -125,20 +125,24 @@ public class ImageUI {
     //Earth Scene 1
     createBackgroundPanel(1, "backgrounds/earth.jpeg");
     createMapObject(1, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(1, 400, 350, 647, 385, "backgrounds/building2.png", unloadRunnableListener);
+    createObject(1, 400, 350, 647, 385, "backgrounds/building.png", unloadRunnableListener);
 
     //Planet Scene 2
     createBackgroundPanel(2, "backgrounds/planetBlue-1024x640.jpeg");
     createObject(2, 800, 400, 200, 200, "backgrounds/astronaut.png",
         loadRunnableListener);
-    createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
-    createObject(2, 500, 200, 280, 320, "backgrounds/alien_thumbnail.png", interactRunnableListener);
+    createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+    createObject(2, 500, 200, 280, 320, "backgrounds/extremeCold.png", interactRunnableListener);
+
+//    createObject(2, 500, 200, 280, 320, "backgrounds/blueAlien.png", interactRunnableListener);
+//    createObject(2, 500, 200, 280, 320, "backgrounds/poisonGas.png", interactRunnableListener);
+//    createObject(2, 500, 200, 280, 320, "backgrounds/greenAlien.png", interactRunnableListener);
     bgPanel[1].add(bgLabel[1]);
 
     //Station Scene 3
     createBackgroundPanel(3, "backgrounds/station.jpg");
     createMapObject(3, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(3, 720, 300, 233, 320, "backgrounds/gas1.png", refuelRunnableListener);
+    createObject(3, 720, 300, 233, 320, "backgrounds/gas.png", refuelRunnableListener);
 
 
     addUpdateToPanel();
