@@ -62,6 +62,15 @@ public class Gui {
   private GridLayout gridLayout = new GridLayout(0, 1, 5,
       5); //0 rows, 1 col, 5 horizontal gap btw buttons, 5 vertical gap
   private FlowLayout flowLayout = new FlowLayout();
+
+  //CONSUMER TIPS
+//  private Consumer <String> movePlanetsListenerConsumer;
+//
+//  public void setMovePlanetsListenerConsumer(
+//      Consumer<String> movePlanetsListenerConsumer) {
+//    this.movePlanetsListenerConsumer = movePlanetsListenerConsumer;
+//  }
+
   public Gui() {
 
     //CREATES OUTERMOST MAIN FRAME
@@ -136,6 +145,7 @@ public class Gui {
             deductFuel();
           }
         });
+
   }
 
   //Instantiates imageGUI and constructs background images for centralDisplayPanel Center
@@ -466,6 +476,9 @@ public class Gui {
     JButton marsBtn = new JButton("Mars");
     planetIcons(marsBtn, "images/Mars.png", 70, 150, 50, 71);
     chaChaRealSmooth(marsBtn, "go mars", true);
+
+    //CONSUMER TIPS
+//    marsBtn.addActionListener(e -> movePlanetsListenerConsumer.accept("mars"));
     //    creates mercury btn, icon, and functionality
     JButton mercuryBtn = new JButton("Mercury");
     planetIcons(mercuryBtn, "images/Mercury.png", 160, 190, 50, 52);

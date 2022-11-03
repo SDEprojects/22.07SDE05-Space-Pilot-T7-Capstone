@@ -42,6 +42,15 @@ public class Controller {
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
     //creates all the different Gui components/sections
+
+    //CONSUMER TIPS
+//    gui.setMovePlanetsListenerConsumer(new Consumer<String>() {
+//      @Override
+//      public void accept(String s) {
+//        textParser(s);
+//      }
+//    });
+
     gui.createSectionsOfGui();
 
     //starts Gui and shows titleScreen
