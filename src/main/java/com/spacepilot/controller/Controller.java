@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacepilot.Main;
 import com.spacepilot.model.Game;
-import com.spacepilot.model.Ticktock;
 import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
@@ -20,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
@@ -42,7 +42,7 @@ public class Controller {
 
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
-    //Starts gui
+
     gui.showGuiStart();
     View.consoleToGUI(gui);
 
@@ -51,6 +51,9 @@ public class Controller {
 
     // display game's introduction with flash screen and story and prompt the user to continue
     gameIntro();
+
+
+
     displayCurrentPlanetStatus();
     displayGameStatusPanel();
     userInput ="";
@@ -202,6 +205,7 @@ public class Controller {
       }
 
     } else if (command[0].equals("load")) {
+
       loadNewPassengers();
 
     } else if (command[0].equals("unload")) {

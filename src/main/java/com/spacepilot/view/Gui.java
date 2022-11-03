@@ -19,7 +19,6 @@ import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,7 +27,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -58,6 +56,7 @@ public class Gui {
   private double fuel = 100;
   private Font normalFont;
   private Ticktock ticktock = new Ticktock();
+  private ImageUI imageUI;
 
 
   public Gui() {
@@ -87,12 +86,40 @@ public class Gui {
     createMusicPanelInMenuScreen();
     createBottomPlanetStatusPanel();
 
-    //Creating central Panel to hold DisplayArea and PlanetStatusDisplayArea
+    //Creating central Panel to hold DisplayArea and PlanetStatusDisplayArea and ScrollPanel
     centralDisplayPanel = new JPanel();
     centralDisplayPanel.setLayout(borderLayout);
-    centralDisplayPanel.add(scrollPanel, BorderLayout.CENTER);
-    centralDisplayPanel.add(planetStatusPanel, BorderLayout.PAGE_END);
+    centralDisplayPanel.add(planetStatusPanel, BorderLayout.PAGE_START);
+    centralDisplayPanel.add(scrollPanel, BorderLayout.PAGE_END);
+    //Call method that instantiates gui and passes /and or sets runnables here.
+
+    //imageUI constructor, pass in all commands here.
+    imageUI = new ImageUI(centralDisplayPanel, new Runnable() {
+      @Override
+      public void run() {
+        controllerField.textParser("load");
+      }
+    });
+
+//    imageUI.setLoadRunnable(new Runnable() {
+//      @Override
+//      public void run() {
+//        controllerField.textParser("load");
+//      }
+//    });
+    /*
+    * Instantiate imageUI
+    * Set all 4 runnable fields in ImageUI from the GUI
+    * Call the methods of  imageUI.createTopLevelPanel(); imageUI.generateScreen(); to create the center panel iamges
+    * */
+
+    /*
+    * Instantiate imageUI
+    * pass all 4 cmd runnables directly into imageUI constructor as parameters
+    * use in imageUI class as nseeded.*/
   }
+
+  //Instantiates Gui
 
 
   // THESE METHODS CREATE DIFFERENT SECTIONS OF THE GUI
@@ -119,6 +146,9 @@ public class Gui {
     scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     displayArea.setLineWrap(true);
+    displayArea.setBackground(Color.black);
+    displayArea.setForeground(Color.white);
+    displayArea.setRows(9);
   }
 
   private void createTopOfScreenStatusPanel() {
@@ -654,6 +684,7 @@ public class Gui {
   public void setTicktock(Ticktock ticktock) {
     this.ticktock = ticktock;
   }
+
 }
 
 

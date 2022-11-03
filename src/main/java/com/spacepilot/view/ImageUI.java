@@ -1,10 +1,11 @@
 package com.spacepilot.view;
 
-import com.spacepilot.view.Gui.ChoiceHandler;
+import com.spacepilot.view.Gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.function.Consumer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,15 +17,24 @@ public class ImageUI {
   private JPanel imagePanel;
   private JPanel bgPanel[] = new JPanel[10];
   private JLabel bgLabel[] = new JLabel[10];
-  private ChoiceHandler choiceH;
+  private Runnable loadRunnable;
+  private Runnable unloadRunnable;
+  private Runnable refuelRunnable;
+  private Runnable interactRunnable;
+  //load
+  //unload
+  //refuel
+  //interact
 
-  public ImageUI(JPanel containerPanel, ChoiceHandler choiceHandler) {
+
+//  public void setLoadRunnable(Runnable loadRunnable) {
+//    this.loadRunnable = loadRunnable;
+//  }
+
+  public ImageUI(JPanel containerPanel, Runnable loadRunnable) {
     this.containerPanel = containerPanel;
-    this.choiceH = choiceHandler;
+    this.loadRunnable = loadRunnable;
 
-//    createBackgroundPanel();
-//    createObject();
-//    addUpdateToPanel();
     createTopLevelPanel();
     generateScreen();
 
@@ -71,7 +81,7 @@ public class ImageUI {
   }
 
   //Creates object image within background
-  public void createObject(int bgNum, int objx, int objy, int objWidth, int objHeight, String objFileName, String command){
+  public void createObject(int bgNum, int objx, int objy, int objWidth, int objHeight, String objFileName, Runnable cmdRunnable){
     //create label
     JButton objectLabel = new JButton();
     objectLabel.setBounds(objx, objy, objWidth, objHeight); //sets location for astronaut
@@ -82,8 +92,8 @@ public class ImageUI {
     objectLabel.setFocusPainted(false);//clears focus border from click
 
     //Set click actions
-    objectLabel.addActionListener(choiceH);
-    objectLabel.setActionCommand(command);
+    objectLabel.addActionListener(e -> cmdRunnable.run());
+//    objectLabel.setActionCommand(command);
 
     //attach icon to it
     ImageIcon objectIcon = new ImageIcon(getClass().getClassLoader().getResource(objFileName));
@@ -107,12 +117,12 @@ public class ImageUI {
     objectLabel.setFocusPainted(false);//clears focus border from click
 
     //Set click actions
-    objectLabel.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Gui.showMap();
-      }
-    });
+//    objectLabel.addActionListener(new ActionListener() {
+//      @Override
+//      public void actionPerformed(ActionEvent e) {
+//        Gui.showMap();
+//      }
+//    });
 
 //    objectLabel.setActionCommand(command);
 
@@ -130,19 +140,19 @@ public class ImageUI {
     //Earth Scene 1
     createBackgroundPanel(1, "backgrounds/earth.jpeg");
     createMapObject(1, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(1, 400, 350, 647, 385, "backgrounds/building2.png", "load");
+    createObject(1, 400, 350, 647, 385, "backgrounds/building2.png", loadRunnable);
 
     //Planet Scene 2
     createBackgroundPanel(2, "backgrounds/planetBlue-1024x640.jpeg");
-    createObject(2, 800, 400, 200, 200, "backgrounds/astronaut_origin_thumbnail.png", "load");
+    createObject(2, 800, 400, 200, 200, "backgrounds/astronaut_origin_thumbnail.png", loadRunnable);
     createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(2, 500, 200, 280, 320, "backgrounds/alien_thumbnail.png", "load");
+//    createObject(2, 500, 200, 280, 320, "backgrounds/alien_thumbnail.png", loadRunnable);
 //    bgPanel[1].add(bgLabel[1]);
 
     //Station Scene 3
     createBackgroundPanel(3, "backgrounds/station.jpg");
     createMapObject(3, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(3, 720, 300, 233, 320, "backgrounds/gas1.png", "refuel");
+    createObject(3, 720, 300, 233, 320, "backgrounds/gas1.png", loadRunnable);
 
 
     addUpdateToPanel();
