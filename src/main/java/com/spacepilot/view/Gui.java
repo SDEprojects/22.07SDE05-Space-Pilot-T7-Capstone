@@ -623,6 +623,10 @@ public class Gui {
           mapPanel.setVisible(false); //hides map panel
           centralDisplayPanel.setVisible(true); //shows central panel
           imageUI.showStationScreen3(); //gets correct background panel
+        }else if (command.equals("go earth")){
+          mapPanel.setVisible(false);
+          centralDisplayPanel.setVisible(true);
+          imageUI.showEarthScreen2();
         }else{
           mapPanel.setVisible(false);
           centralDisplayPanel.setVisible(true);
