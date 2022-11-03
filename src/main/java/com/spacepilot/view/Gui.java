@@ -515,11 +515,16 @@ public class Gui {
     mapPanel.setBackground(Color.black);
     mapPanel.setLayout(null);
 
+    JLabel backgroundLabel = new JLabel("");
+    backgroundLabel.setIcon(
+        new ImageIcon(getClass().getClassLoader().getResource("images/Space.jpg")));
+    backgroundLabel.setBounds(0, 0, 1140, 900);
+
     //Creating maps buttons to go to respective planets below
 
     //    creates sun btn, icon, and functionality
     sunBtn = new JButton();
-    planetIcons(sunBtn, "images/Sun.jpg", 250, 100, 200, 170);
+    planetIcons(sunBtn, "images/Sun.png", 330, 200, 400, 380, 400, 400);
     sunBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -528,46 +533,46 @@ public class Gui {
     });
     //    creates earth btn, icon, and functionality
     JButton earthBtn = new JButton("Earth");
-    planetIcons(earthBtn, "images/Earth.png", 330, 30, 50, 69);
+    planetIcons(earthBtn, "images/Earth.png", 440, 80, 100, 118, 100, 98);
     chaChaRealSmooth(earthBtn, "go earth", true);
 //    creates moon btn, icon, and functionality
     JButton moonBtn = new JButton("Moon");
-    planetIcons(moonBtn, "images/Moon.png", 260, 20, 37, 48);
+    planetIcons(moonBtn, "images/Moon.png", 380, 40, 47, 48, 27, 28);
     chaChaRealSmooth(moonBtn, "go moon", true);
     //    creates mars btn, icon, and functionality
     JButton marsBtn = new JButton("Mars");
-    planetIcons(marsBtn, "images/Mars.png", 70, 150, 50, 71);
+    planetIcons(marsBtn, "images/Mars.png", 80, 280, 100, 122, 100, 102);
     chaChaRealSmooth(marsBtn, "go mars", true);
 
     //CONSUMER TIPS
 //    marsBtn.addActionListener(e -> movePlanetsListenerConsumer.accept("mars"));
     //    creates mercury btn, icon, and functionality
     JButton mercuryBtn = new JButton("Mercury");
-    planetIcons(mercuryBtn, "images/Mercury.png", 160, 190, 50, 52);
+    planetIcons(mercuryBtn, "images/Mercury.png", 230, 400, 60, 84, 60, 64);
     chaChaRealSmooth(mercuryBtn, "go mercury", true);
     //    creates saturn btn, icon, and functionality
     JButton saturnBtn = new JButton("Saturn");
-    planetIcons(saturnBtn, "images/Saturn.png", 130, 290, 58, 62);
+    planetIcons(saturnBtn, "images/Saturn.png", 115, 540, 116, 104, 116, 84);
     chaChaRealSmooth(saturnBtn, "go saturn", true);
     //    creates venus btn, icon, and functionality
     JButton venusBtn = new JButton("Venus");
-    planetIcons(venusBtn, "images/Venus.png", 460, 160, 50, 58);
+    planetIcons(venusBtn, "images/Venus.png", 775, 375, 74, 96, 74, 76);
     chaChaRealSmooth(venusBtn, "go venus", true);
     //    creates neptune btn, icon, and functionality
     JButton neptuneBtn = new JButton("Neptune");
-    planetIcons(neptuneBtn, "images/Neptune.png", 90, 40, 55, 60);
+    planetIcons(neptuneBtn, "images/Neptune.png", 100, 100, 110, 100, 110, 80);
     chaChaRealSmooth(neptuneBtn, "go neptune", true);
     //    creates jupiter btn, icon, and functionality
     JButton jupiterBtn = new JButton("Jupiter");
-    planetIcons(jupiterBtn, "images/Jupiter.png", 480, 230, 79, 101);
+    planetIcons(jupiterBtn, "images/Jupiter.png", 800, 550, 158, 182, 158, 162);
     chaChaRealSmooth(jupiterBtn, "go jupiter", true);
     //    creates uranus btn, icon, and functionality
     JButton uranusBtn = new JButton("Uranus");
-    planetIcons(uranusBtn, "images/Uranus.png", 320, 290, 43, 65);
+    planetIcons(uranusBtn, "images/Uranus.png", 500, 590, 86, 110, 86, 90);
     chaChaRealSmooth(uranusBtn, "go uranus", true);
     //    creates station btn, icon, and functionality
     stationBtn = new JButton("Station");
-    planetIcons(stationBtn, "images/Station.png", 500, -10, 150, 170);
+    planetIcons(stationBtn, "images/Station.png", 700, -40, 300, 340, 300, 300);
     chaChaRealSmooth(stationBtn, "go station", true);
     //Adding all buttons to menu frame
     mapPanel.add(earthBtn);
@@ -581,6 +586,13 @@ public class Gui {
     mapPanel.add(saturnBtn);
     mapPanel.add(stationBtn);
     mapPanel.add(sunBtn);
+    mapPanel.add(backgroundLabel);
+    sunBtn.setOpaque(false);
+    sunBtn.setContentAreaFilled(false);
+    sunBtn.setBorderPainted(false);
+    stationBtn.setOpaque(false);
+    stationBtn.setContentAreaFilled(false);
+    stationBtn.setBorderPainted(false);
   }
 
   //THESE METHODS WILL SHOW RESPECTIVE SCREENS AND HIDE OTHERS
@@ -681,22 +693,16 @@ public class Gui {
   }
 
   public void planetIcons(JButton btn, String png, Integer x, Integer y, Integer width,
-      Integer height) {
-    if (btn.equals(sunBtn)) {
-      planetIcon = new ImageIcon(getClass().getClassLoader().getResource(png));
-      Image img = planetIcon.getImage();
-      Image newImg = img.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
-      planetIcon = new ImageIcon(newImg);
-    } else if (!btn.equals(stationBtn)) {
-      planetIcon = new ImageIcon(getClass().getClassLoader().getResource(png));
-    } else {
-      planetIcon = new ImageIcon(getClass().getClassLoader().getResource(png));
-      Image img = planetIcon.getImage();
-      Image newImg = img.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
-      planetIcon = new ImageIcon(newImg);
-    }
+      Integer height, Integer scaleWidth, Integer scaleHeight) {
+
+    planetIcon = new ImageIcon(getClass().getClassLoader().getResource(png));
+    Image img = planetIcon.getImage();
+    Image newImg = img.getScaledInstance(scaleWidth, scaleHeight, Image.SCALE_DEFAULT);
+    planetIcon = new ImageIcon(newImg);
+
     btn.setIcon(planetIcon);
     btn.setBackground(Color.black);
+    btn.setForeground(Color.gray);
     btn.setBorder(BorderFactory.createLineBorder(Color.black));
     btn.setVerticalTextPosition(SwingConstants.BOTTOM);
     btn.setHorizontalTextPosition(SwingConstants.CENTER);
