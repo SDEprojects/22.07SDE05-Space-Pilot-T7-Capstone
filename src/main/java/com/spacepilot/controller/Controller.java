@@ -42,8 +42,13 @@ public class Controller {
 
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
+    //creates all the different Gui components/sections
+    gui.createSectionsOfGui();
 
+    //starts Gui and shows titleScreen
     gui.showGuiStart();
+
+    //Redirects all SOUT to gui
     View.consoleToGUI(gui);
 
     // create and set up game environment

@@ -57,16 +57,12 @@ public class Gui {
   private Font normalFont;
   private Ticktock ticktock = new Ticktock();
   private ImageUI imageUI;
-
-
+  private BorderLayout borderLayout = new BorderLayout();
+  private GridBagLayout gridBagLayout = new GridBagLayout();
+  private GridLayout gridLayout = new GridLayout(0, 1, 5,
+      5); //0 rows, 1 col, 5 horizontal gap btw buttons, 5 vertical gap
+  private FlowLayout flowLayout = new FlowLayout();
   public Gui() {
-
-    //Different type of layouts to use on JPanels and JFrames as needed.
-    BorderLayout borderLayout = new BorderLayout();
-    GridBagLayout gridBagLayout = new GridBagLayout();
-    GridLayout gridLayout = new GridLayout(0, 1, 5,
-        5); //0 rows, 1 col, 5 horizontal gap btw buttons, 5 vertical gap
-    FlowLayout flowLayout = new FlowLayout();
 
     //CREATES OUTERMOST MAIN FRAME
     frame = new JFrame("Main Panel"); //Create Frame for content //Default layout is BorderLayout
@@ -76,51 +72,79 @@ public class Gui {
 
     //Centers a frame onscreen when it opens
     frame.setLocationRelativeTo(null);
+  }
 
+  public void createSectionsOfGui(){
     //These methods are used to create sections of the gui
-    createCenterDisplayPanel();
+    createCenterDisplayArea();
     createRightSideControlPanel(gridLayout);
     createMenuPanel();
     createMapPanel();
     createTopOfScreenStatusPanel();
     createMusicPanelInMenuScreen();
     createBottomPlanetStatusPanel();
+    createCentralDisplayPanel(); //creating central Panel to hold DisplayArea and PlanetStatusDisplayArea and ScrollPanel
+    passCommandMethodsToImageGui(); //method that instantiates gui and passes /and or sets runnables here.
+    createBackgroundImagesForGui(); //creates background images using passed in runnables
+  }
 
+  public void createCentralDisplayPanel(){
     //Creating central Panel to hold DisplayArea and PlanetStatusDisplayArea and ScrollPanel
     centralDisplayPanel = new JPanel();
     centralDisplayPanel.setLayout(borderLayout);
     centralDisplayPanel.add(planetStatusPanel, BorderLayout.PAGE_START);
     centralDisplayPanel.add(scrollPanel, BorderLayout.PAGE_END);
-    //Call method that instantiates gui and passes /and or sets runnables here.
 
-    //imageUI constructor, pass in all commands here.
-    imageUI = new ImageUI(centralDisplayPanel, new Runnable() {
-      @Override
-      public void run() {
-        controllerField.textParser("load");
-      }
-    });
-
-//    imageUI.setLoadRunnable(new Runnable() {
-//      @Override
-//      public void run() {
-//        controllerField.textParser("load");
-//      }
-//    });
-    /*
-    * Instantiate imageUI
-    * Set all 4 runnable fields in ImageUI from the GUI
-    * Call the methods of  imageUI.createTopLevelPanel(); imageUI.generateScreen(); to create the center panel iamges
-    * */
-
-    /*
-    * Instantiate imageUI
-    * pass all 4 cmd runnables directly into imageUI constructor as parameters
-    * use in imageUI class as nseeded.*/
+    //Call method that instantiates gui and passes /and or sets runnables next, then createBackground
+    // images for Gui method.
   }
 
-  //Instantiates Gui
+  public void passCommandMethodsToImageGui(){
+    //Creates an instance of imageUI while passing in runnables carrying the command methods from Gui to ImageUI
+    //Effectively connects the class so this method can be passed and used in imageUI
+    imageUI = new ImageUI(centralDisplayPanel,
+        new Runnable() {
+          @Override
+          public void run() {
+            controllerField.textParser("load");
+          }
+        },
+        new Runnable() {
+          @Override
+          public void run() {
+            controllerField.textParser("unload");
+          }
+        },
+        new Runnable() {
+          @Override
+          public void run() {
+            controllerField.textParser("refuel");
+          }
+        },
+        new Runnable() {
+          @Override
+          public void run() {
+            controllerField.textParser("interact");
+          }
+        },
+        new Runnable() {
+          @Override
+          public void run() {
+            showMap();
+            controllerField.textParser("go orbit");
+            currentPlanetLabel.setText("Current Planet: Orbit");
+            deductFuel();
+          }
+        });
+  }
 
+  //Instantiates imageGUI and constructs background images for centralDisplayPanel Center
+  public void createBackgroundImagesForGui(){
+    //Adds the background panel to centerDisplayPanel
+    imageUI.createTopLevelPanel();
+    //Adds background images, scenes, and buttons to background panel
+    imageUI.generateScreen();
+  }
 
   // THESE METHODS CREATE DIFFERENT SECTIONS OF THE GUI
   private void createBottomPlanetStatusPanel() {
@@ -137,7 +161,7 @@ public class Gui {
     planetStatusPanel.add(damageConditionLabel);
   }
 
-  private void createCenterDisplayPanel() {
+  private void createCenterDisplayArea() {
     //CREATES CENTER DISPlAY FOR TEXT OUTPUTS
     displayArea = new JTextArea();
     scrollPanel = new JScrollPane(displayArea); //scrollpane to let text scroll
@@ -533,9 +557,9 @@ public class Gui {
 
   public void showSoundSettings() {
     menuPanel.setVisible(false);
-    scrollPanel.setVisible(false);
+    centralDisplayPanel.setVisible(false);
     mapPanel.setVisible(false);
-    centralDisplayPanel.add(soundPanel, BorderLayout.CENTER);
+    frame.add(soundPanel, BorderLayout.CENTER);
     soundPanel.setVisible(true);
   }
 
@@ -569,7 +593,7 @@ public class Gui {
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
     frame.add(controlPanel, BorderLayout.LINE_END);
-    imageUI.showPlanetScreen1(); //Gets earth background screen.
+    imageUI.showEarthScreen2(); //Gets earth background screen.
     frame.setVisible(true);
   }
 
@@ -589,10 +613,16 @@ public class Gui {
         controllerField.textParser(command);
         if (!planet) {
           return;
-        } else {
+        } else if (command.equals("go station")) {
+          mapPanel.setVisible(false); //hides map panel
+          centralDisplayPanel.setVisible(true); //shows central panel
+          imageUI.showStationScreen3(); //gets correct background panel
+        }else{
           mapPanel.setVisible(false);
-          scrollPanel.setVisible(true);
+          centralDisplayPanel.setVisible(true);
+          imageUI.showPlanetScreen1();
         }
+
       }
     });
   }

@@ -1,11 +1,7 @@
 package com.spacepilot.view;
 
-import com.spacepilot.view.Gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.function.Consumer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,26 +13,26 @@ public class ImageUI {
   private JPanel imagePanel;
   private JPanel bgPanel[] = new JPanel[10];
   private JLabel bgLabel[] = new JLabel[10];
-  private Runnable loadRunnable;
-  private Runnable unloadRunnable;
-  private Runnable refuelRunnable;
-  private Runnable interactRunnable;
-  //load
-  //unload
-  //refuel
-  //interact
-
+  private Runnable loadRunnableListener;
+  private Runnable unloadRunnableListener;
+  private Runnable refuelRunnableListener;
+  private Runnable interactRunnableListener;
+  private Runnable goOrbitRunnableListener;
 
 //  public void setLoadRunnable(Runnable loadRunnable) {
 //    this.loadRunnable = loadRunnable;
 //  }
 
-  public ImageUI(JPanel containerPanel, Runnable loadRunnable) {
-    this.containerPanel = containerPanel;
-    this.loadRunnable = loadRunnable;
 
-    createTopLevelPanel();
-    generateScreen();
+  public ImageUI(JPanel containerPanel, Runnable loadRunnable,
+      Runnable unloadRunnable, Runnable refuelRunnable,
+      Runnable interactRunnable, Runnable goOrbitRunnable) {
+    this.containerPanel = containerPanel;
+    this.loadRunnableListener = loadRunnable;
+    this.unloadRunnableListener = unloadRunnable;
+    this.refuelRunnableListener  = refuelRunnable;
+    this.interactRunnableListener = interactRunnable;
+    this.goOrbitRunnableListener = goOrbitRunnable;
 
   }
   public ImageUI(){
@@ -73,11 +69,6 @@ public class ImageUI {
     bgLabel[bgNum].setBounds(0,0, 1024, 640);
     bgLabel[bgNum].setIcon(bgIcon);
 
-    //Add all to center display
-//    centralDisplayPanel.add(imagePanel, BorderLayout.CENTER);
-//    containerPanel.add(imagePanel, BorderLayout.CENTER);
-
-//    return imagePanel;
   }
 
   //Creates object image within background
@@ -93,7 +84,6 @@ public class ImageUI {
 
     //Set click actions
     objectLabel.addActionListener(e -> cmdRunnable.run());
-//    objectLabel.setActionCommand(command);
 
     //attach icon to it
     ImageIcon objectIcon = new ImageIcon(getClass().getClassLoader().getResource(objFileName));
@@ -105,6 +95,7 @@ public class ImageUI {
 
   }
 
+  //Creates map object to open map with click
   public void createMapObject(int bgNum, int objx, int objy, int objWidth, int objHeight, String objFileName){
     //create label
     JButton objectLabel = new JButton();
@@ -117,14 +108,7 @@ public class ImageUI {
     objectLabel.setFocusPainted(false);//clears focus border from click
 
     //Set click actions
-//    objectLabel.addActionListener(new ActionListener() {
-//      @Override
-//      public void actionPerformed(ActionEvent e) {
-//        Gui.showMap();
-//      }
-//    });
-
-//    objectLabel.setActionCommand(command);
+    objectLabel.addActionListener(e -> goOrbitRunnableListener.run());
 
     //attach icon to it
     ImageIcon objectIcon = new ImageIcon(getClass().getClassLoader().getResource(objFileName));
@@ -136,23 +120,25 @@ public class ImageUI {
 
   }
 
+  //Creates each background panel with image buttons
   public void generateScreen(){
     //Earth Scene 1
     createBackgroundPanel(1, "backgrounds/earth.jpeg");
     createMapObject(1, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(1, 400, 350, 647, 385, "backgrounds/building2.png", loadRunnable);
+    createObject(1, 400, 350, 647, 385, "backgrounds/building2.png", unloadRunnableListener);
 
     //Planet Scene 2
     createBackgroundPanel(2, "backgrounds/planetBlue-1024x640.jpeg");
-    createObject(2, 800, 400, 200, 200, "backgrounds/astronaut_origin_thumbnail.png", loadRunnable);
+    createObject(2, 800, 400, 200, 200, "backgrounds/astronaut.png",
+        loadRunnableListener);
     createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-//    createObject(2, 500, 200, 280, 320, "backgrounds/alien_thumbnail.png", loadRunnable);
-//    bgPanel[1].add(bgLabel[1]);
+    createObject(2, 500, 200, 280, 320, "backgrounds/alien_thumbnail.png", interactRunnableListener);
+    bgPanel[1].add(bgLabel[1]);
 
     //Station Scene 3
     createBackgroundPanel(3, "backgrounds/station.jpg");
     createMapObject(3, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(3, 720, 300, 233, 320, "backgrounds/gas1.png", loadRunnable);
+    createObject(3, 720, 300, 233, 320, "backgrounds/gas1.png", refuelRunnableListener);
 
 
     addUpdateToPanel();
