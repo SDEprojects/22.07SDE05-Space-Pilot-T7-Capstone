@@ -5,8 +5,8 @@ import com.spacepilot.model.Music;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
@@ -17,8 +17,8 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
-import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,10 +36,12 @@ public class Gui {
 
   public static final Color VERY_DARK_RED = new Color(153, 0, 0);
   public static final Color DARK_ORANGE = new Color(255, 102, 0);
+  private static JProgressBar shipHealthBar;
+  private static int health = 100;
+  public ImageIcon planetIcon;
   private JFrame frame;
   private JTextArea displayArea;
   private JScrollPane scrollPanel;
-  private static JProgressBar shipHealthBar;
   private JProgressBar fuelLevelBar;
   private FloatControl gainControl;
   private JSlider slider;
@@ -51,8 +53,6 @@ public class Gui {
       numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel;
   private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn;
   private float currentVolume;
-  public ImageIcon planetIcon;
-  private static int health = 100;
   private double fuel = 100;
   private Font normalFont;
   private Ticktock ticktock = new Ticktock();
@@ -83,7 +83,24 @@ public class Gui {
     frame.setLocationRelativeTo(null);
   }
 
-  public void createSectionsOfGui(){
+  public static void playMusic() {
+    Music.playAudioMusic("sounds/Space_Chill.wav");
+  }
+
+  //  GETTERS AND SETTERS
+  public static int getHealth() {
+    return health;
+  }
+
+  public static void setHealth(int health) {
+    Gui.health = health;
+  }
+
+  public static JProgressBar getShipHealthBar() {
+    return shipHealthBar;
+  }
+
+  public void createSectionsOfGui() {
     //These methods are used to create sections of the gui
     createCenterDisplayArea();
     createRightSideControlPanel(gridLayout);
@@ -97,7 +114,7 @@ public class Gui {
     createBackgroundImagesForGui(); //creates background images using passed in runnables
   }
 
-  public void createCentralDisplayPanel(){
+  public void createCentralDisplayPanel() {
     //Creating central Panel to hold DisplayArea and PlanetStatusDisplayArea and ScrollPanel
     centralDisplayPanel = new JPanel();
     centralDisplayPanel.setLayout(borderLayout);
@@ -108,7 +125,7 @@ public class Gui {
     // images for Gui method.
   }
 
-  public void passCommandMethodsToImageGui(){
+  public void passCommandMethodsToImageGui() {
     //Creates an instance of imageUI while passing in runnables carrying the command methods from Gui to ImageUI
     //Effectively connects the class so this method can be passed and used in imageUI
     imageUI = new ImageUI(centralDisplayPanel,
@@ -149,7 +166,7 @@ public class Gui {
   }
 
   //Instantiates imageGUI and constructs background images for centralDisplayPanel Center
-  public void createBackgroundImagesForGui(){
+  public void createBackgroundImagesForGui() {
     //Adds the background panel to centerDisplayPanel
     imageUI.createTopLevelPanel();
     //Adds background images, scenes, and buttons to background panel
@@ -370,6 +387,51 @@ public class Gui {
     controlPanel.add(interactBtn);
   }
 
+  //TODO
+  //Once refactoring is complete, fix this method
+//  public void createGameOverScreen(){
+//    planetStatusPanel.setVisible(false);
+//    centralDisplayPanel.setVisible(false);
+//    statusPanel.setVisible(false);
+//    controlPanel.setVisible(false);
+//
+//    gameOverPanel = new JPanel();
+//    gameOverPanel.setLayout(new GridLayout(2, 1, 5, 4));
+//    ImageIcon gameOverIcon = new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png"));
+//    JLabel gameOverLabel = new JLabel();
+//    gameOverLabel.setIcon(gameOverIcon);
+//    gameOverPanel.add(gameOverLabel);
+//    frame.add(gameOverPanel);
+//
+//
+//    startBtn = new JButton("Start New Game");
+//    continueBtn = new JButton("Continue Game");
+//    titleBtnPanel = new JPanel();
+//
+//    continueBtn.addActionListener(choiceHandler);
+//    continueBtn.setActionCommand("continue");
+//
+//    startBtn.setBackground(Color.black);
+//    continueBtn.setBackground(Color.black);
+//
+//    gameOverPanel.add(startBtn);
+//    gameOverPanel.add(continueBtn);
+//    //Add btn listeners
+//    startBtn.addActionListener(new ActionListener() {
+//      @Override
+//      public void actionPerformed(ActionEvent e) {
+//        showGameScreenPanels();
+//      }
+//    });
+//    continueBtn.addActionListener(new ActionListener() {
+//      @Override
+//      public void actionPerformed(ActionEvent e) {
+////        Controller.textParser("continue");
+//        showGameScreenPanels();
+//      }
+//    });
+//  }
+
   public void createTitleScreen() {
     //Create components
 
@@ -521,52 +583,6 @@ public class Gui {
     mapPanel.add(sunBtn);
   }
 
-  //TODO
-  //Once refactoring is complete, fix this method
-//  public void createGameOverScreen(){
-//    planetStatusPanel.setVisible(false);
-//    centralDisplayPanel.setVisible(false);
-//    statusPanel.setVisible(false);
-//    controlPanel.setVisible(false);
-//
-//    gameOverPanel = new JPanel();
-//    gameOverPanel.setLayout(new GridLayout(2, 1, 5, 4));
-//    ImageIcon gameOverIcon = new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png"));
-//    JLabel gameOverLabel = new JLabel();
-//    gameOverLabel.setIcon(gameOverIcon);
-//    gameOverPanel.add(gameOverLabel);
-//    frame.add(gameOverPanel);
-//
-//
-//    startBtn = new JButton("Start New Game");
-//    continueBtn = new JButton("Continue Game");
-//    titleBtnPanel = new JPanel();
-//
-//    continueBtn.addActionListener(choiceHandler);
-//    continueBtn.setActionCommand("continue");
-//
-//    startBtn.setBackground(Color.black);
-//    continueBtn.setBackground(Color.black);
-//
-//    gameOverPanel.add(startBtn);
-//    gameOverPanel.add(continueBtn);
-//    //Add btn listeners
-//    startBtn.addActionListener(new ActionListener() {
-//      @Override
-//      public void actionPerformed(ActionEvent e) {
-//        showGameScreenPanels();
-//      }
-//    });
-//    continueBtn.addActionListener(new ActionListener() {
-//      @Override
-//      public void actionPerformed(ActionEvent e) {
-////        Controller.textParser("continue");
-//        showGameScreenPanels();
-//      }
-//    });
-//  }
-
-
   //THESE METHODS WILL SHOW RESPECTIVE SCREENS AND HIDE OTHERS
   public void showGuiStart() {
     createTitleScreen();
@@ -616,13 +632,11 @@ public class Gui {
     frame.setVisible(true);
   }
 
-
   //Converts sout from terminal to displayTextArea instead
   public void appendText(String text) {
     displayArea.append(text);
     displayArea.setCaretPosition((displayArea.getDocument().getLength()));
   }
-
 
   //Takes button actions as input and sends to Controller textParser()
   public void chaChaRealSmooth(JButton btn, String command, Boolean planet) {
@@ -636,11 +650,11 @@ public class Gui {
           mapPanel.setVisible(false); //hides map panel
           centralDisplayPanel.setVisible(true); //shows central panel
           imageUI.showStationScreen3(); //gets correct background panel
-        }else if (command.equals("go earth")){
+        } else if (command.equals("go earth")) {
           mapPanel.setVisible(false);
           centralDisplayPanel.setVisible(true);
           imageUI.showEarthScreen2();
-        }else{
+        } else {
           mapPanel.setVisible(false);
           centralDisplayPanel.setVisible(true);
           imageUI.showPlanetScreen1();
@@ -649,11 +663,6 @@ public class Gui {
       }
     });
   }
-
-  public static void playMusic() {
-    Music.playAudioMusic("sounds/Space_Chill.wav");
-  }
-
 
   //  STATUS UPDATES
   public void displayPlanetStatus(String item, String damageCondition, int numberOfAstronauts) {
@@ -700,16 +709,6 @@ public class Gui {
     getFuelLevelBar().setString("Fuel: " + getFuel() + "%");
   }
 
-
-  //  GETTERS AND SETTERS
-  public static int getHealth() {
-    return health;
-  }
-
-  public static void setHealth(int health) {
-    Gui.health = health;
-  }
-
   public double getFuel() {
     return fuel;
   }
@@ -720,10 +719,6 @@ public class Gui {
 
   public JProgressBar getFuelLevelBar() {
     return fuelLevelBar;
-  }
-
-  public static JProgressBar getShipHealthBar() {
-    return shipHealthBar;
   }
 
   public void setControllerField(Controller controllerField) {

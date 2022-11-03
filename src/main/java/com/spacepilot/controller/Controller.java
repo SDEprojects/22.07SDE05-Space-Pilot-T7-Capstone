@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacepilot.Main;
 import com.spacepilot.model.Game;
-import com.spacepilot.view.Gui;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
+import com.spacepilot.view.Gui;
 import com.spacepilot.view.View;
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -32,11 +32,98 @@ public class Controller {
   private String userInput;
 
 
-
   public Controller(Game game, BufferedReader reader, Gui gui) {
     this.reader = reader;
     this.gui = gui;
     this.game = game;
+  }
+
+  //method to create a new game
+  public static Game createNewGame() {
+    // create a reader
+    try (Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/game.json"))) {
+      // convert JSON file to Game and return the Game instance
+      return new Gson().fromJson(reader, Game.class);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static void loadSavedGame() {
+    try (Reader reader = Files.newBufferedReader(Paths.get("./saved-game.json"))) {
+      Game savedGame = new Gson().fromJson(reader, Game.class);
+      if (savedGame != null) { // if there is a saved game data
+        game = savedGame;
+        View.printLoadGameResult(true);
+      } else {
+        View.printLoadGameResult(false);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+//METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
+
+  public static void saveGame(Game game) throws IOException {
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.create();
+    FileWriter writer = new FileWriter("saved-game.json");
+    writer.write(gson.toJson(game));
+    writer.close();
+    View.printSaveGameMessage();
+  }
+
+  // Returns an instance of the desired planet when given a planet name
+  // If the desired planet by the name does not exist, returns null
+  public static Planet returnPlanet(String destination) {
+    // capitalize the destination
+    String planetName =
+        destination.substring(0, 1).toUpperCase() + destination.substring(1).toLowerCase();
+    for (Planet planet : game.getPlanets()) {
+      if (planet.getName().equals(planetName)) {
+        return planet;
+      }
+    }
+    return null;
+  }
+
+  public static Spacecraft createSpacecraft() {
+    // create a reader
+    try (Reader reader = new InputStreamReader(
+        Main.class.getResourceAsStream("/spacecraft.json"))) {
+      // convert JSON file to Spacecraft
+      return new Gson().fromJson(reader, Spacecraft.class);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static List<Planet> createPlanets() throws URISyntaxException, IOException {
+
+    List<Planet> planets = new ArrayList<>();
+    List<String> planetNames = new ArrayList<>();
+    planetNames.add("/planets/earth.json");
+    planetNames.add("/planets/moon.json");
+    planetNames.add("/planets/mars.json");
+    planetNames.add("/planets/mercury.json");
+    planetNames.add("/planets/uranus.json");
+    planetNames.add("/planets/venus.json");
+    planetNames.add("/planets/jupiter.json");
+    planetNames.add("/planets/saturn.json");
+    planetNames.add("/planets/neptune.json");
+    planetNames.add("/planets/station.json");
+    planetNames.add("/planets/orbit.json");
+
+    for (String planetPath : planetNames) {
+      try (Reader reader = new InputStreamReader(
+          Main.class.getResourceAsStream(planetPath))) {
+        planets.add(new Gson().fromJson(reader, Planet.class));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return planets;
   }
 
   public void play()
@@ -65,14 +152,13 @@ public class Controller {
     // display game's introduction with flash screen and story and prompt the user to continue
     gameIntro();
 
-
-
     displayCurrentPlanetStatus();
     displayGameStatusPanel();
-    userInput ="";
+    userInput = "";
     textParser(userInput);
 
   }
+
   public void replay() throws URISyntaxException, IOException, InterruptedException {
     // create and set up game environment
     setUpGame();
@@ -85,20 +171,17 @@ public class Controller {
     displayGameStatusPanel();
 
     //Reset fuel and health
-      //needs to connect health and fuel to spacecraft model
+    //needs to connect health and fuel to spacecraft model
 
     //Reset timer to 3 minutes
     gui.getTicktock().setMinutes(3);
     gui.getTicktock().setSeconds(1);
   }
 
-//METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
-
-  public void newGameInitialization(){
+  public void newGameInitialization() {
     try (Reader input =
         new InputStreamReader(System.in);
-        BufferedReader reader = new BufferedReader(input))
-    {
+        BufferedReader reader = new BufferedReader(input)) {
       //Creates new game from model
       game = createNewGame();
       //Sets up gui and controller again
@@ -111,24 +194,11 @@ public class Controller {
     }
   }
 
-  public void quitter(){
+  public void quitter() {
     System.exit(0);
   }
 
-  //method to create a new game
-public static Game createNewGame() {
-  // create a reader
-  try (Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/game.json")))
-  {
-    // convert JSON file to Game and return the Game instance
-    return new Gson().fromJson(reader, Game.class);
-  } catch (IOException e) {
-    throw new RuntimeException(e);
-  }
-}
-
-
-//KEEP DIS
+  //KEEP DIS
   public void setUpGame() throws URISyntaxException, IOException {
     // create planets based on planets' json files and set them as the current game's planets
     game.setPlanets(createPlanets());
@@ -181,7 +251,6 @@ public static Game createNewGame() {
     } else if (command[0].equals("help")) {
       View.printInstructions();
 //      newGameInitialization();//creates new game?
-
 
     } else if (command[0].equals("save")) {
       saveGame(game);
@@ -280,8 +349,8 @@ public static Game createNewGame() {
 
     } else if (command[0].equals("refuel")) {
       refuelShip();
-    } else if (command[0].equals("god")){
-        godMode();
+    } else if (command[0].equals("god")) {
+      godMode();
     } else if (command[0].equals("interact")) {
       interactAlien();
     } else { // invalid command message
@@ -299,9 +368,10 @@ public static Game createNewGame() {
     gui.displayPlanetStatus(
         game.getSpacecraft().getCurrentPlanet().getItem(),
         game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
-        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() );
+        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet());
   }
-  private  void displayGameStatusPanel() {
+
+  private void displayGameStatusPanel() {
     Collection<String> inventory = game.getSpacecraft().getInventory();
     Planet planet = game.getSpacecraft().getCurrentPlanet();
     int strandedAstos = game.calculateRemainingAstronautsViaTotalNumOfAstronauts()
@@ -309,8 +379,7 @@ public static Game createNewGame() {
     gui.displayGameStatus(inventory, planet, repairCounter, strandedAstos);
   }
 
-
-  public  void loadNewPassengers() {
+  public void loadNewPassengers() {
     Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
     if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
@@ -381,6 +450,13 @@ public static Game createNewGame() {
     }
   }
 
+
+
+
+  /*
+  HELPER METHODS
+   */
+
   public void interactAlien() {
     Spacecraft spacecraft = game.getSpacecraft();
     Planet destinationPlanet = returnPlanet(spacecraft.getCurrentPlanet().getName());
@@ -403,7 +479,7 @@ public static Game createNewGame() {
   }
 
   //gives the user all the astronauts, items, and sets health and fuel to 100
-  public void godMode(){
+  public void godMode() {
     for (Planet planet : game.getPlanets()) {
       Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
       game.getSpacecraft().addPassengers(astronauts);
@@ -418,7 +494,7 @@ public static Game createNewGame() {
     game.getSpacecraft().setHealth(100);
   }
 
-//TODO: Expand checkGameResult to have all fail conditions
+  //TODO: Expand checkGameResult to have all fail conditions
   public void checkGameResult() {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
@@ -431,90 +507,6 @@ public static Game createNewGame() {
       game.setOver(true);
       View.printGameOverMessage(userWon);
     }
-  }
-
-  public static void loadSavedGame() {
-    try (Reader reader = Files.newBufferedReader(Paths.get("./saved-game.json"))) {
-      Game savedGame = new Gson().fromJson(reader, Game.class);
-      if (savedGame != null) { // if there is a saved game data
-        game = savedGame;
-        View.printLoadGameResult(true);
-      } else {
-        View.printLoadGameResult(false);
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public static void saveGame(Game game) throws IOException {
-    GsonBuilder builder = new GsonBuilder();
-    Gson gson = builder.create();
-    FileWriter writer = new FileWriter("saved-game.json");
-    writer.write(gson.toJson(game));
-    writer.close();
-    View.printSaveGameMessage();
-  }
-
-
-
-
-  /*
-  HELPER METHODS
-   */
-
-
-  // Returns an instance of the desired planet when given a planet name
-  // If the desired planet by the name does not exist, returns null
-  public static Planet returnPlanet(String destination) {
-    // capitalize the destination
-    String planetName =
-        destination.substring(0, 1).toUpperCase() + destination.substring(1).toLowerCase();
-    for (Planet planet : game.getPlanets()) {
-      if (planet.getName().equals(planetName)) {
-        return planet;
-      }
-    }
-    return null;
-  }
-
-  public static Spacecraft createSpacecraft() {
-    // create a reader
-    try (Reader reader = new InputStreamReader(
-        Main.class.getResourceAsStream("/spacecraft.json"))) {
-      // convert JSON file to Spacecraft
-      return new Gson().fromJson(reader, Spacecraft.class);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public static List<Planet> createPlanets() throws URISyntaxException, IOException {
-
-    List<Planet> planets = new ArrayList<>();
-    List<String> planetNames = new ArrayList<>();
-    planetNames.add("/planets/earth.json");
-    planetNames.add("/planets/moon.json");
-    planetNames.add("/planets/mars.json");
-    planetNames.add("/planets/mercury.json");
-    planetNames.add("/planets/uranus.json");
-    planetNames.add("/planets/venus.json");
-    planetNames.add("/planets/jupiter.json");
-    planetNames.add("/planets/saturn.json");
-    planetNames.add("/planets/neptune.json");
-    planetNames.add("/planets/station.json");
-    planetNames.add("/planets/orbit.json");
-
-
-    for (String planetPath : planetNames) {
-      try (Reader reader = new InputStreamReader(
-          Main.class.getResourceAsStream(planetPath))) {
-        planets.add(new Gson().fromJson(reader, Planet.class));
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return planets;
   }
 
 }

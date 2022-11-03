@@ -18,14 +18,13 @@ public class Main {
 //    Release 2.2 into main
     try (Reader input =
         new InputStreamReader(System.in);
-        BufferedReader reader = new BufferedReader(input))
-    {
-        Game game = createNewGame(); // Model
-        Gui gui = new Gui(); // GUI
-        game.setOver(false); // Set the current game's status to be not over
-        Controller controller = new Controller(game, reader, gui); // Controller
-        gui.setControllerField(controller);
-        controller.play();
+        BufferedReader reader = new BufferedReader(input)) {
+      Game game = createNewGame(); // Model
+      Gui gui = new Gui(); // GUI
+      game.setOver(false); // Set the current game's status to be not over
+      Controller controller = new Controller(game, reader, gui); // Controller
+      gui.setControllerField(controller);
+      controller.play();
     } catch (IOException | URISyntaxException | MidiUnavailableException |
              InvalidMidiDataException e) {
     } catch (InterruptedException e) {
@@ -36,8 +35,7 @@ public class Main {
   //Refreshes GSON file for new game
   public static Game createNewGame() {
     // create a reader
-    try (Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/game.json")))
-    {
+    try (Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/game.json"))) {
       // convert JSON file to Game and return the Game instance
       return new Gson().fromJson(reader, Game.class);
     } catch (IOException e) {
