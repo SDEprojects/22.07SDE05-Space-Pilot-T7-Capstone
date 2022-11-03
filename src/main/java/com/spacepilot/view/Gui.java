@@ -37,7 +37,6 @@ public class Gui {
   public static final Color VERY_DARK_RED = new Color(153, 0, 0);
   public static final Color DARK_ORANGE = new Color(255, 102, 0);
   private static JProgressBar shipHealthBar;
-  private static int health = 100;
   public ImageIcon planetIcon;
   private JFrame frame;
   private JTextArea displayArea;
@@ -53,7 +52,6 @@ public class Gui {
       numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel;
   private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn;
   private float currentVolume;
-  private double fuel = 100;
   private Font normalFont;
   private Ticktock ticktock = new Ticktock();
   private ImageUI imageUI;
@@ -85,19 +83,6 @@ public class Gui {
 
   public static void playMusic() {
     Music.playAudioMusic("sounds/Space_Chill.wav");
-  }
-
-  //  GETTERS AND SETTERS
-  public static int getHealth() {
-    return health;
-  }
-
-  public static void setHealth(int health) {
-    Gui.health = health;
-  }
-
-  public static JProgressBar getShipHealthBar() {
-    return shipHealthBar;
   }
 
   public void createSectionsOfGui() {
@@ -159,7 +144,6 @@ public class Gui {
             showMap();
             controllerField.textParser("go orbit");
             currentPlanetLabel.setText("Current Planet: Orbit");
-            deductFuel();
           }
         });
 
@@ -238,8 +222,8 @@ public class Gui {
         return Color.black;
       }
     });
-    shipHealthBar.setValue(health);
-    shipHealthBar.setString("Health: " + health + "%");
+    shipHealthBar.setValue(100);
+    shipHealthBar.setString("Health: " + 100 + "%");
     shipHealthBar.setStringPainted(true);
 
     //creating ship fuel level bar
@@ -257,8 +241,8 @@ public class Gui {
         return Color.black;
       }
     });
-    fuelLevelBar.setValue((int) getFuel());
-    fuelLevelBar.setString("Fuel: " + getFuel() + "%");
+    fuelLevelBar.setValue(100);
+    fuelLevelBar.setString("Fuel: " + 100 + "%");
     fuelLevelBar.setStringPainted(true);
     JTextArea fuelLevelText = new JTextArea("100");
 
@@ -372,7 +356,7 @@ public class Gui {
         showMap();
         chaChaRealSmooth(mapBtn, "go orbit", true);
         currentPlanetLabel.setText("Current Planet: Orbit");
-        deductFuel();
+        controllerField.updateFuel();
       }
     });
     mainBtn.addActionListener(new ActionListener() {
@@ -721,19 +705,7 @@ public class Gui {
     btn.setBounds(x, y, width, height);
   }
 
-  public void deductFuel() {
-    getFuelLevelBar().setValue((int) (getFuel() - 10));
-    setFuel(getFuel() - 10);
-    getFuelLevelBar().setString("Fuel: " + getFuel() + "%");
-  }
-
-  public double getFuel() {
-    return fuel;
-  }
-
-  public void setFuel(double fuel) {
-    this.fuel = fuel;
-  }
+  //  GETTERS AND SETTERS
 
   public JProgressBar getFuelLevelBar() {
     return fuelLevelBar;
@@ -749,6 +721,10 @@ public class Gui {
 
   public void setTicktock(Ticktock ticktock) {
     this.ticktock = ticktock;
+  }
+
+  public JProgressBar getShipHealthBar() {
+    return shipHealthBar;
   }
 
 }

@@ -43,17 +43,6 @@ public class Ticktock {
     });
   }
 
-  public void healthTickTimer() {
-    healthTimer = new Timer(250, new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Gui.getShipHealthBar().setValue(Gui.getHealth() - 1);
-        Gui.setHealth(Gui.getHealth() - 1);
-        Gui.getShipHealthBar().setString("Health" + Gui.getHealth() + "%");
-
-      }
-    });
-  }
   public Timer getTimer() {
     return timer;
   }
@@ -108,22 +97,6 @@ public class Ticktock {
 
   public void setOxygenTimeLeftLabel(JLabel oxygenTimeLeftLabel) {
     this.oxygenTimeLeftLabel = oxygenTimeLeftLabel;
-  }
-
-  public Timer getHealthTimer() {
-    return healthTimer;
-  }
-
-  public void setHealthTimer(Timer healthTimer) {
-    this.healthTimer = healthTimer;
-  }
-
-  public Boolean getHealthTickerBoolean() {
-    return healthTickerBoolean;
-  }
-
-  public void setHealthTickerBoolean(Boolean healthTickerBoolean) {
-    this.healthTickerBoolean = healthTickerBoolean;
   }
 
 }
