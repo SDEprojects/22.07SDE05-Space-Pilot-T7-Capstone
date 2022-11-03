@@ -33,24 +33,6 @@ public class Main {
     }
   }
 
-//  public void startGameInitialization(){
-//    try (Reader input =
-//        new InputStreamReader(System.in);
-//        BufferedReader reader = new BufferedReader(input))
-//    {
-//        Game game = createNewGame(); // Model
-//        Gui gui = new Gui(); // GUI
-//        game.setOver(false); // Set the current game's status to be not over
-//        Controller controller = new Controller(game, reader, gui); // Controller
-//        gui.setControllerField(controller);
-//        controller.play();
-//    } catch (IOException | URISyntaxException | MidiUnavailableException |
-//             InvalidMidiDataException e) {
-//    } catch (InterruptedException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
-
   //Refreshes GSON file for new game
   public static Game createNewGame() {
     // create a reader
@@ -63,20 +45,5 @@ public class Main {
     }
   }
 
-//  public static boolean continuePlaying(BufferedReader reader) throws IOException {
-//    // print the prompt message
-//    View.printUserInputPrompt(
-//        "\nTurn & Burn! Would you like to play again?\n"
-//            + "Enter n to quit\n"
-//            + "Enter anything else to play another game\n");
-//    // sanitize user response (turn it into lower-case and trim whitespaces) and save it to userInput
-//    String userInput = reader.readLine().trim().toLowerCase();
-//    // check if the user input was "n" and return an appropriate boolean
-//    if (userInput.equals("n")) {
-//      return false;
-//    } else {
-//      return true;
-//    }
-//  }
 
 }

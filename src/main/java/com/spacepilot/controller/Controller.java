@@ -19,7 +19,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
@@ -65,29 +64,46 @@ public class Controller {
     textParser(userInput);
 
   }
+  public void replay() throws URISyntaxException, IOException, InterruptedException {
+    // create and set up game environment
+    setUpGame();
+
+    // display game's introduction with flash screen and story and prompt the user to continue
+    gameIntro();
+
+    //Update status panels to empty
+    displayCurrentPlanetStatus();
+    displayGameStatusPanel();
+
+    //Reset fuel and health
+      //needs to connect health and fuel to spacecraft model
+
+    //Reset timer to 3 minutes
+    gui.getTicktock().setMinutes(3);
+    gui.getTicktock().setSeconds(1);
+  }
 
 //METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
 
-  public void startGameInitialization(){
+  public void newGameInitialization(){
     try (Reader input =
         new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input))
     {
-      Game game = createNewGame(); // Model
-
-//      Gui gui = new Gui(); // GUI
-      this.gui = new Gui();
-//      game.setOver(false); // Set the current game's status to be not over
-//      Controller controller = new Controller(game, reader, gui); // Controller
-
-//      gui.setControllerField(controller);
-//      controller.play();
-      play();
-    } catch (IOException | URISyntaxException | MidiUnavailableException |
-             InvalidMidiDataException e) {
+      //Creates new game from model
+      game = createNewGame();
+      //Sets up gui and controller again
+      replay();
+      //Shows correct gui panels
+      gui.showGameScreenPanels();//Takes you back to earth
+    } catch (IOException | URISyntaxException e) {
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void quitter(){
+    System.exit(0);
   }
 
   //method to create a new game
@@ -152,10 +168,11 @@ public static Game createNewGame() {
     Spacecraft spacecraft = game.getSpacecraft();
 
     if (command[0].equals("quit")) {
-      game.setOver(true);
-
+      System.exit(0);
     } else if (command[0].equals("help")) {
       View.printInstructions();
+//      newGameInitialization();//creates new game?
+
 
     } else if (command[0].equals("save")) {
       saveGame(game);

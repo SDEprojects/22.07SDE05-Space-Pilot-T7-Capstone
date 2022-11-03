@@ -393,7 +393,13 @@ public class Gui {
         showGameScreenPanels();
       }
     });
-    chaChaRealSmooth(continueBtn, "continue", false);
+    continueBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        controllerField.textParser("continue");
+        showGameScreenPanels();
+      }
+    });
   }
 
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
