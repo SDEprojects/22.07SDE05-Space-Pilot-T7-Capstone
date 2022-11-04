@@ -182,7 +182,7 @@ public class Controller {
     gui.getFuelLevelBar().setValue(spacecraft.getFuel());
     gui.getFuelLevelBar().setString("Fuel: " + spacecraft.getFuel() + "%");
     gui.getShipHealthBar().setValue(spacecraft.getHealth());
-    gui.getShipHealthBar().setString("Health: " +  spacecraft.getHealth() + "%");
+    gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
     //needs to connect health and fuel to spacecraft model
 
     //Reset timer to 3 minutes
@@ -301,7 +301,7 @@ public class Controller {
             // decrement spacecraft health by 1.
             gui.getShipHealthBar().setValue(spacecraft.getHealth() - 15);
             spacecraft.setHealth(spacecraft.getHealth() - 15);
-            gui.getShipHealthBar().setString("Health" + spacecraft.getHealth() + "%");
+            gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
             // alert the user about the event
             View.printEventAlert(event);
           }
@@ -309,6 +309,11 @@ public class Controller {
           String preReq = destinationPlanet.getPreReq();
 
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
+          if (command[1].equals("orbit")) {
+           return;
+          } else {
+            updateFuel();
+          }
           if (command[1].equals("orbit") && (!healthTimerBoolean || !alienTimerBoolean)) {
             if (!healthTimerBoolean) {
               healthTimer.stop();
@@ -505,7 +510,7 @@ public class Controller {
     if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
       gui.getShipHealthBar().setValue(spacecraft.getHealth() - 45);
       spacecraft.setHealth(spacecraft.getHealth() - 45);
-      gui.getShipHealthBar().setString("Health" + spacecraft.getHealth() + "%");
+      gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
       alienInteractionTimer();
       alienTimer.start();
       alienTimerBoolean = false;
@@ -537,8 +542,13 @@ public class Controller {
     }
     //full health and fuel set to 100
     game.getSpacecraft().setFuel(100);
+    gui.getFuelLevelBar().setValue(game.getSpacecraft().getFuel());
+    gui.getFuelLevelBar().setString("Fuel: " + 100 + "%");
     game.getSpacecraft().setHealth(100);
-    gui.getTicktock().setMinutes(3);
+    gui.getShipHealthBar().setValue(game.getSpacecraft().getHealth());
+    gui.getShipHealthBar().setString("Health: " + 100 + "%");
+
+    gui.getTicktock().setMinutes(8);
     gui.getTicktock().setSeconds(1);
   }
 
@@ -549,10 +559,10 @@ public class Controller {
         >= (double) 5 / 5;
 
     if (!userWon) {
-      if(game.getSpacecraft().getFuel() < 1) {
+      if (game.getSpacecraft().getFuel() < 1) {
 //        game.setOver(true);
         gui.showGameOverLoseScreen();
-      } else if(gui.getShipHealthBar().getValue() < 1 ){
+      } else if (gui.getShipHealthBar().getValue() < 1) {
         gui.showGameOverLoseScreen();
         if (!healthTimerBoolean) {
           healthTimer.stop();
@@ -560,10 +570,10 @@ public class Controller {
           alienTimer.stop();
         }
 
-      } else if (gui.getTicktock().getOxygenTickerLose()){
+      } else if (gui.getTicktock().getOxygenTickerLose()) {
         gui.showGameOverLoseScreen();
 
-      } else{
+      } else {
         return;
       }
     } else if (userWon) {
@@ -577,15 +587,15 @@ public class Controller {
       @Override
       public void actionPerformed(ActionEvent e) {
         gui.getShipHealthBar().setValue((spacecraft.getHealth() - 1));
-        spacecraft.setHealth( (spacecraft.getHealth() - 1));
-        gui.getShipHealthBar().setString("Health" + spacecraft.getHealth() + "%");
+        spacecraft.setHealth((spacecraft.getHealth() - 1));
+        gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
         gui.warningMessage();
-        if(spacecraft.getHealth() < 1) {
+        if (spacecraft.getHealth() < 1) {
           healthTimer.stop();
           gui.getShipHealthBar().setValue(0);
-          gui.getShipHealthBar().setString("Health" + 0 + "%");
+          gui.getShipHealthBar().setString("Health: " + 0 + "%");
           spacecraft.setHealth(0);
-         checkGameResult();
+          checkGameResult();
         }
       }
     });
@@ -602,10 +612,10 @@ public class Controller {
     });
   }
 
-public void updateFuel(){
-  Spacecraft spacecraft = game.getSpacecraft();
-  gui.getFuelLevelBar().setValue((spacecraft.getFuel() - 10));
-  spacecraft.setFuel((spacecraft.getFuel() - 10));
-  gui.getFuelLevelBar().setString("Fuel" + spacecraft.getFuel() + "%");
-}
+  public void updateFuel() {
+    Spacecraft spacecraft = game.getSpacecraft();
+    gui.getFuelLevelBar().setValue((spacecraft.getFuel() - 10));
+    spacecraft.setFuel((spacecraft.getFuel() - 10));
+    gui.getFuelLevelBar().setString("Fuel: " + spacecraft.getFuel() + "%");
+  }
 }
