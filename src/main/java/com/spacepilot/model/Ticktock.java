@@ -47,12 +47,6 @@ public class Ticktock {
           runDis.run();
 
         }
-//        if(minutes == 2 && seconds == 55){
-//          oxygenTickerLose = true;
-//          runDis.run();
-//
-//        }
-
       }
     });
   }
