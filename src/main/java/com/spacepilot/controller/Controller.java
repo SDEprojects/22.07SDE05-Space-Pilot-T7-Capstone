@@ -69,8 +69,6 @@ public class Controller {
     }
   }
 
-//METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
-
   public static void saveGame(Game game) throws IOException {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
@@ -138,6 +136,7 @@ public class Controller {
     //CONSUMER TIPS
 
     //creates all the different Gui components/sections
+
     gui.createSectionsOfGui();
 
     //starts Gui and shows titleScreen
@@ -154,6 +153,12 @@ public class Controller {
 
     displayCurrentPlanetStatus();
     displayGameStatusPanel();
+    gui.getTicktock().setRunDis(new Runnable() {
+      @Override
+      public void run() {
+        checkGameResult();
+      }
+    });
     userInput = "";
     textParser(userInput);
 
@@ -162,6 +167,7 @@ public class Controller {
   public void replay() throws URISyntaxException, IOException, InterruptedException {
     // create and set up game environment
     setUpGame();
+    gui.showNewGameReplay();
 
     // display game's introduction with flash screen and story and prompt the user to continue
     gameIntro();
@@ -181,6 +187,13 @@ public class Controller {
     //Reset timer to 3 minutes
     gui.getTicktock().setMinutes(3);
     gui.getTicktock().setSeconds(1);
+    gui.getTicktock().getTimer().start();
+    gui.getTicktock().setRunDis(new Runnable() {
+      @Override
+      public void run() {
+        checkGameResult();
+      }
+    });
   }
 
   public void newGameInitialization() {
@@ -199,9 +212,6 @@ public class Controller {
     }
   }
 
-  public void quitter() {
-    System.exit(0);
-  }
 
   //KEEP DIS
   public void setUpGame() throws URISyntaxException, IOException {
@@ -254,8 +264,13 @@ public class Controller {
     if (command[0].equals("quit")) {
       System.exit(0);
     } else if (command[0].equals("help")) {
+      View.printInstructions();
+//      newGameInitialization();//creates new game?
+
+    } else if (command[0].equals("new")) {
 //      View.printInstructions();
       newGameInitialization();//creates new game?
+
 
     } else if (command[0].equals("save")) {
       saveGame(game);
@@ -302,11 +317,15 @@ public class Controller {
             healthTimer.stop();
             healthTimerForPlanetBoolean = true;
           } else if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
-            if (command[1].equals("venus")
+              if (command[1].equals("venus")
                 || command[1].equals("uranus")) {
               healthTickTimer();
               healthTimer.start();
               healthTimerForPlanetBoolean = false;
+//              if(gui.getShipHealthBar().getValue()<1){
+//                healthTimer.stop();
+//                checkGameResult();
+//              }
             }
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
@@ -378,6 +397,13 @@ public class Controller {
         game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet());
   }
+
+
+
+
+  /*
+  HELPER METHODS
+   */
 
   private void displayGameStatusPanel() {
     Collection<String> inventory = game.getSpacecraft().getInventory();
@@ -459,13 +485,6 @@ public class Controller {
     }
   }
 
-
-
-
-  /*
-  HELPER METHODS
-   */
-
   public void interactAlien() {
     Spacecraft spacecraft = game.getSpacecraft();
     Planet destinationPlanet = returnPlanet(spacecraft.getCurrentPlanet().getName());
@@ -487,6 +506,8 @@ public class Controller {
     }
   }
 
+//METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
+
   //gives the user all the astronauts, items, and sets health and fuel to 100
   public void godMode() {
     for (Planet planet : game.getPlanets()) {
@@ -501,9 +522,10 @@ public class Controller {
     //full health and fuel set to 100
     game.getSpacecraft().setFuel(100);
     game.getSpacecraft().setHealth(100);
+    gui.getTicktock().setMinutes(3);
+    gui.getTicktock().setSeconds(1);
   }
 
-  //TODO: Expand checkGameResult to have all fail conditions
   public void checkGameResult() {
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
@@ -511,24 +533,42 @@ public class Controller {
         >= (double) 5 / 5;
 
     if (!userWon) {
-      return;
+      if(game.getSpacecraft().getFuel() < 1) {
+//        game.setOver(true);
+        gui.showGameOverLoseScreen();
+      } else if(gui.getShipHealthBar().getValue() < 1 ){
+        gui.showGameOverLoseScreen();
+
+      } else if (gui.getTicktock().getOxygenTickerLose()){
+        gui.showGameOverLoseScreen();
+
+      } else{
+        return;
+      }
     } else if (userWon) {
-      game.setOver(true);
-      View.printGameOverMessage(userWon);
+      gui.showGameOverWinScreen();
     }
   }
 
   public void healthTickTimer() {
     Spacecraft spacecraft = game.getSpacecraft();
-    healthTimer = new Timer(250, new ActionListener() {
+    healthTimer = new Timer(250, new ActionListener() {//health timer should be 250
       @Override
       public void actionPerformed(ActionEvent e) {
         gui.getShipHealthBar().setValue((spacecraft.getHealth() - 1));
         spacecraft.setHealth( (spacecraft.getHealth() - 1));
         gui.getShipHealthBar().setString("Health" + spacecraft.getHealth() + "%");
+        if(spacecraft.getHealth() < 1) {
+          healthTimer.stop();
+          gui.getShipHealthBar().setValue(0);
+          gui.getShipHealthBar().setString("Health" + 0 + "%");
+          spacecraft.setHealth(0);
+         checkGameResult();
+        }
       }
     });
   }
+
 public void updateFuel(){
   Spacecraft spacecraft = game.getSpacecraft();
   gui.getFuelLevelBar().setValue((spacecraft.getFuel() - 10));
