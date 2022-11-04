@@ -131,7 +131,7 @@ public class ImageUI {
     createBackgroundPanel(2, "backgrounds/planetBlue-1024x640.jpeg");
     createObject(2, 800, 400, 200, 200, "backgrounds/astronaut.png",
         loadRunnableListener);
-    createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+    createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
     createObject(2, 500, 200, 280, 320, "backgrounds/alien_thumbnail.png", interactRunnableListener);
     bgPanel[1].add(bgLabel[1]);
 

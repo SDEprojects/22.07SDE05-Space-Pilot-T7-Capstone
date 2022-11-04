@@ -1,6 +1,6 @@
 {
   "name": "Orbit",
-  "event": "WW III",
+  "event": null,
   "gravity": 9,
   "radius": 6300,
   "mass": 100,
