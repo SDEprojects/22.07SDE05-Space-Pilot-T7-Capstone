@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
@@ -814,6 +815,8 @@ public class Gui {
         } else {
           mapPanel.setVisible(false);
           centralDisplayPanel.setVisible(true);
+          imageUI.setCurrentPlanet(command.substring(3)); //sends planet name to imageUI
+          imageUI.createPlanetScreen(); //create the planet screen then show
           imageUI.showPlanetScreen1();
         }
 
@@ -828,6 +831,14 @@ public class Gui {
     damageConditionLabel.setText(
         "Damage Condition: " + (damageCondition == null ? "None" : damageCondition));
     numberOfAstronautsOnPlanetLabel.setText("# Astronauts on Planet: " + numberOfAstronauts);
+    imageUI.createPlanetScreen();
+  }
+
+  public void planetBackgroundUpdate(String item, String dangerCondition, int numberOfAstronautsOnPlanet,
+      String currentPlanet, List<String> inventory){
+
+    imageUI.planetBackgroundCustomization(item, dangerCondition, numberOfAstronautsOnPlanet, currentPlanet,
+        inventory);
   }
 
   public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,

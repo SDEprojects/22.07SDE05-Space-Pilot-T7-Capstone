@@ -2,6 +2,10 @@ package com.spacepilot.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,10 +23,22 @@ public class ImageUI {
   private Runnable interactRunnableListener;
   private Runnable goOrbitRunnableListener;
 
+  private List<String> allPlanets = new ArrayList<>(Arrays.asList("jupiter", "mars",
+      "mercury", "moon", "neptune", "orbit", "saturn", "uranus", "venus"));
+  private String item;
+  private List<String> inventory;
+  private String dangerCondition;
+  private String currentPlanet;
+  private int numberOfAstronauts;
+
 //  public void setLoadRunnable(Runnable loadRunnable) {
 //    this.loadRunnable = loadRunnable;
 //  }
 
+
+  public void setCurrentPlanet(String currentPlanet) {
+    this.currentPlanet = currentPlanet;
+  }
 
   public ImageUI(JPanel containerPanel, Runnable loadRunnable,
       Runnable unloadRunnable, Runnable refuelRunnable,
@@ -38,6 +54,7 @@ public class ImageUI {
   public ImageUI(){
 
   }
+
 
   public JPanel getImagePanel() {
     return imagePanel;
@@ -120,6 +137,65 @@ public class ImageUI {
 
   }
 
+
+  /* Get current planet
+   * Get Danger condition
+   * Get if passengers
+   * Static = earth, station, orbit
+   * */
+
+  //Method to update fields to current game statuses
+  public void planetBackgroundCustomization(String item, String dangerCondition,
+      int numberOfAstronauts, String currentPlanet, List<String> inventory){
+    //Assign all values to fields
+    this.item = item;
+    this.dangerCondition = dangerCondition;
+    this.numberOfAstronauts = numberOfAstronauts;
+    this.currentPlanet = currentPlanet;
+    this.inventory = inventory;
+  }
+
+
+  public void createPlanetScreen(){
+    //Clear entire panel
+    bgPanel[2].removeAll();
+
+    //Check which planet background and add spaceship
+    if(allPlanets.contains(currentPlanet)){
+      createBackgroundPanel(2, "backgrounds/moon.png");
+    }
+    createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+    //Check if astronauts
+    if(numberOfAstronauts > 0){ //check is astronauts
+      createObject(2, 725, 325, 225, 225, "backgrounds/astronautGroup.png", loadRunnableListener);
+    }
+    //Check which dangerCondition to add
+    if(dangerCondition != null) {
+      switch (dangerCondition) {
+        case "frost alien":
+          createObject(2, 450, 200, 280, 320, "backgrounds/blueAlien.png",
+              interactRunnableListener);
+          break;
+        case "Alien Mom":
+          createObject(2, 4500, 200, 280, 320, "backgrounds/greenAlien.png",
+              interactRunnableListener);
+          break;
+        case "extreme cold":
+          createObject(2, 350, 65, 400, 500, "backgrounds/extremeCold.png",
+              interactRunnableListener);
+          break;
+        case "poisonous gas":
+          createObject(2, 500, 200, 280, 320, "backgrounds/poisonGas.png",
+              interactRunnableListener);
+          break;
+        default:
+          return;
+      }
+    }
+    addUpdateToPanel();
+
+  }
+
   //Creates each background panel with image buttons
   public void generateScreen(){
     //Earth Scene 1
@@ -129,14 +205,15 @@ public class ImageUI {
 
     //Planet Scene 2
     createBackgroundPanel(2, "backgrounds/planetBlue-1024x640.jpeg");
-    createObject(2, 800, 400, 200, 200, "backgrounds/astronaut.png",
-        loadRunnableListener);
-    createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(2, 450, 100, 400, 500, "backgrounds/extremeCold.png", interactRunnableListener);
+//    createObject(2, 725, 300, 225, 225, "backgrounds/astronautGroup.png",
+//        loadRunnableListener);
+//    createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+//    createObject(2, 350, 75, 400, 500, "backgrounds/extremeCold.png", interactRunnableListener);
 //    createObject(2, 500, 200, 280, 320, "backgrounds/blueAlien.png", interactRunnableListener);
 //    createObject(2, 500, 200, 280, 320, "backgrounds/poisonGas.png", interactRunnableListener);
 //    createObject(2, 500, 200, 280, 320, "backgrounds/greenAlien.png", interactRunnableListener);
-    bgPanel[1].add(bgLabel[1]);
+//    createPlanetScreen();
+//    bgPanel[1].add(bgLabel[1]);
 
     //Station Scene 3
     createBackgroundPanel(3, "backgrounds/station.jpg");
@@ -146,6 +223,9 @@ public class ImageUI {
 
     addUpdateToPanel();
   }
+
+
+
 
   public void showPlanetScreen1(){
     bgPanel[1].setVisible(false);

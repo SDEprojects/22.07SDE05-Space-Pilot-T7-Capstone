@@ -70,6 +70,8 @@ public class Controller {
     }
   }
 
+//METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
+
   public static void saveGame(Game game) throws IOException {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
@@ -154,6 +156,7 @@ public class Controller {
 
     displayCurrentPlanetStatus();
     displayGameStatusPanel();
+    getStatusUpdateForBackgrounds();
     gui.getTicktock().setRunDis(new Runnable() {
       @Override
       public void run() {
@@ -398,11 +401,20 @@ public class Controller {
     }
 
     //update status and check if we won or lost
-    displayCurrentPlanetStatus();
     displayGameStatusPanel();
+    displayCurrentPlanetStatus();
+    getStatusUpdateForBackgrounds();
     checkGameResult();
   }
 
+  public void getStatusUpdateForBackgrounds(){
+    gui.planetBackgroundUpdate(
+        game.getSpacecraft().getCurrentPlanet().getItem(),
+        game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
+        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
+        game.getSpacecraft().getCurrentPlanet().getName(),
+        game.getSpacecraft().getInventory());
+  }
   public void displayCurrentPlanetStatus() {
     //Calls gui method to display current status of planet user is on.
     gui.displayPlanetStatus(
