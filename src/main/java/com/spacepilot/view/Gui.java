@@ -49,8 +49,10 @@ public class Gui {
   private JPanel titleScreenPanel, titleBtnPanel, controlPanel, statusPanel, centralDisplayPanel, inventoryPanel, rightSidePanel,
       planetStatusPanel, menuPanel, soundPanel, mapPanel;
   private JLabel titleLabel, currentPlanetLabel, damageConditionLabel, itemsOnPlanetLabel,
-      numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel;
+      numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel, warningLabel;
   private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn;
+  private Boolean warningBoolean = true;
+
   private float currentVolume;
   private Font normalFont;
   private Ticktock ticktock;
@@ -110,6 +112,23 @@ public class Gui {
     centralDisplayPanel.setLayout(borderLayout);
     centralDisplayPanel.add(planetStatusPanel, BorderLayout.PAGE_START);
     centralDisplayPanel.add(scrollPanel, BorderLayout.PAGE_END);
+
+    warningLabel = new JLabel("");
+    ImageIcon warningIcon = new ImageIcon(
+        getClass().getClassLoader().getResource("images/Warning.png"));
+    Image img = warningIcon.getImage();
+    Image newImg = img.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
+    warningIcon = new ImageIcon(newImg);
+    warningLabel.setForeground(Color.red);
+    warningLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+    warningLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+    warningLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+    warningLabel.setBorder(BorderFactory.createLineBorder(null, 0));
+    warningLabel.setIcon(warningIcon);
+    warningLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
+    warningLabel.setBounds(100, 25, 900, 200);
+    centralDisplayPanel.add(warningLabel);
+    warningLabel.setVisible(false);
 
     //Call method that instantiates gui and passes /and or sets runnables next, then createBackground
     // images for Gui method.
@@ -364,6 +383,7 @@ public class Gui {
         chaChaRealSmooth(mapBtn, "go orbit", true);
         currentPlanetLabel.setText("Current Planet: Orbit");
         controllerField.updateFuel();
+        warningLabel.setVisible(false);
       }
     });
     mainBtn.addActionListener(new ActionListener() {
@@ -835,6 +855,39 @@ public class Gui {
     btn.setBounds(x, y, width, height);
   }
 
+  public void warningMessage() {
+    if (warningBoolean) {
+      warningLabel.setVisible(true);
+      centralDisplayPanel.setVisible(false);
+      centralDisplayPanel.setVisible(true);
+      warningBoolean = false;
+    } else {
+      warningLabel.setVisible(false);
+      centralDisplayPanel.setVisible(false);
+      centralDisplayPanel.setVisible(true);
+      warningBoolean = true;
+    }
+  }
+
+  public void removeWarningMessage() {
+    warningLabel.setVisible(true);
+    warningLabel.setVisible(false);
+  }
+
+  public void displayStrings() {
+    if (warningBoolean) {
+      warningLabel.setVisible(true);
+      centralDisplayPanel.setVisible(false);
+      centralDisplayPanel.setVisible(true);
+      warningBoolean = false;
+    } else {
+      warningLabel.setVisible(false);
+      centralDisplayPanel.setVisible(false);
+      centralDisplayPanel.setVisible(true);
+      warningBoolean = true;
+    }
+  }
+
   //  GETTERS AND SETTERS
 
   public JProgressBar getFuelLevelBar() {
@@ -855,6 +908,14 @@ public class Gui {
 
   public JProgressBar getShipHealthBar() {
     return shipHealthBar;
+  }
+
+  public JLabel getWarningLabel() {
+    return warningLabel;
+  }
+
+  public void setWarningLabel(JLabel warningLabel) {
+    this.warningLabel = warningLabel;
   }
 
 }
