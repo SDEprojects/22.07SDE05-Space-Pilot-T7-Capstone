@@ -815,7 +815,7 @@ public class Gui {
         } else {
           mapPanel.setVisible(false);
           centralDisplayPanel.setVisible(true);
-          imageUI.setCurrentPlanet(command.substring(3)); //sends planet name to imageUI
+          controllerField.getStatusUpdateForBackgrounds(); //update planet again before switch
           imageUI.createPlanetScreen(); //create the planet screen then show
           imageUI.showPlanetScreen1();
         }
@@ -831,7 +831,7 @@ public class Gui {
     damageConditionLabel.setText(
         "Damage Condition: " + (damageCondition == null ? "None" : damageCondition));
     numberOfAstronautsOnPlanetLabel.setText("# Astronauts on Planet: " + numberOfAstronauts);
-    imageUI.createPlanetScreen();
+//    imageUI.createPlanetScreen();
   }
 
   public void planetBackgroundUpdate(String item, String dangerCondition, int numberOfAstronautsOnPlanet,
