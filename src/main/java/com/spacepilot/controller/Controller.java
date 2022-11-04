@@ -309,7 +309,9 @@ public class Controller {
           String preReq = destinationPlanet.getPreReq();
 
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
-          if (!command[1].equals("orbit")) {
+          if (command[1].equals("orbit")) {
+           return;
+          } else {
             updateFuel();
           }
           if (command[1].equals("orbit") && (!healthTimerBoolean || !alienTimerBoolean)) {
@@ -546,7 +548,7 @@ public class Controller {
     gui.getShipHealthBar().setValue(game.getSpacecraft().getHealth());
     gui.getShipHealthBar().setString("Health: " + 100 + "%");
 
-    gui.getTicktock().setMinutes(3);
+    gui.getTicktock().setMinutes(8);
     gui.getTicktock().setSeconds(1);
   }
 

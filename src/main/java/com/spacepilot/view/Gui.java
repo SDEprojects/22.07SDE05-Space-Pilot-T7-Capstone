@@ -167,6 +167,7 @@ public class Gui {
           public void run() {
             showMap();
             controllerField.textParser("go orbit");
+            controllerField.updateFuel();
             currentPlanetLabel.setText("Current Planet: Orbit");
           }
         });
@@ -225,10 +226,10 @@ public class Gui {
     repairsLeftLabel = new JLabel("Repairs Left:");
     strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
     inventoryLabel = new JLabel("Inventory:");
-    ticktock.setOxygenTimeLeftLabel(new JLabel("Oxygen Time Remain: 03:00"));
+    ticktock.setOxygenTimeLeftLabel(new JLabel("Oxygen Time Remain: 08:00"));
 
     //creating time thread (for oxygen display)
-    ticktock.setMinutes(3);
+    ticktock.setMinutes(8);
     ticktock.setSeconds(0);
     ticktock.ticktock();
 //    ticktock.getTimer().start();
@@ -399,15 +400,12 @@ public class Gui {
     //adding button to right panel: Control Panel
     controlPanel.setLayout(gridLayout); //Setting controlPanel to grid layout
     controlPanel.add(menuBtn);
-    controlPanel.add(mapBtn);
-    controlPanel.add(mainBtn);
-    controlPanel.add(repairBtn);
     controlPanel.add(helpBtn);
-//    controlPanel.add(loadBtn);
-//    controlPanel.add(unloadBtn);
-//    controlPanel.add(refuelBtn);
-    controlPanel.add(godModeBtn);
-//    controlPanel.add(interactBtn);
+    controlPanel.add(repairBtn);
+//    controlPanel.add(mainBtn);
+//    controlPanel.add(godModeBtn);
+//    controlPanel.add(mapBtn);
+
   }
 
   public void createGameOverWinScreen(){
