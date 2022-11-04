@@ -53,13 +53,16 @@ public class Gui {
   private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn;
   private float currentVolume;
   private Font normalFont;
-  private Ticktock ticktock = new Ticktock();
+  private Ticktock ticktock;
   private ImageUI imageUI;
   private BorderLayout borderLayout = new BorderLayout();
   private GridBagLayout gridBagLayout = new GridBagLayout();
   private GridLayout gridLayout = new GridLayout(0, 1, 5,
       5); //0 rows, 1 col, 5 horizontal gap btw buttons, 5 vertical gap
   private FlowLayout flowLayout = new FlowLayout();
+  private JPanel gameOverLosePanel = new JPanel();
+  private JPanel bottomPanel;
+  private JPanel gameOverWinPanel = new JPanel();
 
   //CONSUMER TIPS
 //  private Consumer <String> movePlanetsListenerConsumer;
@@ -97,6 +100,8 @@ public class Gui {
     createCentralDisplayPanel(); //creating central Panel to hold DisplayArea and PlanetStatusDisplayArea and ScrollPanel
     passCommandMethodsToImageGui(); //method that instantiates gui and passes /and or sets runnables here.
     createBackgroundImagesForGui(); //creates background images using passed in runnables
+    createGameOverLoseScreen();
+    createGameOverWinScreen();
   }
 
   public void createCentralDisplayPanel() {
@@ -187,6 +192,8 @@ public class Gui {
   }
 
   private void createTopOfScreenStatusPanel() {
+    ticktock = new Ticktock();
+
     //CREATES TOP PANEL: (Status of Spaceship)
     statusPanel = new JPanel();
     statusPanel.setBackground(Color.gray);
@@ -205,7 +212,7 @@ public class Gui {
     ticktock.setMinutes(3);
     ticktock.setSeconds(0);
     ticktock.ticktock();
-    ticktock.getTimer().start();
+//    ticktock.getTimer().start();
 
     //creating ship health bar
     shipHealthBar = new JProgressBar(0, 100);
@@ -383,50 +390,120 @@ public class Gui {
 //    controlPanel.add(interactBtn);
   }
 
-  //TODO
-  //Once refactoring is complete, fix this method
-//  public void createGameOverScreen(){
-//    planetStatusPanel.setVisible(false);
-//    centralDisplayPanel.setVisible(false);
-//    statusPanel.setVisible(false);
-//    controlPanel.setVisible(false);
-//
-//    gameOverPanel = new JPanel();
-//    gameOverPanel.setLayout(new GridLayout(2, 1, 5, 4));
-//    ImageIcon gameOverIcon = new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png"));
-//    JLabel gameOverLabel = new JLabel();
-//    gameOverLabel.setIcon(gameOverIcon);
-//    gameOverPanel.add(gameOverLabel);
-//    frame.add(gameOverPanel);
-//
-//
-//    startBtn = new JButton("Start New Game");
-//    continueBtn = new JButton("Continue Game");
-//    titleBtnPanel = new JPanel();
-//
-//    continueBtn.addActionListener(choiceHandler);
-//    continueBtn.setActionCommand("continue");
-//
-//    startBtn.setBackground(Color.black);
-//    continueBtn.setBackground(Color.black);
-//
-//    gameOverPanel.add(startBtn);
-//    gameOverPanel.add(continueBtn);
-//    //Add btn listeners
-//    startBtn.addActionListener(new ActionListener() {
-//      @Override
-//      public void actionPerformed(ActionEvent e) {
-//        showGameScreenPanels();
-//      }
-//    });
-//    continueBtn.addActionListener(new ActionListener() {
-//      @Override
-//      public void actionPerformed(ActionEvent e) {
-////        Controller.textParser("continue");
-//        showGameScreenPanels();
-//      }
-//    });
-//  }
+  public void createGameOverWinScreen(){
+    gameOverWinPanel.setVisible(false);
+
+//    showGameOverWinScreen();
+
+
+    gameOverWinPanel.setLayout(new BorderLayout());
+    gameOverWinPanel.setBackground(Color.BLACK);
+
+    JPanel topPanel = new JPanel(new BorderLayout());
+    Font titleFont = new Font("Times New Roman", Font.PLAIN, 100);
+
+    JLabel gameOverLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("Astronaut-BoomBox.png")));
+
+    JLabel youWonLabel = new JLabel("You Won!!!", SwingConstants.CENTER);
+    JLabel partnerLabel = new JLabel("Happy Travels Partner ;)", SwingConstants.CENTER);
+
+    topPanel.setFont(titleFont);
+    topPanel.setBackground(Color.black);
+    topPanel.setForeground(Color.white);
+
+    partnerLabel.setFont(titleFont);
+    partnerLabel.setBackground(Color.black);
+    partnerLabel.setForeground(Color.white);
+
+    youWonLabel.setFont(titleFont);
+    youWonLabel.setBackground(Color.BLACK);
+    youWonLabel.setForeground(Color.white);
+
+
+    topPanel.add(youWonLabel, BorderLayout.PAGE_START);
+    topPanel.add(gameOverLabel, BorderLayout.CENTER);
+    topPanel.add(partnerLabel, BorderLayout.PAGE_END);
+
+    startBtn = new JButton("Start New Game");
+    JButton quitBtn = new JButton("Quit Game");
+
+
+    normalFont = new Font("Times New Roman", Font.PLAIN, 40);
+    partnerLabel.setFont(normalFont);
+    quitBtn.setBackground(Color.black);
+    quitBtn.setForeground(Color.white);
+    quitBtn.setFont(normalFont);
+    startBtn.setBackground(Color.black);
+    startBtn.setForeground(Color.white);
+    startBtn.setFont(normalFont);
+
+    bottomPanel = new JPanel();
+    bottomPanel.setBackground(Color.BLACK);
+    bottomPanel.add(startBtn);
+    bottomPanel.add(quitBtn);
+
+    //Add btn listeners
+    chaChaRealSmooth(quitBtn, "quit", false);
+    chaChaRealSmooth(startBtn,"new", false);
+
+    gameOverWinPanel.add(topPanel, BorderLayout.CENTER);
+    gameOverWinPanel.add(bottomPanel, BorderLayout.PAGE_END);
+
+
+
+  }
+
+  public void createGameOverLoseScreen(){
+    gameOverLosePanel.setVisible(false);
+//    removeOtherPanelsToShowGameOverLoseScreen();
+//    showGameOverLoseScreen();
+    gameOverLosePanel.setLayout(new BorderLayout());
+    gameOverLosePanel.setBackground(Color.BLACK);
+
+    JPanel topPanel = new JPanel(new BorderLayout());
+    topPanel.setBackground(Color.BLACK);
+
+    Font titleFont = new Font("Times New Roman", Font.PLAIN, 100);
+
+    JLabel youLostLabel = new JLabel("You Lost :(", SwingConstants.CENTER);
+    JLabel gameOverLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png")), SwingConstants.CENTER);
+    JLabel youSuckLabel = new JLabel("YOU SUCK LOSER!", SwingConstants.CENTER);
+
+    youLostLabel.setFont(titleFont);
+    youLostLabel.setForeground(Color.white);
+
+    topPanel.add(youLostLabel,BorderLayout.PAGE_START);
+    topPanel.add(gameOverLabel, BorderLayout.CENTER);
+    topPanel.add(youSuckLabel, BorderLayout.PAGE_END);
+
+    normalFont = new Font("Times New Roman", Font.PLAIN, 40);
+
+    startBtn = new JButton("Start New Game");
+    startBtn.setFont(normalFont);
+    startBtn.setBackground(Color.black);
+    startBtn.setForeground(Color.white);
+
+    JButton quitBtn = new JButton("Quit Game");
+    quitBtn.setFont(normalFont);
+    quitBtn.setBackground(Color.black);
+    quitBtn.setForeground(Color.white);
+
+    bottomPanel = new JPanel();
+    bottomPanel.setBackground(Color.BLACK);
+    bottomPanel.add(startBtn);
+    bottomPanel.add(quitBtn);
+
+    chaChaRealSmooth(quitBtn, "quit", false);
+    chaChaRealSmooth(startBtn,"new", false);
+
+    gameOverLosePanel.add(topPanel, BorderLayout.CENTER);
+    gameOverLosePanel.add(bottomPanel, BorderLayout.PAGE_END);
+
+
+
+  }
+
+
 
   public void createTitleScreen() {
     //Create components
@@ -459,6 +536,7 @@ public class Gui {
       @Override
       public void actionPerformed(ActionEvent e) {
         showGameScreenPanels();
+        ticktock.getTimer().start();
       }
     });
     continueBtn.addActionListener(new ActionListener() {
@@ -466,15 +544,6 @@ public class Gui {
       public void actionPerformed(ActionEvent e) {
         controllerField.textParser("continue");
         showGameScreenPanels();
-      }
-    });
-  }
-
-  public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
-    btn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        musicMethod.accept(wavFile);
       }
     });
   }
@@ -591,6 +660,15 @@ public class Gui {
     stationBtn.setBorderPainted(false);
   }
 
+  public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
+    btn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        musicMethod.accept(wavFile);
+      }
+    });
+  }
+
   //THESE METHODS WILL SHOW RESPECTIVE SCREENS AND HIDE OTHERS
   public void showGuiStart() {
     createTitleScreen();
@@ -632,13 +710,60 @@ public class Gui {
 
   public void showGameScreenPanels() {
     //Attach panels to the outermost Main Frame
-    frame.remove(titleScreenPanel);
+//    if(titleScreenPanel.isVisible()) {
+      titleScreenPanel.setVisible(false);
+//    }
+//    if (gameOverWinPanel.isVisible()){
+      gameOverWinPanel.setVisible(false);
+//    }
+//    if(gameOverLosePanel.isVisible()){
+      gameOverLosePanel.setVisible(false);
+
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
     frame.add(rightSidePanel, BorderLayout.LINE_END);
     imageUI.showEarthScreen2(); //Gets earth background screen.
     frame.setVisible(true);
   }
+
+  public void showNewGameReplay(){
+    if (gameOverWinPanel.isVisible()){
+      gameOverWinPanel.setVisible(false);
+    }
+    if(gameOverLosePanel.isVisible()){
+     gameOverLosePanel.setVisible(false);
+    }
+
+    centralDisplayPanel.setVisible(true);
+    statusPanel.setVisible(true);
+    rightSidePanel.setVisible(true);
+
+    imageUI.showEarthScreen2(); //Gets earth background screen.
+  }
+  public void showGameOverLoseScreen() {
+    statusPanel.setVisible(false);
+    centralDisplayPanel.setVisible(false);
+    frame.remove(centralDisplayPanel);
+    rightSidePanel.setVisible(false);
+    mapPanel.setVisible(false);
+    statusPanel.setVisible(false);
+    soundPanel.setVisible(false);
+    menuPanel.setVisible(false);
+    frame.add(gameOverLosePanel, BorderLayout.CENTER);
+    gameOverLosePanel.setVisible(true);
+    gameOverLosePanel.setVisible(false);
+    gameOverLosePanel.setVisible(true);
+  }
+  public void showGameOverWinScreen() {
+    statusPanel.setVisible(false);
+    centralDisplayPanel.setVisible(false);
+    rightSidePanel.setVisible(false);
+    mapPanel.setVisible(false);
+    frame.add(gameOverWinPanel,BorderLayout.CENTER);
+    gameOverWinPanel.setVisible(true);
+
+  }
+
 
   //Converts sout from terminal to displayTextArea instead
   public void appendText(String text) {
@@ -651,6 +776,10 @@ public class Gui {
     btn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        if(btn.equals(startBtn)){
+          frame.remove(gameOverLosePanel);
+          frame.remove(gameOverWinPanel);
+        }
         controllerField.textParser(command);
         if (!planet) {
           return;
@@ -667,6 +796,7 @@ public class Gui {
           centralDisplayPanel.setVisible(true);
           imageUI.showPlanetScreen1();
         }
+
 
       }
     });

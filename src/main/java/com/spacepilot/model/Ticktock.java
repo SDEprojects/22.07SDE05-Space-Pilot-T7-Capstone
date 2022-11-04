@@ -1,6 +1,5 @@
 package com.spacepilot.model;
 
-import com.spacepilot.view.Gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -17,7 +16,15 @@ public class Ticktock {
   private String doubleDigitMinutes;
   private DecimalFormat dFormat = new DecimalFormat("00");
   private JLabel oxygenTimeLeftLabel;
-  private Boolean healthTickerBoolean = true;
+  private Boolean oxygenTickerLose = false;
+
+  Runnable runDis;
+
+
+  public void setRunDis(Runnable runDis) {
+    this.runDis = runDis;
+  }
+
 
   public void ticktock() {
     timer = new Timer(1000, new ActionListener() {
@@ -36,7 +43,15 @@ public class Ticktock {
           oxygenTimeLeftLabel.setText("Oxygen Time Remaining: " +  doubleDigitMinutes + ":" + doubleDigitSeconds);
         }
         if(minutes == 0 && seconds ==0){
+          oxygenTickerLose = true;
           timer.stop();
+          runDis.run();
+
+        }
+        if(minutes == 2 && seconds == 55){
+          oxygenTickerLose = true;
+          runDis.run();
+
         }
 
       }
@@ -98,5 +113,7 @@ public class Ticktock {
   public void setOxygenTimeLeftLabel(JLabel oxygenTimeLeftLabel) {
     this.oxygenTimeLeftLabel = oxygenTimeLeftLabel;
   }
-
+  public Boolean getOxygenTickerLose() {
+    return oxygenTickerLose;
+  }
 }
