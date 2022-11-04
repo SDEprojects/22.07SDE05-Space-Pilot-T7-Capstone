@@ -44,15 +44,14 @@ public class Ticktock {
         }
         if(minutes == 0 && seconds ==0){
           oxygenTickerLose = true;
-          timer.stop();
           runDis.run();
 
         }
-        if(minutes == 2 && seconds == 55){
-          oxygenTickerLose = true;
-          runDis.run();
-
-        }
+//        if(minutes == 2 && seconds == 55){
+//          oxygenTickerLose = true;
+//          runDis.run();
+//
+//        }
 
       }
     });
