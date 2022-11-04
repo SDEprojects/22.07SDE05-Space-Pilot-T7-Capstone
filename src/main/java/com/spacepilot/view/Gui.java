@@ -208,7 +208,7 @@ public class Gui {
     displayArea.setLineWrap(true);
     displayArea.setBackground(Color.black);
     displayArea.setForeground(Color.white);
-    displayArea.setRows(9);
+    displayArea.setRows(11); //Adjusts size of display area
   }
 
   private void createTopOfScreenStatusPanel() {
