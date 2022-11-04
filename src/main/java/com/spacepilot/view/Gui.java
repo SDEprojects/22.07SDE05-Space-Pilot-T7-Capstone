@@ -50,7 +50,7 @@ public class Gui {
       planetStatusPanel, menuPanel, soundPanel, mapPanel;
   private JLabel titleLabel, currentPlanetLabel, damageConditionLabel, itemsOnPlanetLabel,
       numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel, warningLabel;
-  private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn, dotBtn;
+  private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn;
   private Boolean warningBoolean = true;
 
   private float currentVolume;
@@ -167,7 +167,6 @@ public class Gui {
           public void run() {
             showMap();
             controllerField.textParser("go orbit");
-            controllerField.updateFuel();
             currentPlanetLabel.setText("Current Planet: Orbit");
           }
         });
@@ -226,10 +225,10 @@ public class Gui {
     repairsLeftLabel = new JLabel("Repairs Left:");
     strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
     inventoryLabel = new JLabel("Inventory:");
-    ticktock.setOxygenTimeLeftLabel(new JLabel("Oxygen Time Remain: 08:00"));
+    ticktock.setOxygenTimeLeftLabel(new JLabel("Oxygen Time Remain: 03:00"));
 
     //creating time thread (for oxygen display)
-    ticktock.setMinutes(8);
+    ticktock.setMinutes(3);
     ticktock.setSeconds(0);
     ticktock.ticktock();
 //    ticktock.getTimer().start();
@@ -400,12 +399,15 @@ public class Gui {
     //adding button to right panel: Control Panel
     controlPanel.setLayout(gridLayout); //Setting controlPanel to grid layout
     controlPanel.add(menuBtn);
-    controlPanel.add(helpBtn);
+    controlPanel.add(mapBtn);
+    controlPanel.add(mainBtn);
     controlPanel.add(repairBtn);
-//    controlPanel.add(mainBtn);
-//    controlPanel.add(godModeBtn);
-//    controlPanel.add(mapBtn);
-
+    controlPanel.add(helpBtn);
+//    controlPanel.add(loadBtn);
+//    controlPanel.add(unloadBtn);
+//    controlPanel.add(refuelBtn);
+    controlPanel.add(godModeBtn);
+//    controlPanel.add(interactBtn);
   }
 
   public void createGameOverWinScreen(){
@@ -657,10 +659,6 @@ public class Gui {
     stationBtn = new JButton("Station");
     planetIcons(stationBtn, "images/Station.png", 700, -40, 300, 340, 300, 300);
     chaChaRealSmooth(stationBtn, "go station", true);
-//    creates godmode btn
-    dotBtn = new JButton();
-    planetIcons(dotBtn, "images/Dot.png", 5, 5, 3, 3, 3, 3);
-    chaChaRealSmooth(dotBtn, "god", false);
     //Adding all buttons to menu frame
     mapPanel.add(earthBtn);
     mapPanel.add(moonBtn);
@@ -672,19 +670,14 @@ public class Gui {
     mapPanel.add(uranusBtn);
     mapPanel.add(saturnBtn);
     mapPanel.add(stationBtn);
-    mapPanel.add(dotBtn);
     mapPanel.add(sunBtn);
     mapPanel.add(backgroundLabel);
-
     sunBtn.setOpaque(false);
     sunBtn.setContentAreaFilled(false);
     sunBtn.setBorderPainted(false);
     stationBtn.setOpaque(false);
     stationBtn.setContentAreaFilled(false);
     stationBtn.setBorderPainted(false);
-    dotBtn.setOpaque(false);
-    dotBtn.setContentAreaFilled(false);
-    dotBtn.setBorderPainted(false);
   }
 
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
@@ -738,13 +731,13 @@ public class Gui {
   public void showGameScreenPanels() {
     //Attach panels to the outermost Main Frame
 //    if(titleScreenPanel.isVisible()) {
-      titleScreenPanel.setVisible(false);
+    titleScreenPanel.setVisible(false);
 //    }
 //    if (gameOverWinPanel.isVisible()){
-      gameOverWinPanel.setVisible(false);
+    gameOverWinPanel.setVisible(false);
 //    }
 //    if(gameOverLosePanel.isVisible()){
-      gameOverLosePanel.setVisible(false);
+    gameOverLosePanel.setVisible(false);
 
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
@@ -758,7 +751,7 @@ public class Gui {
       gameOverWinPanel.setVisible(false);
     }
     if(gameOverLosePanel.isVisible()){
-     gameOverLosePanel.setVisible(false);
+      gameOverLosePanel.setVisible(false);
     }
 
     centralDisplayPanel.setVisible(true);
