@@ -192,6 +192,30 @@ public class ImageUI {
     if(numberOfAstronauts > 0){ //check is astronauts
       createObject(2, 725, 325, 225, 225, "backgrounds/astronautGroup.png", loadRunnableListener);
     }
+    //Check if item
+    if(item != null){
+      //create item based on planet
+      switch (item){
+        case "weapon":
+          createObject(2, 725, 50, 320, 320, "backgrounds/weapon.png", loadRunnableListener);
+          break;
+        case "gas mask":
+          createObject(2, 800, 175, 143, 125, "backgrounds/gasmask.png", loadRunnableListener);
+          break;
+        case "alien baby":
+          createObject(2, 825, 165, 101, 150, "backgrounds/alienBaby.png", loadRunnableListener);
+          break;
+        case "cold shield":
+          createObject(2, 750, 115, 250, 250, "backgrounds/coldShield.png", loadRunnableListener);
+          break;
+        default:
+          return;
+      }
+
+      //create item bubble
+      createObject(2, 650, 100, 450, 316, "backgrounds/itemBubble.png", loadRunnableListener);
+
+    }
     //Check which dangerCondition to add
     if(dangerCondition != null) {
       switch (dangerCondition) {
