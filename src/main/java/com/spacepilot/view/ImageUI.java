@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,15 +29,12 @@ public class ImageUI {
   private String dangerCondition;
   private String currentPlanet;
   private int numberOfAstronauts;
+  private JPanel guiInventoryPanel;
+  private JLabel refuelsLeftLabel;
+  private int refuelsLeft;
 
-//  public void setLoadRunnable(Runnable loadRunnable) {
-//    this.loadRunnable = loadRunnable;
-//  }
 
 
-  public void setCurrentPlanet(String currentPlanet) {
-    this.currentPlanet = currentPlanet;
-  }
 
   public ImageUI(JPanel containerPanel, Runnable loadRunnable,
       Runnable unloadRunnable, Runnable refuelRunnable,
@@ -51,6 +47,7 @@ public class ImageUI {
     this.goOrbitRunnableListener = goOrbitRunnable;
 
   }
+
 
   public void addUpdateToPanel(){
     containerPanel.add(imagePanel, BorderLayout.CENTER);
@@ -86,23 +83,23 @@ public class ImageUI {
   //Creates object image within background
   public void createObject(int bgNum, int objx, int objy, int objWidth, int objHeight, String objFileName, Runnable cmdRunnable){
     //create label
-    JButton objectLabel = new JButton();
-    objectLabel.setBounds(objx, objy, objWidth, objHeight); //sets location for astronaut
+    JButton objectButton = new JButton();
+    objectButton.setBounds(objx, objy, objWidth, objHeight); //sets location for astronaut
 
     //Button formatting
-    objectLabel.setContentAreaFilled(false);//clears white fill
-    objectLabel.setBorderPainted(false);//clears border
-    objectLabel.setFocusPainted(false);//clears focus border from click
+    objectButton.setContentAreaFilled(false);//clears white fill
+    objectButton.setBorderPainted(false);//clears border
+    objectButton.setFocusPainted(false);//clears focus border from click
 
     //Set click actions
-    objectLabel.addActionListener(e -> cmdRunnable.run());
+    objectButton.addActionListener(e -> cmdRunnable.run());
 
     //attach icon to it
     ImageIcon objectIcon = new ImageIcon(getClass().getClassLoader().getResource(objFileName));
 
-    objectLabel.setIcon(objectIcon);
+    objectButton.setIcon(objectIcon);
     //add to panel background
-    bgPanel[bgNum].add(objectLabel);
+    bgPanel[bgNum].add(objectButton);
     bgPanel[bgNum].add(bgLabel[bgNum]); //adds background here
 
   }
@@ -144,7 +141,7 @@ public class ImageUI {
     this.inventory = inventory;
   }
 
-
+  //Uses current game status to create updated planet backgrounds
   public void createPlanetScreen(){
     //Clear entire panel
     bgPanel[2].removeAll();
@@ -240,11 +237,51 @@ public class ImageUI {
       }
     }
     addUpdateToPanel();
+    loopThroughInventoryToCheckCurrentItems();
+  }
 
+  //Loops through current inventory to check which items there
+  public void loopThroughInventoryToCheckCurrentItems(){
+    //Clears inventory panel
+    guiInventoryPanel.removeAll();
+
+    for(String item : inventory){
+      switch (item){
+        case "weapon":
+          addHeldItemsToInventoryImagePanel("backgrounds/weapon.png");
+          break;
+        case "gas mask":
+          addHeldItemsToInventoryImagePanel("backgrounds/gasmask.png");
+          break;
+        case "alien baby":
+          addHeldItemsToInventoryImagePanel("backgrounds/alienBaby.png");
+          break;
+        case "cold shield":
+          addHeldItemsToInventoryImagePanel("backgrounds/coldShield.png");
+          break;
+        default:
+          return;
+      }
+    }
+  }
+
+  //Adds items in inventory to panel with an image
+  public void addHeldItemsToInventoryImagePanel(String fileName){
+    //Create a new label
+    JLabel itemLabel = new JLabel();
+    //create icon
+    ImageIcon objectIcon = new ImageIcon(getClass().getClassLoader().getResource(fileName));
+    //assign icon to label
+    itemLabel.setIcon(objectIcon);
+    //set alignment of images to center right
+    itemLabel.setHorizontalAlignment(JLabel.RIGHT);
+    itemLabel.setVerticalAlignment(JLabel.CENTER);
+    //add to inventory panel
+    guiInventoryPanel.add(itemLabel);
   }
 
   //Creates each background panel with image buttons
-  public void generateScreen(){
+  public void generateScene(){
     //Earth Scene 1
     createBackgroundPanel(1);
     createBackgroundLabel(1, "backgrounds/earth.png");
@@ -255,28 +292,29 @@ public class ImageUI {
     createBackgroundPanel(2);
     createBackgroundLabel(2, "backgrounds/moon.png");
 
-//    createObject(2, 725, 300, 225, 225, "backgrounds/astronautGroup.png",
-//        loadRunnableListener);
-//    createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-//    createObject(2, 350, 75, 400, 500, "backgrounds/extremeCold.png", interactRunnableListener);
-//    createObject(2, 500, 200, 280, 320, "backgrounds/blueAlien.png", interactRunnableListener);
-//    createObject(2, 500, 200, 280, 320, "backgrounds/poisonGas.png", interactRunnableListener);
-//    createObject(2, 500, 200, 280, 320, "backgrounds/greenAlien.png", interactRunnableListener);
-//    createPlanetScreen();
-//    bgPanel[1].add(bgLabel[1]);
-
     //Station Scene 3
     createBackgroundPanel(3);
     createBackgroundLabel(3, "backgrounds/station.png");
     createMapObject(3, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+      //Creates Label tracking refuels on station
+    refuelsLeftLabel = new JLabel("3 / 3");
+    refuelsLeftLabel.setForeground(Color.white);
+    refuelsLeftLabel.setLayout(null);
+    refuelsLeftLabel.setBounds(839, 190, 150, 160);
+    bgPanel[3].add(refuelsLeftLabel);
+    bgPanel[3].add(bgLabel[3]); //adds background here
+      //Creates the gas pump
     createObject(3, 720, 200, 233, 360, "backgrounds/gas.png", refuelRunnableListener);
-    JLabel refuelsLeft = new JLabel("3/3");
+
     addUpdateToPanel();
   }
 
+  //Updates fuel count after refuel is clicked
+  public void updateRefuelsOnStation(){
+    refuelsLeftLabel.setText(refuelsLeft + " / 3");
+  }
 
-
-
+  //Rotates background scenes
   public void showPlanetScreen1(){
     bgPanel[1].setVisible(false);
     bgPanel[3].setVisible(false);
@@ -295,4 +333,16 @@ public class ImageUI {
     bgPanel[3].setVisible(true);
   }
 
+
+  public void setCurrentPlanet(String currentPlanet) {
+    this.currentPlanet = currentPlanet;
+  }
+
+  public void setGuiInventoryPanel(JPanel guiInventoryPanel) {
+    this.guiInventoryPanel = guiInventoryPanel;
+  }
+
+  public void setRefuelsLeft(int refuelsLeft) {
+    this.refuelsLeft = refuelsLeft;
+  }
 }

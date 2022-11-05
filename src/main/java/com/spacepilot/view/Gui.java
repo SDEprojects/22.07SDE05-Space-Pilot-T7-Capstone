@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicProgressBarUI;
@@ -94,7 +95,6 @@ public class Gui {
   public void createSectionsOfGui() {
     //These methods are used to create sections of the gui
     createCenterDisplayArea();
-    createRightSideControlPanel(gridLayout);
     createMenuPanel();
     createMapPanel();
     createTopOfScreenStatusPanel();
@@ -102,6 +102,7 @@ public class Gui {
     createBottomPlanetStatusPanel();
     createCentralDisplayPanel(); //creating central Panel to hold DisplayArea and PlanetStatusDisplayArea and ScrollPanel
     passCommandMethodsToImageGui(); //method that instantiates gui and passes /and or sets runnables here.
+    createRightSideControlPanel(gridLayout);
     createBackgroundImagesForGui(); //creates background images using passed in runnables
     createGameOverLoseScreen();
     createGameOverWinScreen();
@@ -160,6 +161,7 @@ public class Gui {
           @Override
           public void run() {
             controllerField.textParser("refuel");
+            imageUI.updateRefuelsOnStation();
           }
         },
         new Runnable() {
@@ -173,6 +175,9 @@ public class Gui {
           public void run() {
             showMap();
             controllerField.textParser("go orbit");
+            //updates fuel after moving
+            controllerField.updateFuel();
+            //update text for orbit
             currentPlanetLabel.setText("Current Planet: Orbit");
           }
         });
@@ -184,7 +189,7 @@ public class Gui {
     //Adds the background panel to centerDisplayPanel
     imageUI.createTopLevelPanel();
     //Adds background images, scenes, and buttons to background panel
-    imageUI.generateScreen();
+    imageUI.generateScene();
   }
 
   // THESE METHODS CREATE DIFFERENT SECTIONS OF THE GUI
@@ -348,14 +353,16 @@ public class Gui {
     //CREATING PANEL ON THE RIGHT TO HOLD BUTTONS AND INVENTORY
     rightSidePanel = new JPanel(gridLayout); //holds controlPanel and inventoryPanel
     controlPanel = new JPanel(); //holds gui buttons
-    inventoryPanel = new JPanel(new GridLayout(5, 1, 2, 1)); // will hold inventory images
+    inventoryPanel = new JPanel(new GridLayout(4, 1, 1, 9)); // will hold inventory images
 
     //setting color
     controlPanel.setBackground(Color.blue);
 
-    //Creating label for inventory Panel and adding it
-    JLabel inventoryLabel = new JLabel("Inventory", SwingConstants.CENTER);
-    inventoryPanel.add(inventoryLabel);
+    //Creating TitleBorder for Inventory
+    inventoryPanel.setBorder(new TitledBorder(null, "Inventory", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+
+    //pass inventory panel to imageUI to be updated
+    imageUI.setGuiInventoryPanel(inventoryPanel);
 
     //creating buttons right panel
     mapBtn = new JButton("Go Orbit");
@@ -847,11 +854,13 @@ public class Gui {
   }
 
   public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,
-      int strandedAstros) {
+      int strandedAstros, int refuelsLeft) {
     inventoryLabel.setText("Inventory: " + inventory);
     currentPlanetLabel.setText("Current Planet: " + planet.getName());
     repairsLeftLabel.setText("Repairs Left: " + repairsLeft);
     strandedAstronautsLabel.setText("Stranded Astronauts: " + strandedAstros);
+    //Sets the refuelsLeft field in imageUI to update station planet
+    imageUI.setRefuelsLeft(refuelsLeft);
   }
 
   public void planetIcons(JButton btn, String png, Integer x, Integer y, Integer width,

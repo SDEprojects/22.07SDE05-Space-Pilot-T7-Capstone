@@ -433,7 +433,7 @@ public class Controller {
     Planet planet = game.getSpacecraft().getCurrentPlanet();
     int strandedAstos = game.calculateRemainingAstronautsViaTotalNumOfAstronauts()
         - returnPlanet("Earth").getNumOfAstronautsOnPlanet();
-    gui.displayGameStatus(inventory, planet, repairCounter, strandedAstos);
+    gui.displayGameStatus(inventory, planet, repairCounter, strandedAstos, refuelCounter);
   }
 
   public void loadNewPassengers() {
