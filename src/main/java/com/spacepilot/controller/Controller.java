@@ -341,12 +341,13 @@ public class Controller {
             //Call string to show that you avoided damage by having correct preReq in inventory
             String damageCondition = destinationPlanet.getDamageCondition();
             View.printDamageConditionAvoidedAlert(preReq, damageCondition);
+
             //set planet preReq to null
-            destinationPlanet.setPreReq(null);
-            //set damageCondition to null
-            destinationPlanet.setDamageCondition(null);
+//            destinationPlanet.setPreReq(null);
+////            set damageCondition to null
+//            destinationPlanet.setDamageCondition(null);
             //remove item from inventory as it's used.
-            spacecraft.getInventory().remove(preReq);
+//            spacecraft.getInventory().remove(preReq);
           }
         }
       }
@@ -441,19 +442,25 @@ public class Controller {
   public void loadNewPassengers() {
     Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
+    //If no astronauts, no load
     if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
       View.printNoAstronautsToLoad();
     }
+    //If on earth, no load
     if (game.getSpacecraft().getCurrentPlanet().getName().equals("Earth")) {
       View.printCannotRemovePeopleFromEarth();
     }
     //conditional to prevent player from loading passengers while preReq is still active.
     String preReq = game.getSpacecraft().getCurrentPlanet().getPreReq();
     List<String> inventory = game.getSpacecraft().getInventory();
-    if (preReq != null) {
+    if (preReq != null && !game.getSpacecraft().getInventory().contains(preReq)) {
       View.printCantLoadWithoutPreReqAlert(preReq);
       return;
     }
+    if(preReq != null && game.getSpacecraft().getInventory().contains(preReq)){
+      View.tellUserToInteractToClearDamageCondition(preReq, game.getSpacecraft().getCurrentPlanet().getDamageCondition());
+    }
+
     if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
         .getName().equals("Earth")) {
       //adds astronauts from planet to spacecraft
@@ -531,6 +538,7 @@ public class Controller {
       destinationPlanet.setDamageCondition(null);
       //remove item from inventory as it's used.
       spacecraft.getInventory().remove(preReq);
+
     }
   }
 

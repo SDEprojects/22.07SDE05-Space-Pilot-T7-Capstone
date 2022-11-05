@@ -52,10 +52,6 @@ public class ImageUI {
 
   }
 
-  public JPanel getImagePanel() {
-    return imagePanel;
-  }
-
   public void addUpdateToPanel(){
     containerPanel.add(imagePanel, BorderLayout.CENTER);
   }
@@ -204,7 +200,7 @@ public class ImageUI {
               interactRunnableListener);
           break;
         case "Alien Mom":
-          createObject(2, 4500, 200, 280, 320, "backgrounds/greenAlien.png",
+          createObject(2, 450, 200, 280, 320, "backgrounds/greenAlien.png",
               interactRunnableListener);
           break;
         case "extreme cold":
@@ -249,7 +245,7 @@ public class ImageUI {
     createBackgroundPanel(3);
     createBackgroundLabel(3, "backgrounds/station.png");
     createMapObject(3, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
-    createObject(3, 720, 200, 233, 360, "backgrounds/gas1.png", refuelRunnableListener);
+    createObject(3, 720, 200, 233, 360, "backgrounds/gas.png", refuelRunnableListener);
     JLabel refuelsLeft = new JLabel("3/3");
     addUpdateToPanel();
   }

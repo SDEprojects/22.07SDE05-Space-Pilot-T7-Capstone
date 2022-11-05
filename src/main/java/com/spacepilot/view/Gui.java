@@ -143,6 +143,11 @@ public class Gui {
           @Override
           public void run() {
             controllerField.textParser("load");
+            //Updates background panel to remove astronuats
+            imageUI.createPlanetScreen();
+            //Refreshes panel to show updated images
+            centralDisplayPanel.setVisible(false);
+            centralDisplayPanel.setVisible(true);
           }
         },
         new Runnable() {
