@@ -245,6 +245,10 @@ public class View {
         + "more than twice per round of the game." + ANSI_RESET);
   }
 
+  public static void tellUserToInteractToClearDamageCondition(String preReq, String damageCondition){
+    System.out.println("Use " + preReq + " on " + damageCondition + " to clear the way for loading astronauts!");
+  }
+
   public static void printTheVolumeNumberDoesNotExist() {
     System.out.println(ANSI_RED + "That volume number does not exist, please enter a volume number of '0-10'." + ANSI_RESET);
   }

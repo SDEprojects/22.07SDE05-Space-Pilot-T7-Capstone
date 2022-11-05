@@ -70,6 +70,8 @@ public class Controller {
     }
   }
 
+//METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
+
   public static void saveGame(Game game) throws IOException {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
@@ -154,6 +156,7 @@ public class Controller {
 
     displayCurrentPlanetStatus();
     displayGameStatusPanel();
+    getStatusUpdateForBackgrounds();
     gui.getTicktock().setRunDis(new Runnable() {
       @Override
       public void run() {
@@ -337,13 +340,14 @@ public class Controller {
           } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
             //Call string to show that you avoided damage by having correct preReq in inventory
             String damageCondition = destinationPlanet.getDamageCondition();
-            View.printDamageConditionAvoidedAlert(preReq, damageCondition);
+//            View.printDamageConditionAvoidedAlert(preReq, damageCondition);
+
             //set planet preReq to null
-            destinationPlanet.setPreReq(null);
-            //set damageCondition to null
-            destinationPlanet.setDamageCondition(null);
+//            destinationPlanet.setPreReq(null);
+////            set damageCondition to null
+//            destinationPlanet.setDamageCondition(null);
             //remove item from inventory as it's used.
-            spacecraft.getInventory().remove(preReq);
+//            spacecraft.getInventory().remove(preReq);
           }
         }
       }
@@ -398,11 +402,20 @@ public class Controller {
     }
 
     //update status and check if we won or lost
-    displayCurrentPlanetStatus();
     displayGameStatusPanel();
+    displayCurrentPlanetStatus();
+    getStatusUpdateForBackgrounds();
     checkGameResult();
   }
 
+  public void getStatusUpdateForBackgrounds(){
+    gui.planetBackgroundUpdate(
+        game.getSpacecraft().getCurrentPlanet().getItem(),
+        game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
+        game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet(),
+        game.getSpacecraft().getCurrentPlanet().getName(),
+        game.getSpacecraft().getInventory());
+  }
   public void displayCurrentPlanetStatus() {
     //Calls gui method to display current status of planet user is on.
     gui.displayPlanetStatus(
@@ -410,9 +423,6 @@ public class Controller {
         game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet());
   }
-
-
-
 
   /*
   HELPER METHODS
@@ -429,19 +439,26 @@ public class Controller {
   public void loadNewPassengers() {
     Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
+    //If no astronauts, no load
     if (arrayOfAstronautsOnCurrentPlanet.size() <= 0) {
       View.printNoAstronautsToLoad();
     }
+    //If on earth, no load
     if (game.getSpacecraft().getCurrentPlanet().getName().equals("Earth")) {
       View.printCannotRemovePeopleFromEarth();
     }
     //conditional to prevent player from loading passengers while preReq is still active.
     String preReq = game.getSpacecraft().getCurrentPlanet().getPreReq();
     List<String> inventory = game.getSpacecraft().getInventory();
-    if (preReq != null) {
+    if (preReq != null && !game.getSpacecraft().getInventory().contains(preReq)) {
       View.printCantLoadWithoutPreReqAlert(preReq);
       return;
     }
+    if(preReq != null && game.getSpacecraft().getInventory().contains(preReq)){
+      View.tellUserToInteractToClearDamageCondition(preReq, game.getSpacecraft().getCurrentPlanet().getDamageCondition());
+      return;
+    }
+
     if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
         .getName().equals("Earth")) {
       //adds astronauts from planet to spacecraft
@@ -454,6 +471,13 @@ public class Controller {
 
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       determineIfEngineerIsOnBoard();
+
+      //set planet preReq to null
+      game.getSpacecraft().getCurrentPlanet().setPreReq(null);
+      //set damageCondition to null
+      game.getSpacecraft().getCurrentPlanet().setDamageCondition(null);
+      //remove item from inventory as it's used.
+      game.getSpacecraft().getInventory().remove(preReq);
     }
   }
 
@@ -519,6 +543,7 @@ public class Controller {
       destinationPlanet.setDamageCondition(null);
       //remove item from inventory as it's used.
       spacecraft.getInventory().remove(preReq);
+
     }
   }
 

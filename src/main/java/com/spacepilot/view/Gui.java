@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
@@ -142,6 +143,11 @@ public class Gui {
           @Override
           public void run() {
             controllerField.textParser("load");
+            //Updates background panel to remove astronuats
+            imageUI.createPlanetScreen();
+            //Refreshes panel to show updated images
+            centralDisplayPanel.setVisible(false);
+            centralDisplayPanel.setVisible(true);
           }
         },
         new Runnable() {
@@ -207,7 +213,7 @@ public class Gui {
     displayArea.setLineWrap(true);
     displayArea.setBackground(Color.black);
     displayArea.setForeground(Color.white);
-    displayArea.setRows(9);
+    displayArea.setRows(11); //Adjusts size of display area
   }
 
   private void createTopOfScreenStatusPanel() {
@@ -814,6 +820,8 @@ public class Gui {
         } else {
           mapPanel.setVisible(false);
           centralDisplayPanel.setVisible(true);
+          controllerField.getStatusUpdateForBackgrounds(); //update planet again before switch
+          imageUI.createPlanetScreen(); //create the planet screen then show
           imageUI.showPlanetScreen1();
         }
 
@@ -828,6 +836,14 @@ public class Gui {
     damageConditionLabel.setText(
         "Damage Condition: " + (damageCondition == null ? "None" : damageCondition));
     numberOfAstronautsOnPlanetLabel.setText("# Astronauts on Planet: " + numberOfAstronauts);
+//    imageUI.createPlanetScreen();
+  }
+
+  public void planetBackgroundUpdate(String item, String dangerCondition, int numberOfAstronautsOnPlanet,
+      String currentPlanet, List<String> inventory){
+
+    imageUI.planetBackgroundCustomization(item, dangerCondition, numberOfAstronautsOnPlanet, currentPlanet,
+        inventory);
   }
 
   public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,
