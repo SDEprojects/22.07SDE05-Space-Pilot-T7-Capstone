@@ -246,7 +246,7 @@ public class View {
   }
 
   public static void tellUserToInteractToClearDamageCondition(String preReq, String damageCondition){
-    System.out.println("Use " + preReq + " on " + damageCondition + "to clear the way for loading astronauts!");
+    System.out.println("Use " + preReq + " on " + damageCondition + " to clear the way for loading astronauts!");
   }
 
   public static void printTheVolumeNumberDoesNotExist() {

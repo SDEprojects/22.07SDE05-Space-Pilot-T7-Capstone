@@ -340,7 +340,7 @@ public class Controller {
           } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
             //Call string to show that you avoided damage by having correct preReq in inventory
             String damageCondition = destinationPlanet.getDamageCondition();
-            View.printDamageConditionAvoidedAlert(preReq, damageCondition);
+//            View.printDamageConditionAvoidedAlert(preReq, damageCondition);
 
             //set planet preReq to null
 //            destinationPlanet.setPreReq(null);
@@ -424,9 +424,6 @@ public class Controller {
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet());
   }
 
-
-
-
   /*
   HELPER METHODS
    */
@@ -459,6 +456,7 @@ public class Controller {
     }
     if(preReq != null && game.getSpacecraft().getInventory().contains(preReq)){
       View.tellUserToInteractToClearDamageCondition(preReq, game.getSpacecraft().getCurrentPlanet().getDamageCondition());
+      return;
     }
 
     if (arrayOfAstronautsOnCurrentPlanet.size() > 0 && !game.getSpacecraft().getCurrentPlanet()
@@ -473,6 +471,13 @@ public class Controller {
 
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
       determineIfEngineerIsOnBoard();
+
+      //set planet preReq to null
+      game.getSpacecraft().getCurrentPlanet().setPreReq(null);
+      //set damageCondition to null
+      game.getSpacecraft().getCurrentPlanet().setDamageCondition(null);
+      //remove item from inventory as it's used.
+      game.getSpacecraft().getInventory().remove(preReq);
     }
   }
 
