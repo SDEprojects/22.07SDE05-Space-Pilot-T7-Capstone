@@ -189,7 +189,7 @@ public class Controller {
     //needs to connect health and fuel to spacecraft model
 
     //Reset timer to 3 minutes
-    gui.getTicktock().setMinutes(3);
+    gui.getTicktock().setMinutes(8);
     gui.getTicktock().setSeconds(1);
     gui.getTicktock().getTimer().start();
     gui.getTicktock().setRunDis(new Runnable() {
@@ -569,8 +569,14 @@ public class Controller {
     }
     //full health and fuel set to 100
     game.getSpacecraft().setFuel(100);
+    gui.getFuelLevelBar().setValue(game.getSpacecraft().getFuel());
+    gui.getFuelLevelBar().setString("Fuel: " + 100 + "%");
     game.getSpacecraft().setHealth(100);
-    gui.getTicktock().setMinutes(3);
+    gui.getShipHealthBar().setValue(game.getSpacecraft().getHealth());
+    gui.getShipHealthBar().setString("Health: " + 100 + "%");
+
+//    set timer to 8:00
+    gui.getTicktock().setMinutes(8);
     gui.getTicktock().setSeconds(1);
   }
 
@@ -581,7 +587,8 @@ public class Controller {
         >= (double) 5 / 5;
 
     if (!userWon) {
-      if (game.getSpacecraft().getFuel() < 1) {
+      if (game.getSpacecraft().getFuel() < 0) {
+        gui.getFuelLevelBar().setString("Fuel: " + 0 + "%");
 //        game.setOver(true);
         gui.showGameOverLoseScreen();
       } else if (gui.getShipHealthBar().getValue() < 1) {

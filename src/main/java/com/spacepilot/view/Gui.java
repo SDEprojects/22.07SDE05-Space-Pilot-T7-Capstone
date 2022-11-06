@@ -52,7 +52,7 @@ public class Gui {
       planetStatusPanel, menuPanel, soundPanel, mapPanel;
   private JLabel titleLabel, currentPlanetLabel, damageConditionLabel, itemsOnPlanetLabel,
       numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel, warningLabel;
-  private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn;
+  private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn, dotBtn;
   private Boolean warningBoolean = true;
 
   private float currentVolume;
@@ -179,6 +179,7 @@ public class Gui {
             controllerField.updateFuel();
             //update text for orbit
             currentPlanetLabel.setText("Current Planet: Orbit");
+            controllerField.checkGameResult();
           }
         });
 
@@ -236,10 +237,10 @@ public class Gui {
     repairsLeftLabel = new JLabel("Repairs Left:");
     strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
     inventoryLabel = new JLabel("Inventory:");
-    ticktock.setOxygenTimeLeftLabel(new JLabel("Oxygen Time Remain: 03:00"));
+    ticktock.setOxygenTimeLeftLabel(new JLabel("Oxygen Time Remain: 08:00"));
 
     //creating time thread (for oxygen display)
-    ticktock.setMinutes(3);
+    ticktock.setMinutes(8);
     ticktock.setSeconds(0);
     ticktock.ticktock();
 //    ticktock.getTimer().start();
@@ -672,6 +673,10 @@ public class Gui {
     stationBtn = new JButton("Station");
     planetIcons(stationBtn, "images/Station.png", 700, -40, 300, 340, 300, 300);
     chaChaRealSmooth(stationBtn, "go station", true);
+    //    creates godmode btn
+    dotBtn = new JButton();
+    planetIcons(dotBtn, "images/Dot.png", 5, 5, 3, 3, 3, 3);
+    chaChaRealSmooth(dotBtn, "god", false);
     //Adding all buttons to menu frame
     mapPanel.add(earthBtn);
     mapPanel.add(moonBtn);
@@ -683,6 +688,7 @@ public class Gui {
     mapPanel.add(uranusBtn);
     mapPanel.add(saturnBtn);
     mapPanel.add(stationBtn);
+    mapPanel.add(dotBtn);
     mapPanel.add(sunBtn);
     mapPanel.add(backgroundLabel);
     sunBtn.setOpaque(false);
@@ -691,6 +697,9 @@ public class Gui {
     stationBtn.setOpaque(false);
     stationBtn.setContentAreaFilled(false);
     stationBtn.setBorderPainted(false);
+    dotBtn.setOpaque(false);
+    dotBtn.setContentAreaFilled(false);
+    dotBtn.setBorderPainted(false);
   }
 
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
@@ -812,6 +821,7 @@ public class Gui {
         if(btn.equals(startBtn)){
           frame.remove(gameOverLosePanel);
           frame.remove(gameOverWinPanel);
+          warningMessage();
         }
         controllerField.textParser(command);
         if (!planet) {
