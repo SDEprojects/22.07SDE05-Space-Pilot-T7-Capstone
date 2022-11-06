@@ -2,6 +2,7 @@ package com.spacepilot.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -175,11 +176,11 @@ public class ImageUI {
           break;
         case "Uranus":
           createBackgroundLabel(2, "backgrounds/uranus.png");
-          createMapObject(2, 0, 100, 499, 499, "backgrounds/spaceship-499x499.png");
+          createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
           break;
         case "Venus":
           createBackgroundLabel(2, "backgrounds/venus.png");
-          createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+          createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
           break;
         default:
           return;
@@ -271,6 +272,9 @@ public class ImageUI {
     JLabel itemLabel = new JLabel();
     //create icon
     ImageIcon objectIcon = new ImageIcon(getClass().getClassLoader().getResource(fileName));
+    Image img = objectIcon.getImage();
+    Image newImg = img.getScaledInstance(100, 50, Image.SCALE_DEFAULT);
+    objectIcon = new ImageIcon(newImg);
     //assign icon to label
     itemLabel.setIcon(objectIcon);
     //set alignment of images to center right

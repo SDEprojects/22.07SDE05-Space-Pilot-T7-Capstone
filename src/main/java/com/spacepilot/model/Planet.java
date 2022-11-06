@@ -111,7 +111,7 @@ public class Planet {
     // random total number of astronauts on a planet
     int totalNumOfAstronautsOnPlanet = rand.nextInt(5);
     // check to make sure the current planet is not Earth
-    if (!name.equals("Earth")) {
+    if (!name.equals("Earth") && !name.equals("Orbit") && !name.equals("Station")) {
       // place stranded astronauts to the planet
       for (int i = 0; i <= totalNumOfAstronautsOnPlanet; i++) {
         // create a random boolean
