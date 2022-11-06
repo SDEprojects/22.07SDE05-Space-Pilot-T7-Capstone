@@ -1,6 +1,7 @@
 package com.spacepilot.view;
 
 import com.spacepilot.controller.Controller;
+import com.spacepilot.model.GameText;
 import com.spacepilot.model.Music;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Ticktock;
@@ -14,6 +15,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
@@ -21,8 +23,10 @@ import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -79,7 +83,7 @@ public class Gui {
   public Gui() {
 
     //CREATES OUTERMOST MAIN FRAME
-    frame = new JFrame("Main Panel"); //Create Frame for content //Default layout is BorderLayout
+    frame = new JFrame("Space Pilot"); //Create Frame for content //Default layout is BorderLayout
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Set closing event
     frame.setSize(new Dimension(1140, 900));
     frame.setResizable(false);
@@ -352,11 +356,9 @@ public class Gui {
   private void createRightSideControlPanel(GridLayout gridLayout) {
     //CREATING PANEL ON THE RIGHT TO HOLD BUTTONS AND INVENTORY
     rightSidePanel = new JPanel(gridLayout); //holds controlPanel and inventoryPanel
+//    rightSidePanel.setPreferredSize(new Dimension(150, 800));
     controlPanel = new JPanel(); //holds gui buttons
     inventoryPanel = new JPanel(new GridLayout(4, 1, 1, 9)); // will hold inventory images
-
-    //setting color
-    controlPanel.setBackground(Color.blue);
 
     //Creating TitleBorder for Inventory
     inventoryPanel.setBorder(new TitledBorder(null, "Inventory", TitledBorder.CENTER, TitledBorder.TOP, null, null));
@@ -376,13 +378,35 @@ public class Gui {
     godModeBtn = new JButton("GOD MODE");
     mainBtn = new JButton("Main Screen");
 
+
+    helpBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+//        JOptionPane.showMessageDialog(frame, Arrays.toString(View.printInstructionsToGuiPopUp()), "Instructions", JOptionPane.PLAIN_MESSAGE);
+
+//        View.printInstructionsToGuiPopUp();
+//        JDialog d = new JDialog(frame, "And its up");
+//        // create a label
+//        JLabel l = new JLabel("this is a dialog box");
+//
+//        d.add(l);
+//
+//        // setsize of dialog
+//        d.setSize(100, 100);
+//        d.setVisible(true);
+
+        CustomDialogBox customDialogBox  = new CustomDialogBox();
+
+      }
+    });
+
     // When a user presses a button, the respective word is given to the Controller to use for function
     chaChaRealSmooth(godModeBtn, "god", false);
     chaChaRealSmooth(loadBtn, "load", false);
     chaChaRealSmooth(unloadBtn, "unload", false);
     chaChaRealSmooth(refuelBtn, "refuel", false);
     chaChaRealSmooth(repairBtn, "repair", false);
-    chaChaRealSmooth(helpBtn, "help", false);
+//    chaChaRealSmooth(helpBtn, "help", false);
     chaChaRealSmooth(interactBtn, "interact", false);
     //Event Listener for menu button to open new window w/menu options
     menuBtn.addActionListener(new ActionListener() {

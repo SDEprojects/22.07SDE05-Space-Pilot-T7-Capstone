@@ -21,9 +21,7 @@ public class View {
   public static final String ANSI_GREEN = "\u001B[32m";
 
   public static void consoleToGUI(Gui gui) {
-//    Gui gui = new Gui();
     System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
-//    gui.start();
   }
 
   public static void getGameTextJson() {
@@ -66,6 +64,10 @@ public class View {
       System.out.println(line);
     }
     System.out.println();
+  }
+
+  public static String[] printInstructionsToGuiPopUp(){
+    return gameText.getInstructions();
   }
 
   public static void printGameState(String planetName, int astrosOnPlanet, String itemOnPlanet, int shipHealth, int remainingAstros, int remainingDays
