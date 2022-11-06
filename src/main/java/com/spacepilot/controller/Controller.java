@@ -188,6 +188,11 @@ public class Controller {
     gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
     //needs to connect health and fuel to spacecraft model
 
+
+//    resetting refuels and repairs
+    repairCounter = 2;
+    refuelCounter = 3;
+    gui.imageUiReset();
     //Reset timer to 3 minutes
     gui.getTicktock().setMinutes(8);
     gui.getTicktock().setSeconds(1);

@@ -273,7 +273,7 @@ public class ImageUI {
     //create icon
     ImageIcon objectIcon = new ImageIcon(getClass().getClassLoader().getResource(fileName));
     Image img = objectIcon.getImage();
-    Image newImg = img.getScaledInstance(100, 50, Image.SCALE_DEFAULT);
+    Image newImg = img.getScaledInstance(110, 75, Image.SCALE_DEFAULT);
     objectIcon = new ImageIcon(newImg);
     //assign icon to label
     itemLabel.setIcon(objectIcon);
@@ -348,5 +348,9 @@ public class ImageUI {
 
   public void setRefuelsLeft(int refuelsLeft) {
     this.refuelsLeft = refuelsLeft;
+  }
+
+  public JPanel getGuiInventoryPanel() {
+    return guiInventoryPanel;
   }
 }

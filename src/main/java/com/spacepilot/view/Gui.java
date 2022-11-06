@@ -38,8 +38,9 @@ public class Gui {
 
   public static final Color VERY_DARK_RED = new Color(153, 0, 0);
   public static final Color DARK_ORANGE = new Color(255, 102, 0);
+  public static final Color PURPLE = new Color(133, 13, 191);
   private static JProgressBar shipHealthBar;
-  public ImageIcon planetIcon;
+  public ImageIcon planetIcon, btnIcon;
   private JFrame frame;
   private JTextArea displayArea;
   private JScrollPane scrollPanel;
@@ -227,7 +228,7 @@ public class Gui {
 
     //CREATES TOP PANEL: (Status of Spaceship)
     statusPanel = new JPanel();
-    statusPanel.setBackground(Color.gray);
+    statusPanel.setBackground(Color.darkGray);
     statusPanel.setBounds(100, 15, 200, 30);
     GridLayout panelGridLayout = new GridLayout(3, 2, 2, 3); //Created grid layout
     statusPanel.setLayout(panelGridLayout); //Set status panel to gridLayout
@@ -248,7 +249,7 @@ public class Gui {
     //creating ship health bar
     shipHealthBar = new JProgressBar(0, 100);
     shipHealthBar.setForeground(VERY_DARK_RED);
-    shipHealthBar.setBackground(Color.gray);
+    shipHealthBar.setBackground(Color.darkGray);
     shipHealthBar.setBorder(BorderFactory.createLineBorder(VERY_DARK_RED, 2));
     shipHealthBar.getUI();
     shipHealthBar.setUI(new BasicProgressBarUI() {
@@ -268,7 +269,7 @@ public class Gui {
     fuelLevelBar = new JProgressBar(0, 100);
     fuelLevelBar.setForeground(DARK_ORANGE);
     fuelLevelBar.setBorder(BorderFactory.createLineBorder(DARK_ORANGE, 2));
-    fuelLevelBar.setBackground(Color.gray);
+    fuelLevelBar.setBackground(Color.darkGray);
     fuelLevelBar.getUI();
     fuelLevelBar.setUI(new BasicProgressBarUI() {
       protected Color getSelectionBackground() {
@@ -353,23 +354,32 @@ public class Gui {
   private void createRightSideControlPanel(GridLayout gridLayout) {
     //CREATING PANEL ON THE RIGHT TO HOLD BUTTONS AND INVENTORY
     rightSidePanel = new JPanel(gridLayout); //holds controlPanel and inventoryPanel
-    controlPanel = new JPanel(); //holds gui buttons
+    controlPanel = new JPanel(new GridLayout(3, 1, 0, 0)); //holds gui buttons
     inventoryPanel = new JPanel(new GridLayout(4, 1, 1, 9)); // will hold inventory images
 
+    JLabel inventoryLabel = new JLabel("Inventory");
+//    inventoryLabel.setText("Inventory");
+    inventoryLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+    inventoryLabel.setForeground(Color.BLACK);
+
     //setting color
-    controlPanel.setBackground(Color.blue);
+    rightSidePanel.setBackground(Color.darkGray);
+    controlPanel.setBackground(Color.darkGray);
+    inventoryPanel.setBackground(Color.darkGray);
+
 
     //Creating TitleBorder for Inventory
-    inventoryPanel.setBorder(new TitledBorder(null, "Inventory", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+    controlPanel.setSize(100, 300);
+    inventoryPanel.setBorder(new TitledBorder(BorderFactory.createLineBorder(PURPLE, 5), "Inventory", TitledBorder.CENTER, TitledBorder.TOP, new Font("Times New Roman", Font.BOLD, 23), Color.black));
 
     //pass inventory panel to imageUI to be updated
     imageUI.setGuiInventoryPanel(inventoryPanel);
 
     //creating buttons right panel
     mapBtn = new JButton("Go Orbit");
-    menuBtn = new JButton("Menu");
-    repairBtn = new JButton("Repair");
-    helpBtn = new JButton("Help");
+    menuBtn = new JButton();
+    repairBtn = new JButton();
+    helpBtn = new JButton();
     loadBtn = new JButton("Load");
     unloadBtn = new JButton("Unload");
     refuelBtn = new JButton("Refuel");
@@ -407,28 +417,32 @@ public class Gui {
     });
 
     //Adding inventory and control to rightSide panel
+//    rightSidePanel.add(backgroundLabel);
+
     rightSidePanel.add(controlPanel);
     rightSidePanel.add(inventoryPanel);
 
     //adding button to right panel: Control Panel
-    controlPanel.setLayout(gridLayout); //Setting controlPanel to grid layout
+    createBtnIcon(menuBtn, "images/Menu.png", 125, 70);
     controlPanel.add(menuBtn);
-    controlPanel.add(mapBtn);
-    controlPanel.add(mainBtn);
-    controlPanel.add(repairBtn);
+    createBtnIcon(helpBtn, "images/Help.png", 125, 70);
     controlPanel.add(helpBtn);
+    createBtnIcon(repairBtn, "images/Repair.png", 125, 70);
+    controlPanel.add(repairBtn);
+//    controlPanel.add(inventoryLabel);
+//    controlPanel.add(mapBtn);
+//    controlPanel.add(mainBtn);
 //    controlPanel.add(loadBtn);
 //    controlPanel.add(unloadBtn);
 //    controlPanel.add(refuelBtn);
-    controlPanel.add(godModeBtn);
+//    controlPanel.add(godModeBtn);
 //    controlPanel.add(interactBtn);
   }
 
-  public void createGameOverWinScreen(){
+  public void createGameOverWinScreen() {
     gameOverWinPanel.setVisible(false);
 
 //    showGameOverWinScreen();
-
 
     gameOverWinPanel.setLayout(new BorderLayout());
     gameOverWinPanel.setBackground(Color.BLACK);
@@ -436,7 +450,8 @@ public class Gui {
     JPanel topPanel = new JPanel(new BorderLayout());
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 100);
 
-    JLabel gameOverLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("Astronaut-BoomBox.png")));
+    JLabel gameOverLabel = new JLabel(
+        new ImageIcon(getClass().getClassLoader().getResource("Astronaut-BoomBox.png")));
 
     JLabel youWonLabel = new JLabel("You Won!!!", SwingConstants.CENTER);
     JLabel partnerLabel = new JLabel("Happy Travels Partner ;)", SwingConstants.CENTER);
@@ -453,14 +468,12 @@ public class Gui {
     youWonLabel.setBackground(Color.BLACK);
     youWonLabel.setForeground(Color.white);
 
-
     topPanel.add(youWonLabel, BorderLayout.PAGE_START);
     topPanel.add(gameOverLabel, BorderLayout.CENTER);
     topPanel.add(partnerLabel, BorderLayout.PAGE_END);
 
     startBtn = new JButton("Start New Game");
     JButton quitBtn = new JButton("Quit Game");
-
 
     normalFont = new Font("Times New Roman", Font.PLAIN, 40);
     partnerLabel.setFont(normalFont);
@@ -478,16 +491,15 @@ public class Gui {
 
     //Add btn listeners
     chaChaRealSmooth(quitBtn, "quit", false);
-    chaChaRealSmooth(startBtn,"new", false);
+    chaChaRealSmooth(startBtn, "new", false);
 
     gameOverWinPanel.add(topPanel, BorderLayout.CENTER);
     gameOverWinPanel.add(bottomPanel, BorderLayout.PAGE_END);
 
 
-
   }
 
-  public void createGameOverLoseScreen(){
+  public void createGameOverLoseScreen() {
     gameOverLosePanel.setVisible(false);
 //    removeOtherPanelsToShowGameOverLoseScreen();
 //    showGameOverLoseScreen();
@@ -500,13 +512,15 @@ public class Gui {
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 100);
 
     JLabel youLostLabel = new JLabel("You Lost :(", SwingConstants.CENTER);
-    JLabel gameOverLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png")), SwingConstants.CENTER);
+    JLabel gameOverLabel = new JLabel(
+        new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png")),
+        SwingConstants.CENTER);
     JLabel youSuckLabel = new JLabel("YOU SUCK LOSER!", SwingConstants.CENTER);
 
     youLostLabel.setFont(titleFont);
     youLostLabel.setForeground(Color.white);
 
-    topPanel.add(youLostLabel,BorderLayout.PAGE_START);
+    topPanel.add(youLostLabel, BorderLayout.PAGE_START);
     topPanel.add(gameOverLabel, BorderLayout.CENTER);
     topPanel.add(youSuckLabel, BorderLayout.PAGE_END);
 
@@ -528,15 +542,13 @@ public class Gui {
     bottomPanel.add(quitBtn);
 
     chaChaRealSmooth(quitBtn, "quit", false);
-    chaChaRealSmooth(startBtn,"new", false);
+    chaChaRealSmooth(startBtn, "new", false);
 
     gameOverLosePanel.add(topPanel, BorderLayout.CENTER);
     gameOverLosePanel.add(bottomPanel, BorderLayout.PAGE_END);
 
 
-
   }
-
 
 
   public void createTitleScreen() {
@@ -768,11 +780,11 @@ public class Gui {
     frame.setVisible(true);
   }
 
-  public void showNewGameReplay(){
-    if (gameOverWinPanel.isVisible()){
+  public void showNewGameReplay() {
+    if (gameOverWinPanel.isVisible()) {
       gameOverWinPanel.setVisible(false);
     }
-    if(gameOverLosePanel.isVisible()){
+    if (gameOverLosePanel.isVisible()) {
       gameOverLosePanel.setVisible(false);
     }
 
@@ -782,6 +794,7 @@ public class Gui {
 
     imageUI.showEarthScreen2(); //Gets earth background screen.
   }
+
   public void showGameOverLoseScreen() {
     statusPanel.setVisible(false);
     centralDisplayPanel.setVisible(false);
@@ -796,12 +809,13 @@ public class Gui {
     gameOverLosePanel.setVisible(false);
     gameOverLosePanel.setVisible(true);
   }
+
   public void showGameOverWinScreen() {
     statusPanel.setVisible(false);
     centralDisplayPanel.setVisible(false);
     rightSidePanel.setVisible(false);
     mapPanel.setVisible(false);
-    frame.add(gameOverWinPanel,BorderLayout.CENTER);
+    frame.add(gameOverWinPanel, BorderLayout.CENTER);
     gameOverWinPanel.setVisible(true);
 
   }
@@ -818,7 +832,7 @@ public class Gui {
     btn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        if(btn.equals(startBtn)){
+        if (btn.equals(startBtn)) {
           frame.remove(gameOverLosePanel);
           frame.remove(gameOverWinPanel);
           warningMessage();
@@ -856,10 +870,12 @@ public class Gui {
 //    imageUI.createPlanetScreen();
   }
 
-  public void planetBackgroundUpdate(String item, String dangerCondition, int numberOfAstronautsOnPlanet,
-      String currentPlanet, List<String> inventory){
+  public void planetBackgroundUpdate(String item, String dangerCondition,
+      int numberOfAstronautsOnPlanet,
+      String currentPlanet, List<String> inventory) {
 
-    imageUI.planetBackgroundCustomization(item, dangerCondition, numberOfAstronautsOnPlanet, currentPlanet,
+    imageUI.planetBackgroundCustomization(item, dangerCondition, numberOfAstronautsOnPlanet,
+        currentPlanet,
         inventory);
   }
 
@@ -909,18 +925,20 @@ public class Gui {
     warningLabel.setVisible(false);
   }
 
-  public void displayStrings() {
-    if (warningBoolean) {
-      warningLabel.setVisible(true);
-      centralDisplayPanel.setVisible(false);
-      centralDisplayPanel.setVisible(true);
-      warningBoolean = false;
-    } else {
-      warningLabel.setVisible(false);
-      centralDisplayPanel.setVisible(false);
-      centralDisplayPanel.setVisible(true);
-      warningBoolean = true;
-    }
+  public void createBtnIcon(JButton btn, String png, int scaleWidth, int scaleHeight) {
+    btnIcon = new ImageIcon(getClass().getClassLoader().getResource(png));
+    Image img = btnIcon.getImage();
+    Image newImg = img.getScaledInstance(scaleWidth, scaleHeight, Image.SCALE_DEFAULT);
+    btnIcon = new ImageIcon(newImg);
+    btn.setIcon(btnIcon);
+    btn.setBackground(Color.darkGray);
+    btn.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+  }
+
+  public void imageUiReset() {
+    imageUI.setRefuelsLeft(3);
+    imageUI.updateRefuelsOnStation();
+    imageUI.getGuiInventoryPanel().removeAll();
   }
 
   //  GETTERS AND SETTERS
