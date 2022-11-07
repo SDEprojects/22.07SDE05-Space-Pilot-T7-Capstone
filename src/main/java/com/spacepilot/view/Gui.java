@@ -53,7 +53,7 @@ public class Gui {
       planetStatusPanel, menuPanel, soundPanel, mapPanel, helpScreenPanel, helpBtnPanel, backgroundScreenPanel;
   private JLabel titleLabel, currentPlanetLabel, damageConditionLabel, itemsOnPlanetLabel,
       numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel, warningLabel, helpLabel;
-  private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn, dotBtn;
+  private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn, godStarBtn;
   private Boolean warningBoolean = true;
 
   private float currentVolume;
@@ -68,6 +68,7 @@ public class Gui {
   private JPanel gameOverLosePanel = new JPanel();
   private JPanel bottomPanel;
   private JPanel gameOverWinPanel = new JPanel();
+  private Boolean isInitialGame;
 
   //CONSUMER TIPS
 //  private Consumer <String> movePlanetsListenerConsumer;
@@ -660,7 +661,6 @@ public class Gui {
       @Override
       public void actionPerformed(ActionEvent e) {
         controllerField.textParser("continue");
-        showGameScreenPanels();
       }
     });
   }
@@ -762,9 +762,14 @@ public class Gui {
     continueBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        showGameScreenPanels();
-        ticktock.getTimer().start();
-        controllerField.stopTimer();
+        //Conditional to show help at start at game vs help while playing game that returns to current screen.
+        if(isInitialGame){
+          showGameScreenPanels();
+          isInitialGame = false;
+        }
+        else{
+          showMain();
+        }
       }
     });
   }
@@ -878,9 +883,9 @@ public class Gui {
     planetIcons(stationBtn, "images/Station.png", 700, -40, 300, 340, 300, 300);
     chaChaRealSmooth(stationBtn, "go station", true);
     //    creates godmode btn
-    dotBtn = new JButton();
-    planetIcons(dotBtn, "images/Dot.png", 5, 5, 3, 3, 3, 3);
-    chaChaRealSmooth(dotBtn, "god", false);
+    godStarBtn = new JButton();
+    planetIcons(godStarBtn, "images/Dot.png", 5, 5, 3, 3, 3, 3);
+    chaChaRealSmooth(godStarBtn, "god", false);
     //Adding all buttons to menu frame
     mapPanel.add(earthBtn);
     mapPanel.add(moonBtn);
@@ -892,7 +897,7 @@ public class Gui {
     mapPanel.add(uranusBtn);
     mapPanel.add(saturnBtn);
     mapPanel.add(stationBtn);
-    mapPanel.add(dotBtn);
+    mapPanel.add(godStarBtn);
     mapPanel.add(sunBtn);
     mapPanel.add(backgroundLabel);
     sunBtn.setOpaque(false);
@@ -901,9 +906,9 @@ public class Gui {
     stationBtn.setOpaque(false);
     stationBtn.setContentAreaFilled(false);
     stationBtn.setBorderPainted(false);
-    dotBtn.setOpaque(false);
-    dotBtn.setContentAreaFilled(false);
-    dotBtn.setBorderPainted(false);
+    godStarBtn.setOpaque(false);
+    godStarBtn.setContentAreaFilled(false);
+    godStarBtn.setBorderPainted(false);
   }
 
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
@@ -957,77 +962,130 @@ public class Gui {
     menuPanel.setVisible(false);
     soundPanel.setVisible(false);
     mapPanel.setVisible(false);
+    helpScreenPanel.setVisible(false);
+
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
+    statusPanel.setVisible(true);
+    rightSidePanel.setVisible(true);
+
     centralDisplayPanel.setVisible(true);
   }
 
+  //Part of game initialization to start new game Gui
   public void showGameScreenPanels() {
-    //Attach panels to the outermost Main Frame
-//    if(titleScreenPanel.isVisible()) {
+    //Set panels to false visibility
     titleScreenPanel.setVisible(false);
-//    }
-//    if (gameOverWinPanel.isVisible()){
     gameOverWinPanel.setVisible(false);
-//    }
-//    if(gameOverLosePanel.isVisible()){
     gameOverLosePanel.setVisible(false);
-
     helpScreenPanel.setVisible(false);
 
+    //Attach panels to the outermost Main Frame
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
     frame.add(rightSidePanel, BorderLayout.LINE_END);
+
+    //Set correct panels to visible
     statusPanel.setVisible(true);
     centralDisplayPanel.setVisible(true);
     rightSidePanel.setVisible(true);
-    imageUI.showEarthScreen2(); //Gets earth background screen.
+
+    //Get earth background scene
+    imageUI.showEarthScreen2();
+
     frame.setVisible(true);
+
+    //starts the timer
+    ticktock.getTimer().start();
+  }
+
+  public void showGameScreenPanelsForContinuedGame(String currentPlanet) {
+    //Set panels to false visibility
+    titleScreenPanel.setVisible(false);
+    gameOverWinPanel.setVisible(false);
+    gameOverLosePanel.setVisible(false);
+    helpScreenPanel.setVisible(false);
+
+    //Attach panels to the outermost Main Frame
+    frame.add(statusPanel, BorderLayout.PAGE_START);
+    frame.add(centralDisplayPanel, BorderLayout.CENTER);
+    frame.add(rightSidePanel, BorderLayout.LINE_END);
+
+    //Set correct panels to visible
+    statusPanel.setVisible(true);
+    centralDisplayPanel.setVisible(true);
+    rightSidePanel.setVisible(true);
+
+    //Get current planet background scene
+    if(currentPlanet.equals("Earth")){
+      imageUI.showEarthScreen2();
+    }else if(currentPlanet.equals("Station")){
+      imageUI.updateRefuelsOnStation();
+      imageUI.showStationScreen3(); //gets correct background panel
+    }else if(currentPlanet.equals("Orbit")){
+      showMap();
+    }else { //If it's any planet, create planet background
+      controllerField.getStatusUpdateForBackgrounds(); //update planet again before switch
+      imageUI.createPlanetScreen(); //create the planet screen then show
+      imageUI.showPlanetScreen1();
+    };
+
+    //set visibility
+    frame.setVisible(true);
+
+    //starts the timer
+    ticktock.getTimer().start();
   }
 
 
+  //Displays introduction of game in window
   public void showBackgroundScreen() {
     //Attach panels to the outermost Main Frame
-//    if(titleScreenPanel.isVisible()) {
+
     titleScreenPanel.setVisible(false);
-//    }
-//    if (gameOverWinPanel.isVisible()){
+
     gameOverWinPanel.setVisible(false);
-//    }
-//    if(gameOverLosePanel.isVisible()){
+
     gameOverLosePanel.setVisible(false);
 
     frame.add(backgroundScreenPanel, BorderLayout.CENTER);
     frame.setVisible(true);
     backgroundScreenPanel.setVisible(true);
   }
-
+  //Displays help screen at start of game as part of intro
   public void showHelpScreen() {
     //Attach panels to the outermost Main Frame
-//    if(titleScreenPanel.isVisible()) {
+
     titleScreenPanel.setVisible(false);
-//    }
-//    if (gameOverWinPanel.isVisible()){
+
     gameOverWinPanel.setVisible(false);
-//    }
-//    if(gameOverLosePanel.isVisible()){
+
     gameOverLosePanel.setVisible(false);
 
     backgroundScreenPanel.setVisible(false);
+
+
+    menuPanel.setVisible(false);
+    soundPanel.setVisible(false);
+    mapPanel.setVisible(false);
+    centralDisplayPanel.setVisible(false);
 
     frame.add(helpScreenPanel, BorderLayout.CENTER);
     frame.setVisible(true);
     helpScreenPanel.setVisible(true);
   }
 
+  //Displays help screen after game has started
   public void showHelpScreenBtn() {
     statusPanel.setVisible(false);
     centralDisplayPanel.setVisible(false);
     rightSidePanel.setVisible(false);
+
     menuPanel.setVisible(false);
     mapPanel.setVisible(false);
     soundPanel.setVisible(false);
     helpScreenPanel.setVisible(true);
   }
+
 
   public void showNewGameReplay() {
     if (gameOverWinPanel.isVisible()) {
@@ -1089,10 +1147,18 @@ public class Gui {
         }
         controllerField.textParser(command);
         if (!planet) {
-          return;
+          if(command.equals("god")){ //pop up for god movde
+            CustomDialogBox godDialog = new CustomDialogBox(frame, "Message", "God Mode has Been Enabled.\n"
+                + " \nAll items added to inventory."
+                + " \nStatus bars replenished."
+                + " \nAll astronauts on ship.");
+          }else if(command.equals("save")){ //pop up for save
+              CustomDialogBox saveDialog = new CustomDialogBox(frame, "Save Message", "Game Saved Successfully!");
+          }
         } else if (command.equals("go station")) {
           mapPanel.setVisible(false); //hides map panel
           centralDisplayPanel.setVisible(true); //shows central panel
+          imageUI.updateRefuelsOnStation();
           imageUI.showStationScreen3(); //gets correct background panel
         } else if (command.equals("go earth")) {
           mapPanel.setVisible(false);
@@ -1125,29 +1191,30 @@ public class Gui {
 //    imageUI.createPlanetScreen();
   }
 
+  //sends game status info to imageGUI to update planet backgrounds
   public void planetBackgroundUpdate(String item, String dangerCondition,
       int numberOfAstronautsOnPlanet,
-      String currentPlanet, List<String> inventory) {
+      String currentPlanet, List<String> inventory, int startingRefuel, int refuelsLeft ) {
 
     imageUI.planetBackgroundCustomization(item, dangerCondition, numberOfAstronautsOnPlanet,
         currentPlanet,
         inventory);
+    imageUI.setStartingRefuels(startingRefuel);
+    imageUI.setRefuelsLeft(refuelsLeft);
   }
 
-  public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,
-      int strandedAstros, int refuelsLeft) {
-//    inventoryLabel.setText("Inventory: " + inventory);
+  public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,int startingRepairs,
+     int startingStrandedAstronauts, int rescuedAstronauts) {
     currentPlanetLabel.setText(
         String.format("<html>&emsp Current Location: <font color=#990000>%s</font></html>",
             planet.getName()));
     repairsLeftLabel.setText(
-        String.format("<html>&emsp Repairs Left: <font color=#990000>%s</font></html>",
-            repairsLeft));
+        String.format("<html>&emsp Repairs Left: <font color=#990000>%1$s / %2$s</font></html>",
+            repairsLeft, startingRepairs));
     strandedAstronautsLabel.setText(
-        String.format("<html>Stranded Astronauts: <font color=#990000>%s</font></html>",
-            strandedAstros));
-    //Sets the refuelsLeft field in imageUI to update station planet
-    imageUI.setRefuelsLeft(refuelsLeft);
+        String.format("<html>Stranded Astronauts: <font color=#990000>%1$s / %2$s</font></html>",
+            rescuedAstronauts, startingStrandedAstronauts));
+
   }
 
   public void planetIcons(JButton btn, String png, Integer x, Integer y, Integer width,
@@ -1196,10 +1263,9 @@ public class Gui {
     btn.setBorder(BorderFactory.createLineBorder(Color.black));
   }
 
-  public void imageUiReset() {
-    imageUI.setRefuelsLeft(3);
-    imageUI.updateRefuelsOnStation();
-    imageUI.getGuiInventoryPanel().removeAll();
+  //To update inventory with replay
+  public void inventoryImagesReset() {
+    imageUI.loopThroughInventoryToCheckCurrentItems();
   }
 
   public void setStatusPanelFont(JLabel label) {
@@ -1237,6 +1303,9 @@ public class Gui {
     this.warningLabel = warningLabel;
   }
 
+  public void setInitialGame(Boolean initialGame) {
+    isInitialGame = initialGame;
+  }
 }
 
 

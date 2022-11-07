@@ -174,4 +174,8 @@ public class View {
   public static void tellUserToInteractToClearDamageCondition(String preReq, String damageCondition){
     System.out.println("Use " + preReq + " on " + damageCondition + " to clear the way for loading astronauts!");
   }
+
+  public static void cantUnloadOnEarthWithoutAllAstronauts(int remainingAstronauts){
+    System.out.println("You can't unload on Earth until you've rescued all astronauts! There are " + remainingAstronauts + " remaining.");
+  }
 }

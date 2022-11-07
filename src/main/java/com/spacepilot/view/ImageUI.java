@@ -33,6 +33,7 @@ public class ImageUI {
   private JPanel guiInventoryPanel;
   private JLabel refuelsLeftLabel;
   private int refuelsLeft;
+  private int startingRefuels;
 
 
 
@@ -301,7 +302,7 @@ public class ImageUI {
     createBackgroundLabel(3, "backgrounds/station.png");
     createMapObject(3, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
       //Creates Label tracking refuels on station
-    refuelsLeftLabel = new JLabel("3 / 3");
+    refuelsLeftLabel = new JLabel(refuelsLeft + " / " + startingRefuels);
     refuelsLeftLabel.setForeground(Color.white);
     refuelsLeftLabel.setLayout(null);
     refuelsLeftLabel.setBounds(839, 190, 150, 160);
@@ -315,7 +316,7 @@ public class ImageUI {
 
   //Updates fuel count after refuel is clicked
   public void updateRefuelsOnStation(){
-    refuelsLeftLabel.setText(refuelsLeft + " / 3");
+    refuelsLeftLabel.setText(refuelsLeft + " / " + startingRefuels);
   }
 
   //Rotates background scenes
@@ -352,5 +353,9 @@ public class ImageUI {
 
   public JPanel getGuiInventoryPanel() {
     return guiInventoryPanel;
+  }
+
+  public void setStartingRefuels(int startingRefuels) {
+    this.startingRefuels = startingRefuels;
   }
 }
