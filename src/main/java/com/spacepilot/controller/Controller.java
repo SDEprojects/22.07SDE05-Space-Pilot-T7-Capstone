@@ -346,8 +346,20 @@ public class Controller {
           }
           //Check if planet has prereq/damageCondition that causes damage to ship
           String preReq = destinationPlanet.getPreReq();
-
+          //set current planet
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
+          //Print string for arriving at planet or station
+          if(command[1].equals("Station")){
+            View.printStationArrivalMessage(game.getStartingRefuels(), game.getRemainingRefuels());
+          }else if(!command[1].equals("Orbit") && !command[1].equals("Station") ){
+            //Send correct string if astronauts are present on planet
+            String astronautsPresent = game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() >0 ? "some" : "no";
+            //Send correct string if danger
+            String dangerOnPlanet = game.getSpacecraft().getCurrentPlanet().getDamageCondition() != null ? game.getSpacecraft().getCurrentPlanet().getDamageCondition() : "no danger";
+            View.printPlanetArrivalMessage(game.getSpacecraft().getCurrentPlanet().getName(), astronautsPresent,dangerOnPlanet );
+          }
+
+
           Music.playAudioFX("sounds/Rocket_Ship.wav");
 //deducts fuels from planets after moving
           if (!command[1].equals("orbit")) {

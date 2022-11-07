@@ -37,6 +37,15 @@ public class View {
     }
   }
 
+  public static void printPlanetArrivalMessage(String currentPlanet, String astronautsPresent, String danger){
+    System.out.printf("You've arrived at %1$s. You look around and see %2$s stranded astronauts here. Scouting for danger, you confirm there is %3$s!",
+        currentPlanet, astronautsPresent, danger);
+  }
+
+  public static void printStationArrivalMessage(int startingRefuel, int remainingRefuel){
+    System.out.printf("You've arrived at the Space Station. You have %1$d refuels remaining out of %2$d.", remainingRefuel, startingRefuel);
+  }
+
   public static void printHurryUp() {
     System.out.println("We have to move fast out there, my oxygen is limited on this rescue mission!\n\nTime to hop in and take off!");
   }

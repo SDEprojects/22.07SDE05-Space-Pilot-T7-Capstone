@@ -915,6 +915,7 @@ deathStatement();
     godStarBtn.setBorderPainted(false);
   }
 
+
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
     btn.addActionListener(new ActionListener() {
       @Override
