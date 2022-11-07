@@ -310,33 +310,54 @@ public class Gui {
     //CREATES MUSIC PANEL
     soundPanel = new JPanel();
 
+    soundPanel.setLayout(null);
+    //Creating a menu
+//    soundPanel.setBackground(Color.black);
+
+    JLabel backgroundLabel = new JLabel("");
+    backgroundLabel.setIcon(
+        new ImageIcon(getClass().getClassLoader().getResource("images/Space.jpg")));
+    backgroundLabel.setBounds(0, 0, 1140, 900);
+
     //creates buttons for music panel
-    JButton muteBtn = new JButton("Mute FX");
-    JButton playPauseBtn = new JButton("Play/Pause");
-    JButton track1B = new JButton("Track 1");
-    JButton track2B = new JButton("Track 2");
-    JButton track3B = new JButton("Track 3");
-    JButton track4B = new JButton("Track 4");
+    JButton muteBtn = new JButton();
+    JButton playBtn = new JButton();
+    JButton pauseBtn = new JButton();
+    JButton track1B = new JButton();
+    JButton track2B = new JButton();
+    JButton track3B = new JButton();
+    JButton track4B = new JButton();
+    JPanel sliderPanel = new JPanel();
     slider = new JSlider(-40, 6);
 
-    //button plays and pauses current track
+    //button plays current track
     method = i -> Music.musicMute();
-    soundButtons(playPauseBtn, method, null);
+    soundButtons(playBtn, method, null);
+    planetIcons(playBtn, "images/Play.png", 50, 75, 400, 75, 400, 75);
+    //button pauses current track
+    method = i -> Music.musicMute();
+    soundButtons(pauseBtn, method, null);
+    planetIcons(pauseBtn, "images/Pause.png", 550, 75, 400, 75, 400, 75);
     //button mutes and unMutes FX
     method = i -> Music.fxMute();
     soundButtons(muteBtn, method, null);
+    planetIcons(muteBtn, "images/FxMute.png", 50, 175, 400, 75, 400, 75);
     //button plays track 1 as background music
     method = wavFile -> Music.track1(wavFile);
     soundButtons(track1B, method, "sounds/Space_Chill.wav");
+    planetIcons(track1B, "images/Track1.png", 50, 275, 900, 100, 900, 100);
     //button plays track 2 as background music
     method = wavFile -> Music.track2(wavFile);
     soundButtons(track2B, method, "sounds/Space_Ambient.wav");
+    planetIcons(track2B, "images/Track2.png", 50, 400, 900, 100, 900, 100);
     //button plays track 3 as background music
     method = wavFile -> Music.track3(wavFile);
     soundButtons(track3B, method, "sounds/Space_Cinematic.wav");
+    planetIcons(track3B, "images/Track3.png", 50, 525, 900, 100, 900, 100);
     //button plays track 4 as background music
     method = wavFile -> Music.track4(wavFile);
     soundButtons(track4B, method, "sounds/Space_Cyber.wav");
+    planetIcons(track4B, "images/Track4.png", 50, 650, 900, 100, 900, 100);
     //slider is implemented to adjust volume up and down for current background music
     slider.addChangeListener(new ChangeListener() {
       @Override
@@ -349,17 +370,21 @@ public class Gui {
 
       }
     });
-
+    sliderPanel.setBounds(650, 200, 200, 25);
+    sliderPanel.setBackground(Color.black);
     playMusic();
 
     //adds buttons to music panel
-    soundPanel.add(playPauseBtn);
+    soundPanel.add(playBtn);
+    soundPanel.add(pauseBtn);
     soundPanel.add(muteBtn);
     soundPanel.add(track1B);
     soundPanel.add(track2B);
     soundPanel.add(track3B);
     soundPanel.add(track4B);
-    soundPanel.add(slider);
+    soundPanel.add(sliderPanel);
+    sliderPanel.add(slider);
+    soundPanel.add(backgroundLabel);
   }
 
   private void createRightSideControlPanel(GridLayout gridLayout) {
@@ -608,26 +633,34 @@ public class Gui {
   public void createMenuPanel() {
 
     menuPanel = new JPanel(); //Create Panel for content
-
+menuPanel.setLayout(null);
     //Creating a menu
     menuPanel.setBackground(Color.black);
+
+    JLabel backgroundLabel = new JLabel("");
+    backgroundLabel.setIcon(
+        new ImageIcon(getClass().getClassLoader().getResource("images/Space.jpg")));
+    backgroundLabel.setBounds(0, 0, 1140, 900);
     //Creating menu buttons
-    JButton soundSettingsBtn = new JButton("Sound Settings");
+    JButton soundSettingsBtn = new JButton();
     soundSettingsBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         showSoundSettings();
       }
     });
-    JButton videoSettingsBtn = new JButton("Video Settings");
-    JButton saveGameBtn = new JButton("Save");
-    JButton loadSaveGameBtn = new JButton("Load Saved Game");
-    JButton saveAndQuitGameBtn = new JButton("Quit Game");
+    planetIcons(soundSettingsBtn, "images/Sound.png", 195, 75, 600, 150, 600, 150);
+    JButton saveGameBtn = new JButton();
+    planetIcons(saveGameBtn, "images/Save.png", 195, 250, 600, 150, 600, 150);
+    JButton quitGameBtn = new JButton();
+    planetIcons(quitGameBtn, "images/Quit.png", 195, 425, 600, 150, 600, 150);
+    JButton exitMenuBtn = new JButton();
+    planetIcons(exitMenuBtn, "images/Return.png", 195, 600, 600, 150, 600, 150);
     menuPanel.add(soundSettingsBtn); //Adding all buttons to menu frame
-    menuPanel.add(videoSettingsBtn);
     menuPanel.add(saveGameBtn);
-    menuPanel.add(loadSaveGameBtn);
-    menuPanel.add(saveAndQuitGameBtn);
+    menuPanel.add(quitGameBtn);
+    menuPanel.add(exitMenuBtn);
+    menuPanel.add(backgroundLabel);
   }
 
   public void createMapPanel() {
