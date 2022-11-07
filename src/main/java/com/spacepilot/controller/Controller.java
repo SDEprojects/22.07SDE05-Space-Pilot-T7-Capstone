@@ -349,9 +349,9 @@ public class Controller {
           //set current planet
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
           //Print string for arriving at planet or station
-          if(command[1].equals("Station")){
+          if(command[1].equals("station")){
             View.printStationArrivalMessage(game.getStartingRefuels(), game.getRemainingRefuels());
-          }else if(!command[1].equals("Orbit") && !command[1].equals("Station") ){
+          }else if(!command[1].equals("orbit")){
             //Send correct string if astronauts are present on planet
             String astronautsPresent = game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() >0 ? "some" : "no";
             //Send correct string if danger
