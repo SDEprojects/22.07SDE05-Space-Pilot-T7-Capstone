@@ -302,7 +302,7 @@ public class ImageUI {
     createBackgroundLabel(3, "backgrounds/station.png");
     createMapObject(3, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
       //Creates Label tracking refuels on station
-    refuelsLeftLabel = new JLabel("3 / 3");
+    refuelsLeftLabel = new JLabel(refuelsLeft + " / " + startingRefuels);
     refuelsLeftLabel.setForeground(Color.white);
     refuelsLeftLabel.setLayout(null);
     refuelsLeftLabel.setBounds(839, 190, 150, 160);

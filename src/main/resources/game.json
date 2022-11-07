@@ -10,6 +10,10 @@
     "numOfNonEngineersOnBoard": 0,
     "totalPassengers": 0
   },
+  "startingRefuels" : 4,
+  "remainingRefuels": 4,
+  "startingRepairs": 3,
+  "remainingRepairs": 3,
   "totalNumberOfAstronauts" : 0,
   "planets": []
 }

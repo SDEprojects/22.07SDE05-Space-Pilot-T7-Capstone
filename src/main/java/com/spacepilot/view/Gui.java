@@ -6,7 +6,6 @@ import com.spacepilot.model.Planet;
 import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -22,10 +21,8 @@ import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -664,7 +661,6 @@ public class Gui {
       @Override
       public void actionPerformed(ActionEvent e) {
         controllerField.textParser("continue");
-        showGameScreenPanels();
       }
     });
   }
@@ -1002,7 +998,7 @@ public class Gui {
     ticktock.getTimer().start();
   }
 
-  public void showGameScreenPanelsForContinuedGame() {
+  public void showGameScreenPanelsForContinuedGame(String currentPlanet) {
     //Set panels to false visibility
     titleScreenPanel.setVisible(false);
     gameOverWinPanel.setVisible(false);
@@ -1020,8 +1016,20 @@ public class Gui {
     rightSidePanel.setVisible(true);
 
     //Get current planet background scene
-    imageUI.showEarthScreen2();
+    if(currentPlanet.equals("Earth")){
+      imageUI.showEarthScreen2();
+    }else if(currentPlanet.equals("Station")){
+      imageUI.updateRefuelsOnStation();
+      imageUI.showStationScreen3(); //gets correct background panel
+    }else if(currentPlanet.equals("Orbit")){
+      showMap();
+    }else { //If it's any planet, create planet background
+      controllerField.getStatusUpdateForBackgrounds(); //update planet again before switch
+      imageUI.createPlanetScreen(); //create the planet screen then show
+      imageUI.showPlanetScreen1();
+    };
 
+    //set visibility
     frame.setVisible(true);
 
     //starts the timer
@@ -1139,7 +1147,7 @@ public class Gui {
         }
         controllerField.textParser(command);
         if (!planet) {
-          if(command.equals("god")){ //pop up for save
+          if(command.equals("god")){ //pop up for god movde
             CustomDialogBox godDialog = new CustomDialogBox(frame, "Message", "God Mode has Been Enabled.\n"
                 + " \nAll items added to inventory."
                 + " \nStatus bars replenished."
@@ -1150,6 +1158,7 @@ public class Gui {
         } else if (command.equals("go station")) {
           mapPanel.setVisible(false); //hides map panel
           centralDisplayPanel.setVisible(true); //shows central panel
+          imageUI.updateRefuelsOnStation();
           imageUI.showStationScreen3(); //gets correct background panel
         } else if (command.equals("go earth")) {
           mapPanel.setVisible(false);
@@ -1194,20 +1203,18 @@ public class Gui {
     imageUI.setRefuelsLeft(refuelsLeft);
   }
 
-  public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,
-      int strandedAstros, int refuelsLeft, int startingStrandedAstronauts, int rescuedAstronauts) {
-//    inventoryLabel.setText("Inventory: " + inventory);
+  public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,int startingRepairs,
+     int startingStrandedAstronauts, int rescuedAstronauts) {
     currentPlanetLabel.setText(
         String.format("<html>&emsp Current Location: <font color=#990000>%s</font></html>",
             planet.getName()));
     repairsLeftLabel.setText(
-        String.format("<html>&emsp Repairs Left: <font color=#990000>%s</font></html>",
-            repairsLeft));
+        String.format("<html>&emsp Repairs Left: <font color=#990000>%1$s / %2$s</font></html>",
+            repairsLeft, startingRepairs));
     strandedAstronautsLabel.setText(
         String.format("<html>Stranded Astronauts: <font color=#990000>%1$s / %2$s</font></html>",
             rescuedAstronauts, startingStrandedAstronauts));
-    //Sets the refuelsLeft field in imageUI to update station planet
-//    imageUI.setRefuelsLeft(refuelsLeft);
+
   }
 
   public void planetIcons(JButton btn, String png, Integer x, Integer y, Integer width,
@@ -1256,10 +1263,9 @@ public class Gui {
     btn.setBorder(BorderFactory.createLineBorder(Color.black));
   }
 
-  public void imageUiReset() {
-    imageUI.setRefuelsLeft(3);
-    imageUI.updateRefuelsOnStation();
-    imageUI.getGuiInventoryPanel().removeAll();
+  //To update inventory with replay
+  public void inventoryImagesReset() {
+    imageUI.loopThroughInventoryToCheckCurrentItems();
   }
 
   public void setStatusPanelFont(JLabel label) {
