@@ -1135,7 +1135,7 @@ public class Gui {
   }
 
   public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,
-      int strandedAstros, int refuelsLeft) {
+      int strandedAstros, int refuelsLeft, int startingStrandedAstronauts, int rescuedAstronauts) {
 //    inventoryLabel.setText("Inventory: " + inventory);
     currentPlanetLabel.setText(
         String.format("<html>&emsp Current Location: <font color=#990000>%s</font></html>",
@@ -1144,8 +1144,8 @@ public class Gui {
         String.format("<html>&emsp Repairs Left: <font color=#990000>%s</font></html>",
             repairsLeft));
     strandedAstronautsLabel.setText(
-        String.format("<html>Stranded Astronauts: <font color=#990000>%s</font></html>",
-            strandedAstros));
+        String.format("<html>Stranded Astronauts: <font color=#990000>%1$s / %2$s</font></html>",
+            rescuedAstronauts, startingStrandedAstronauts));
     //Sets the refuelsLeft field in imageUI to update station planet
     imageUI.setRefuelsLeft(refuelsLeft);
   }

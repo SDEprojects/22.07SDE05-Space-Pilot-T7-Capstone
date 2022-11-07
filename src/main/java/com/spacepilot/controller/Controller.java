@@ -192,7 +192,7 @@ public class Controller {
 
 //    resetting refuels and repairs
     repairCounter = 2;
-    refuelCounter = 3;
+    refuelCounter = 4;
     gui.imageUiReset();
     //Reset timer to 3 minutes
     gui.getTicktock().setMinutes(8);
@@ -446,7 +446,9 @@ public class Controller {
     Planet planet = game.getSpacecraft().getCurrentPlanet();
     int strandedAstos = game.calculateRemainingAstronautsViaTotalNumOfAstronauts()
         - returnPlanet("Earth").getNumOfAstronautsOnPlanet();
-    gui.displayGameStatus(inventory, planet, repairCounter, strandedAstos, refuelCounter);
+    int startingStrandedAstronauts = game.getTotalNumberOfAstronauts();
+    int rescuedAstronauts = game.getSpacecraft().getPassengers().size();
+    gui.displayGameStatus(inventory, planet, repairCounter, strandedAstos, refuelCounter, startingStrandedAstronauts, rescuedAstronauts);
   }
 
   public void loadNewPassengers() {

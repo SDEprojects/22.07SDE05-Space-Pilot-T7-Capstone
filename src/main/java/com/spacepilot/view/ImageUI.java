@@ -315,7 +315,7 @@ public class ImageUI {
 
   //Updates fuel count after refuel is clicked
   public void updateRefuelsOnStation(){
-    refuelsLeftLabel.setText(refuelsLeft + " / 3");
+    refuelsLeftLabel.setText(refuelsLeft + " / 4");
   }
 
   //Rotates background scenes
