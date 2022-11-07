@@ -27,10 +27,15 @@ public class Ticktock {
 
 
   public void ticktock() {
-    timer = new Timer(1000, new ActionListener() {
+    timer = new Timer(500, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         seconds--;
+        if(minutes == 0 && seconds ==0){
+          oxygenTickerLose = true;
+          runDis.run();
+
+        }
         doubleDigitSeconds = dFormat.format(seconds);
         doubleDigitMinutes = dFormat.format(minutes);
         oxygenTimeLeftLabel.setText(String.format("<html>Oxygen Remaining: <font color=#990000>%s:%2s</font></html>", doubleDigitMinutes, doubleDigitSeconds));
@@ -42,17 +47,6 @@ public class Ticktock {
           doubleDigitMinutes = dFormat.format(minutes);
           oxygenTimeLeftLabel.setText(String.format("<html>Oxygen Remaining: <font color=#990000>%s:%2s</font></html>", doubleDigitMinutes, doubleDigitSeconds));
         }
-        if(minutes == 0 && seconds ==0){
-          oxygenTickerLose = true;
-          runDis.run();
-
-        }
-//        if(minutes == 2 && seconds == 55){
-//          oxygenTickerLose = true;
-//          runDis.run();
-//
-//        }
-
       }
     });
   }
