@@ -609,6 +609,12 @@ public class Controller {
         >= (double) 5 / 5;
 
     if (!userWon) {
+
+      if (game.getSpacecraft().getHealth() < 11) {
+        Music.playAudioFX("sounds/Low_Health.wav");
+      } else if (game.getSpacecraft().getFuel() == 21) {
+        Music.playAudioFX("sounds/Low_Fuel.wav");
+      }
       if (game.getSpacecraft().getFuel() < 0) {
         gui.getFuelLevelBar().setString("Fuel: " + 0 + "%");
 //        game.setOver(true);
