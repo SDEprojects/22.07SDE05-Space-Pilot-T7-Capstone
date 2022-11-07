@@ -331,11 +331,11 @@ public class Gui {
     slider = new JSlider(-40, 6);
 
     //button plays current track
-    method = i -> Music.musicMute();
+    method = i -> Music.musicPlay();
     soundButtons(playBtn, method, null);
     planetIcons(playBtn, "images/Play.png", 50, 75, 400, 75, 400, 75);
     //button pauses current track
-    method = i -> Music.musicMute();
+    method = i -> Music.musicPause();
     soundButtons(pauseBtn, method, null);
     planetIcons(pauseBtn, "images/Pause.png", 550, 75, 400, 75, 400, 75);
     //button mutes and unMutes FX
@@ -345,19 +345,19 @@ public class Gui {
     //button plays track 1 as background music
     method = wavFile -> Music.track1(wavFile);
     soundButtons(track1B, method, "sounds/Space_Chill.wav");
-    planetIcons(track1B, "images/Track1.png", 50, 275, 900, 100, 900, 100);
+    planetIcons(track1B, "images/Track1.png", 150, 275, 700, 100, 700, 100);
     //button plays track 2 as background music
     method = wavFile -> Music.track2(wavFile);
     soundButtons(track2B, method, "sounds/Space_Ambient.wav");
-    planetIcons(track2B, "images/Track2.png", 50, 400, 900, 100, 900, 100);
+    planetIcons(track2B, "images/Track2.png", 150, 400, 700, 100, 700, 100);
     //button plays track 3 as background music
     method = wavFile -> Music.track3(wavFile);
     soundButtons(track3B, method, "sounds/Space_Cinematic.wav");
-    planetIcons(track3B, "images/Track3.png", 50, 525, 900, 100, 900, 100);
+    planetIcons(track3B, "images/Track3.png", 150, 525, 700, 100, 700, 100);
     //button plays track 4 as background music
     method = wavFile -> Music.track4(wavFile);
     soundButtons(track4B, method, "sounds/Space_Cyber.wav");
-    planetIcons(track4B, "images/Track4.png", 50, 650, 900, 100, 900, 100);
+    planetIcons(track4B, "images/Track4.png", 150, 650, 700, 100, 700, 100);
     //slider is implemented to adjust volume up and down for current background music
     slider.addChangeListener(new ChangeListener() {
       @Override
@@ -370,8 +370,10 @@ public class Gui {
 
       }
     });
-    sliderPanel.setBounds(650, 200, 200, 25);
+    sliderPanel.setBounds(550, 200, 400, 25);
     sliderPanel.setBackground(Color.black);
+    slider.setBackground(PURPLE);
+    slider.setPreferredSize(new Dimension(400, 25));
     playMusic();
 
     //adds buttons to music panel
@@ -762,7 +764,11 @@ menuPanel.setLayout(null);
     btn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        if (wavFile != null) {
+          Music.setMusicMute(true);
+        }
         musicMethod.accept(wavFile);
+
       }
     });
   }
