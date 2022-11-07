@@ -33,14 +33,14 @@ public class Ticktock {
         seconds--;
         doubleDigitSeconds = dFormat.format(seconds);
         doubleDigitMinutes = dFormat.format(minutes);
-        oxygenTimeLeftLabel.setText(String.format("<html>Oxygen Remaining: <font color='red'>%s:%2s</font></html>", doubleDigitMinutes, doubleDigitSeconds));
+        oxygenTimeLeftLabel.setText(String.format("<html>Oxygen Remaining: <font color=#990000>%s:%2s</font></html>", doubleDigitMinutes, doubleDigitSeconds));
 
         if (seconds == -1){
           seconds = 59;
           minutes --;
           doubleDigitSeconds = dFormat.format(seconds);
           doubleDigitMinutes = dFormat.format(minutes);
-          oxygenTimeLeftLabel.setText(String.format("<html>Oxygen Remaining: <font color='red'>%s:%2s</font></html>", doubleDigitMinutes, doubleDigitSeconds));
+          oxygenTimeLeftLabel.setText(String.format("<html>Oxygen Remaining: <font color=#990000>%s:%2s</font></html>", doubleDigitMinutes, doubleDigitSeconds));
         }
         if(minutes == 0 && seconds ==0){
           oxygenTickerLose = true;
