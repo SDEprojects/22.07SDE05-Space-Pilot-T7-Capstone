@@ -320,16 +320,7 @@ public class Controller {
             gui.getFuelLevelBar().setString("Fuel: " + spacecraft.getFuel() + "%");
           }
           if (command[1].equals("orbit") && (!healthTimerBoolean || !alienTimerBoolean)) {
-            if (!healthTimerBoolean) {
-              healthTimer.stop();
-              healthTimerBoolean = true;
-              gui.removeWarningMessage();
-            } else if (!alienTimerBoolean) {
-              alienTimer.stop();
-              alienTimerBoolean = true;
-              gui.removeWarningMessage();
-            }
-
+            stopTimer();
           } else if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
             if (command[1].equals("venus")
                 || command[1].equals("uranus")) {
@@ -580,6 +571,7 @@ public class Controller {
 
   //gives the user all the astronauts, items, and sets health and fuel to 100
   public void godMode() {
+    Music.playAudioFX("sounds/God_Mode.wav");
     for (Planet planet : game.getPlanets()) {
       Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
       game.getSpacecraft().addPassengers(astronauts);
@@ -610,9 +602,9 @@ public class Controller {
 
     if (!userWon) {
 
-      if (game.getSpacecraft().getHealth() < 11) {
+      if (game.getSpacecraft().getHealth() < 21) {
         Music.playAudioFX("sounds/Low_Health.wav");
-      } else if (game.getSpacecraft().getFuel() == 21) {
+      } else if (game.getSpacecraft().getFuel() == 20) {
         Music.playAudioFX("sounds/Low_Fuel.wav");
       }
       if (game.getSpacecraft().getFuel() < 0) {
@@ -656,6 +648,20 @@ public class Controller {
         }
       }
     });
+  }
+
+
+  public void stopTimer() {
+    if (!healthTimerBoolean) {
+      healthTimer.stop();
+      healthTimerBoolean = true;
+      gui.removeWarningMessage();
+    } else if (!alienTimerBoolean) {
+      alienTimer.stop();
+      alienTimerBoolean = true;
+      gui.removeWarningMessage();
+    }
+
   }
 
   public void alienInteractionTimer() {

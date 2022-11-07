@@ -450,6 +450,7 @@ public class Gui {
     helpBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         showHelpScreenBtn();
+        controllerField.stopTimer();
       }
     });
     chaChaRealSmooth(interactBtn, "interact", false);
@@ -457,6 +458,7 @@ public class Gui {
     menuBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         showMenu();
+        controllerField.stopTimer();
       }
     });
     mapBtn.addActionListener(new ActionListener() {
@@ -618,23 +620,28 @@ public class Gui {
     //Create components
 
     titleScreenPanel = new JPanel();
-    titleLabel = new JLabel("Space Pilot", SwingConstants.CENTER); //centers label
+    titleLabel = new JLabel(); //centers label
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 130);
     normalFont = new Font("Times New Roman", Font.PLAIN, 30);
     startBtn = new JButton();
     continueBtn = new JButton();
     titleBtnPanel = new JPanel();
+
+    titleLabel.setIcon(
+        new ImageIcon(getClass().getClassLoader().getResource("images/Title.png")));
+    titleLabel.setBounds(250,100, 600, 300);
     //Set up titlePanel
-    titleScreenPanel.setLayout(new GridLayout(2, 1, 5, 4));
+    titleScreenPanel.setLayout(null);
     titleScreenPanel.setBackground(Color.black);
+    titleBtnPanel.setBounds(400, 550, 300, 300);
     //Set up titleLabel
     titleLabel.setFont(titleFont);
     titleLabel.setForeground(Color.lightGray);
     //Set up titleButtons & Panel
     startBtn.setBackground(Color.black);
     continueBtn.setBackground(Color.black);
-    planetIcons(continueBtn, "images/Load.png", 0, 0, 200, 100, 300, 100);
-    planetIcons(startBtn, "images/New.png", 0, 0, 200, 100, 300, 100);
+    planetIcons(continueBtn, "images/Load.png", 870, 600, 200, 100, 300, 100);
+    planetIcons(startBtn, "images/New.png", 570, 600, 200, 100, 300, 100);
     titleBtnPanel.setBackground(Color.black);
     //Add components together
     titleScreenPanel.add(titleLabel);
@@ -757,6 +764,7 @@ public class Gui {
       public void actionPerformed(ActionEvent e) {
         showGameScreenPanels();
         ticktock.getTimer().start();
+        controllerField.stopTimer();
       }
     });
   }
