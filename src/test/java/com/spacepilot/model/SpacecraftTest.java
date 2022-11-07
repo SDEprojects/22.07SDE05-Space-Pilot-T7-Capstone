@@ -47,6 +47,5 @@ public class SpacecraftTest {
     //You should not be able to add more than one passenger to the space craft
     //Ergo, only removing one astronaut
     assertTrue(numberOfAstronautsAfterAddingPassengers <= numberOfAstronautsBeforeAddingPassengers);
-
   }
 }

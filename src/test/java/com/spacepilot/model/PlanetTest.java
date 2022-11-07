@@ -25,6 +25,8 @@ public class PlanetTest {
 
   @Test
   public void testPlaceAstronautsMethodDoesNotPlaceMoreThanFourAstronautsPerPlanet() {
+
+   //Tests each planet to see if there are more than 4 astronauts
     for (Planet planet : game.getPlanets()) {
       int numOfAstronautsOnPlanet = planet.getNumOfAstronautsOnPlanet();
       assertTrue(numOfAstronautsOnPlanet<=4);
@@ -33,6 +35,7 @@ public class PlanetTest {
 
   @Test
   public void testPlaceAstronautsMethodDoesNotPlaceANegativeNumberOfAstronautsPerPlanet() {
+    //Tests each planet to see if there are less than 0 astronauts
     for (Planet planet : game.getPlanets()) {
       int numOfAstronautsOnPlanet = planet.getNumOfAstronautsOnPlanet();
       assertTrue(numOfAstronautsOnPlanet>=0);

@@ -27,6 +27,7 @@ public class GameTest {
 
   @Test
   public void calculateRemainingAstronautsViaTotalNumOfAstronautShouldEqualTotalNumberOfAstronautsAtTheBeginningOfTheGame() {
+    //If nothing gets loaded, the total number of astronauts should be the same as the astronauts remaining to save
     int totalAstros = game.getTotalNumberOfAstronauts();
     int remainingAstros  = game.calculateRemainingAstronautsViaTotalNumOfAstronauts();
     assertEquals(totalAstros, remainingAstros);
