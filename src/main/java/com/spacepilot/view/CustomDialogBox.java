@@ -32,7 +32,7 @@ public class CustomDialogBox implements ActionListener {
     //prevent clicking when dialog up
     dialog.setModal(true);
     //set dialog size
-    dialog.setPreferredSize(new Dimension(475, 550));
+    dialog.setPreferredSize(new Dimension(500, 700));
 
     //Create panel to hold text and button
     JPanel panel = new JPanel();
