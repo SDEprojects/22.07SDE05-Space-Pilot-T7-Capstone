@@ -77,10 +77,9 @@ public final class Music {
   }
 
 
-  public static void startAudio() throws InterruptedException {
+  public static void startAudio() {
     clip2.start();
     clip2.loop(0);
-    clip2.wait();
   }
 
   public static void stopAudio() {

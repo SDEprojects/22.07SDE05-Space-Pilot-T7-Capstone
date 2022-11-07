@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacepilot.Main;
 import com.spacepilot.model.Game;
+import com.spacepilot.model.Music;
 import com.spacepilot.model.Planet;
 import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.Gui;
 import com.spacepilot.view.View;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -188,7 +190,6 @@ public class Controller {
     gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
     //needs to connect health and fuel to spacecraft model
 
-
 //    resetting refuels and repairs
     repairCounter = 2;
     refuelCounter = 3;
@@ -244,11 +245,8 @@ public class Controller {
   public void gameIntro() throws IOException, InterruptedException {
     View.getGameTextJson();
 
-    // display introductory background story
-    View.printIntro();
-
-    // display game instructions (how-to-play)
-    View.printInstructions();
+    // display user to hurry
+    View.printHurryUp();
   }
 
   public void textParser(String text) {
@@ -269,17 +267,14 @@ public class Controller {
 
   public void nextMove(String[] command) throws IOException, InterruptedException {
     Spacecraft spacecraft = game.getSpacecraft();
-
+    View.textSpacing();
     if (command[0].equals("quit")) {
       System.exit(0);
     } else if (command[0].equals("help")) {
-      View.printInstructions();
-//      newGameInitialization();//creates new game?
+//      View.printInstructions();
 
     } else if (command[0].equals("new")) {
-//      View.printInstructions();
       newGameInitialization();//creates new game?
-
 
     } else if (command[0].equals("save")) {
       saveGame(game);
@@ -317,6 +312,7 @@ public class Controller {
           String preReq = destinationPlanet.getPreReq();
 
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
+          Music.playAudioFX("sounds/Rocket_Ship.wav");
 //deducts fuels from planets after moving
           if (!command[1].equals("orbit")) {
             gui.getFuelLevelBar().setValue((spacecraft.getFuel() - 10));
@@ -338,27 +334,32 @@ public class Controller {
             if (command[1].equals("venus")
                 || command[1].equals("uranus")) {
               if (command[1].equals("venus")) {
-                gui.getWarningLabel().setText("NO GAS MASK! YOU NEED TO EVACUATE IMMEDIATELY!");
+                gui.getWarningLabel().setForeground(Color.black);
+                gui.getWarningLabel().setText(" NO GAS MASK! EVACUATE IMMEDIATELY!  ");
+                Music.playAudioFX("sounds/Alarm.wav");//alarm
               } else {
-                gui.getWarningLabel().setText("    NO COLD SHIELD!  EVACUATE IMMEDIATELY!    ");
+                gui.getWarningLabel().setForeground(Color.GREEN);
+                gui.getWarningLabel().setText("NO COLD SHIELD! EVACUATE IMMEDIATELY!");
+                Music.playAudioFX("sounds/Alarm.wav");//alarm
               }
               healthTickTimer();
               healthTimer.start();
               healthTimerBoolean = false;
             }
-            String damageCondition = destinationPlanet.getDamageCondition();
-            View.printDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
-          } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
-            //Call string to show that you avoided damage by having correct preReq in inventory
-            String damageCondition = destinationPlanet.getDamageCondition();
-//            View.printDamageConditionAvoidedAlert(preReq, damageCondition);
+            if (command[1].equals("venus")
+                || command[1].equals("uranus")) {
+              String damageCondition = destinationPlanet.getDamageCondition();
+              View.printPlanetDamageConditionAlert(damageCondition, destinationPlanet.getName(),
+                  preReq);
+            }
 
-            //set planet preReq to null
-//            destinationPlanet.setPreReq(null);
-////            set damageCondition to null
-//            destinationPlanet.setDamageCondition(null);
-            //remove item from inventory as it's used.
-//            spacecraft.getInventory().remove(preReq);
+          } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
+            if (command[1].equals("venus")) {
+              Music.playAudioFX("sounds/Gas_Mask.wav"); //gas mask
+            }
+            if (command[1].equals("uranus")) {
+              Music.playAudioFX("sounds/Snow_Steps.wav"); //snow steps
+            }
           }
         }
       }
@@ -381,6 +382,7 @@ public class Controller {
         spacecraft.setHealth(100);
         gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
         View.printRepair();
+        Music.playAudioFX("sounds/Repair.wav");
         repairCounter--;
       } else if (repairCounter == 0) {
         View.printRepairLimit();
@@ -398,17 +400,26 @@ public class Controller {
     } else if (command[0].equals("god")) {
       godMode();
     } else if (command[0].equals("interact")) {
-
+      if (spacecraft.getCurrentPlanet().getName().equals("Uranus") && spacecraft.getInventory().contains("Cold Shield")) {
+        Music.playAudioFX("sounds/Ice_Break.wav"); //ice breaking
+      } else if (spacecraft.getCurrentPlanet().getName().equals("Venus") && spacecraft.getInventory().contains("Gas Mask")) {
+        Music.playAudioFX("sounds/Gas.wav"); //gas leak
+      }
       if (alienTimerBoolean && healthTimerBoolean) {
         if (spacecraft.getCurrentPlanet().getName().equals("Saturn")) {
-          gui.getWarningLabel().setText("NO ALIEN BABY FOR MAMA!  EVACUATE IMMEDIATELY!");
+          gui.getWarningLabel().setForeground(Color.GREEN);
+          gui.getWarningLabel().setText("NO ALIEN BABY! EVACUATE IMMEDIATELY! ");
+          Music.playAudioFX("sounds/Growl.wav"); //growl
         } else if (spacecraft.getCurrentPlanet().getName().equals("Neptune")) {
-          gui.getWarningLabel().setText("  NO WEAPON TO FIGHT!  EVACUATE IMMEDIATELY!  ");
+          gui.getWarningLabel().setForeground(Color.green);
+          gui.getWarningLabel().setText("   NO WEAPON! EVACUATE IMMEDIATELY   ");
+          Music.playAudioFX("sounds/Growl.wav"); //growl
         }
         interactAlien();
       }
     } else { // invalid command message
-      View.printInvalidCommandAlert();
+//      View.printInvalidCommandAlert();
+      return;
     }
 
     //update status and check if we won or lost
@@ -475,14 +486,17 @@ public class Controller {
         .getName().equals("Earth")) {
       //adds astronauts from planet to spacecraft
       game.getSpacecraft().addPassengers(arrayOfAstronautsOnCurrentPlanet);
+      Music.playAudioFX("sounds/Success_Ding.wav"); //success
 
       //gets item from planet, adds to spacecraft inventory
       String item = game.getSpacecraft().getCurrentPlanet().getItem();
       game.getSpacecraft().addToInventory(item);
+      if (item != null) {
+        View.newItemReceived(item);
+      }
       game.getSpacecraft().getCurrentPlanet().setItem(null);
 
       game.getSpacecraft().typeAndNumOfPassengersOnBoard();
-      determineIfEngineerIsOnBoard();
 
       //set planet preReq to null
       game.getSpacecraft().getCurrentPlanet().setPreReq(null);
@@ -490,14 +504,6 @@ public class Controller {
       game.getSpacecraft().getCurrentPlanet().setDamageCondition(null);
       //remove item from inventory as it's used.
       game.getSpacecraft().getInventory().remove(preReq);
-    }
-  }
-
-  public void determineIfEngineerIsOnBoard() {
-    if (game.getSpacecraft().getNumOfEngineersOnBoard() > 0) {
-      View.printYouveGotAnEngineer();
-    } else {
-      View.printYouHaventGotAnEngineerOnBoard();
     }
   }
 
@@ -530,6 +536,7 @@ public class Controller {
       spacecraft.setFuel(100);
       gui.getFuelLevelBar().setString("Fuel: " + spacecraft.getFuel() + "%");
       refuelCounter--;
+      Music.playAudioFX("sounds/Fuel.wav");// success
       View.printSpacecraftHasBeenFilled();
     }
   }
@@ -539,16 +546,26 @@ public class Controller {
     Planet destinationPlanet = returnPlanet(spacecraft.getCurrentPlanet().getName());
     String preReq = destinationPlanet.getPreReq();
     if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
+      String damageCondition = destinationPlanet.getDamageCondition();
       gui.getShipHealthBar().setValue(spacecraft.getHealth() - 45);
       spacecraft.setHealth(spacecraft.getHealth() - 45);
       gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
+      View.printAlienDamageConditionAlert(damageCondition, destinationPlanet.getName(), preReq);
       alienInteractionTimer();
       alienTimer.start();
       alienTimerBoolean = false;
+      Music.playAudioFX("sounds/Alarm.wav");//alarm
     } else if (preReq != null && spacecraft.getInventory().contains(preReq)) {
       //Call string to show that you avoided damage by having correct preReq in inventory
       String damageCondition = destinationPlanet.getDamageCondition();
-      View.printDamageConditionAvoidedAlert(preReq, damageCondition);
+      if (preReq.equals("Blaster")) {
+        View.printAlienDestroyed(preReq, damageCondition);
+        Music.playAudioFX("sounds/Blaster.wav");//blaster sound
+
+      } else if (preReq.equals("Alien Baby")) {
+        View.printAlienBabyReturned(preReq, damageCondition);
+        Music.playAudioFX("sounds/Baby.wav");//alien baby
+      }
       //set planet preReq to null
       destinationPlanet.setPreReq(null);
       //set damageCondition to null

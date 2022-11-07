@@ -188,30 +188,30 @@ public class ImageUI {
     }
     //Check if astronauts
     if(numberOfAstronauts > 0){ //check is astronauts
-      createObject(2, 725, 375, 225, 225, "backgrounds/astronautGroup.png", loadRunnableListener);
+      createObject(2, 725, 360, 225, 225, "backgrounds/astronautGroup.png", loadRunnableListener);
     }
     //Check if item
     if(item != null){
       //create item based on planet
       switch (item){
         case "Blaster":
-          createObject(2, 715, 150, 320, 320, "backgrounds/weapon.png", loadRunnableListener);
+          createObject(2, 715, 135, 320, 320, "backgrounds/weapon.png", loadRunnableListener);
           break;
         case "Gas Mask":
-          createObject(2, 800, 235, 143, 125, "backgrounds/gasmask.png", loadRunnableListener);
+          createObject(2, 800, 220, 143, 125, "backgrounds/gasmask.png", loadRunnableListener);
           break;
         case "Alien Baby":
-          createObject(2, 820, 222, 101, 150, "backgrounds/alienBaby.png", loadRunnableListener);
+          createObject(2, 820, 207, 101, 150, "backgrounds/alienBaby.png", loadRunnableListener);
           break;
         case "Cold Shield":
-          createObject(2, 740, 215, 250, 150, "backgrounds/coldShield.png", loadRunnableListener);
+          createObject(2, 740, 200, 250, 150, "backgrounds/coldShield.png", loadRunnableListener);
           break;
         default:
           return;
       }
 
       //create item bubble
-      createObject(2, 715, 220, 300, 200, "backgrounds/itemBubble.png", loadRunnableListener);
+      createObject(2, 715, 205, 300, 200, "backgrounds/itemBubble.png", loadRunnableListener);
 
     }
     //Check which dangerCondition to add
