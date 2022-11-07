@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -53,7 +54,7 @@ public class Gui {
       planetStatusPanel, menuPanel, soundPanel, mapPanel, helpScreenPanel, helpBtnPanel, backgroundScreenPanel;
   private JLabel titleLabel, currentPlanetLabel, damageConditionLabel, itemsOnPlanetLabel,
       numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel, warningLabel, helpLabel;
-  private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn, dotBtn;
+  private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn, godStarBtn;
   private Boolean warningBoolean = true;
 
   private float currentVolume;
@@ -878,9 +879,9 @@ public class Gui {
     planetIcons(stationBtn, "images/Station.png", 700, -40, 300, 340, 300, 300);
     chaChaRealSmooth(stationBtn, "go station", true);
     //    creates godmode btn
-    dotBtn = new JButton();
-    planetIcons(dotBtn, "images/Dot.png", 5, 5, 3, 3, 3, 3);
-    chaChaRealSmooth(dotBtn, "god", false);
+    godStarBtn = new JButton();
+    planetIcons(godStarBtn, "images/Dot.png", 5, 5, 3, 3, 3, 3);
+    chaChaRealSmooth(godStarBtn, "god", false);
     //Adding all buttons to menu frame
     mapPanel.add(earthBtn);
     mapPanel.add(moonBtn);
@@ -892,7 +893,7 @@ public class Gui {
     mapPanel.add(uranusBtn);
     mapPanel.add(saturnBtn);
     mapPanel.add(stationBtn);
-    mapPanel.add(dotBtn);
+    mapPanel.add(godStarBtn);
     mapPanel.add(sunBtn);
     mapPanel.add(backgroundLabel);
     sunBtn.setOpaque(false);
@@ -901,9 +902,9 @@ public class Gui {
     stationBtn.setOpaque(false);
     stationBtn.setContentAreaFilled(false);
     stationBtn.setBorderPainted(false);
-    dotBtn.setOpaque(false);
-    dotBtn.setContentAreaFilled(false);
-    dotBtn.setBorderPainted(false);
+    godStarBtn.setOpaque(false);
+    godStarBtn.setContentAreaFilled(false);
+    godStarBtn.setBorderPainted(false);
   }
 
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
@@ -1089,7 +1090,9 @@ public class Gui {
         }
         controllerField.textParser(command);
         if (!planet) {
-          return;
+          if(command.equals("god")){
+            JOptionPane.showMessageDialog(frame, "God Mode has been enabled.");
+          }
         } else if (command.equals("go station")) {
           mapPanel.setVisible(false); //hides map panel
           centralDisplayPanel.setVisible(true); //shows central panel
