@@ -10,6 +10,11 @@ public class Game {
   private int totalNumberOfAstronauts;
   private List<Planet> planets;
 
+  private int startingRefuels;
+  private int remainingRefuels;
+  private int startingRepairs;
+  private int remainingRepairs;
+
 
 
   public boolean isOver() { // Getter for isOver
@@ -57,7 +62,35 @@ public class Game {
     return totalNumberOfAstronauts;
   }
 
+  public int getStartingRefuels() {
+    return startingRefuels;
+  }
 
+  public void setStartingRefuels(int startingRefuels) {
+    this.startingRefuels = startingRefuels;
+  }
 
+  public int getRemainingRefuels() {
+    return remainingRefuels;
+  }
 
+  public void setRemainingRefuels(int remainingRefuels) {
+    this.remainingRefuels = remainingRefuels;
+  }
+
+  public int getStartingRepairs() {
+    return startingRepairs;
+  }
+
+  public void setStartingRepairs(int startingRepairs) {
+    this.startingRepairs = startingRepairs;
+  }
+
+  public int getRemainingRepairs() {
+    return remainingRepairs;
+  }
+
+  public void setRemainingRepairs(int remainingRepairs) {
+    this.remainingRepairs = remainingRepairs;
+  }
 }

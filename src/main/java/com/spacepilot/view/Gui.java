@@ -1002,6 +1002,32 @@ public class Gui {
     ticktock.getTimer().start();
   }
 
+  public void showGameScreenPanelsForContinuedGame() {
+    //Set panels to false visibility
+    titleScreenPanel.setVisible(false);
+    gameOverWinPanel.setVisible(false);
+    gameOverLosePanel.setVisible(false);
+    helpScreenPanel.setVisible(false);
+
+    //Attach panels to the outermost Main Frame
+    frame.add(statusPanel, BorderLayout.PAGE_START);
+    frame.add(centralDisplayPanel, BorderLayout.CENTER);
+    frame.add(rightSidePanel, BorderLayout.LINE_END);
+
+    //Set correct panels to visible
+    statusPanel.setVisible(true);
+    centralDisplayPanel.setVisible(true);
+    rightSidePanel.setVisible(true);
+
+    //Get current planet background scene
+    imageUI.showEarthScreen2();
+
+    frame.setVisible(true);
+
+    //starts the timer
+    ticktock.getTimer().start();
+  }
+
 
   //Displays introduction of game in window
   public void showBackgroundScreen() {
@@ -1116,7 +1142,8 @@ public class Gui {
           if(command.equals("god")){ //pop up for save
             CustomDialogBox godDialog = new CustomDialogBox(frame, "Message", "God Mode has Been Enabled.\n"
                 + " \nAll items added to inventory."
-                + " \nStatus bars replenished.");
+                + " \nStatus bars replenished."
+                + " \nAll astronauts on ship.");
           }else if(command.equals("save")){ //pop up for save
               CustomDialogBox saveDialog = new CustomDialogBox(frame, "Save Message", "Game Saved Successfully!");
           }
@@ -1155,13 +1182,16 @@ public class Gui {
 //    imageUI.createPlanetScreen();
   }
 
+  //sends game status info to imageGUI to update planet backgrounds
   public void planetBackgroundUpdate(String item, String dangerCondition,
       int numberOfAstronautsOnPlanet,
-      String currentPlanet, List<String> inventory) {
+      String currentPlanet, List<String> inventory, int startingRefuel, int refuelsLeft ) {
 
     imageUI.planetBackgroundCustomization(item, dangerCondition, numberOfAstronautsOnPlanet,
         currentPlanet,
         inventory);
+    imageUI.setStartingRefuels(startingRefuel);
+    imageUI.setRefuelsLeft(refuelsLeft);
   }
 
   public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,
@@ -1177,7 +1207,7 @@ public class Gui {
         String.format("<html>Stranded Astronauts: <font color=#990000>%1$s / %2$s</font></html>",
             rescuedAstronauts, startingStrandedAstronauts));
     //Sets the refuelsLeft field in imageUI to update station planet
-    imageUI.setRefuelsLeft(refuelsLeft);
+//    imageUI.setRefuelsLeft(refuelsLeft);
   }
 
   public void planetIcons(JButton btn, String png, Integer x, Integer y, Integer width,

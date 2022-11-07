@@ -33,6 +33,7 @@ public class ImageUI {
   private JPanel guiInventoryPanel;
   private JLabel refuelsLeftLabel;
   private int refuelsLeft;
+  private int startingRefuels;
 
 
 
@@ -315,7 +316,7 @@ public class ImageUI {
 
   //Updates fuel count after refuel is clicked
   public void updateRefuelsOnStation(){
-    refuelsLeftLabel.setText(refuelsLeft + " / 4");
+    refuelsLeftLabel.setText(refuelsLeft + " / " + startingRefuels);
   }
 
   //Rotates background scenes
@@ -352,5 +353,9 @@ public class ImageUI {
 
   public JPanel getGuiInventoryPanel() {
     return guiInventoryPanel;
+  }
+
+  public void setStartingRefuels(int startingRefuels) {
+    this.startingRefuels = startingRefuels;
   }
 }
