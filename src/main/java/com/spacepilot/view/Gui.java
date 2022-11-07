@@ -179,7 +179,7 @@ public class Gui {
             //updates fuel after moving
             controllerField.updateFuel();
             //update text for orbit
-            currentPlanetLabel.setText("Current Planet: Orbit");
+            currentPlanetLabel.setText("<html>&emsp Current Location: <font color='red'>Orbit</font></html>");
             controllerField.checkGameResult();
           }
         });
@@ -196,12 +196,16 @@ public class Gui {
 
   // THESE METHODS CREATE DIFFERENT SECTIONS OF THE GUI
   private void createBottomPlanetStatusPanel() {
-    //CREATES BOTTOM PANEL: (Display Current Planet Status)
+    //CREATES BOTTOM PANEL: (Display Current Location Status)
     planetStatusPanel = new JPanel();
+    planetStatusPanel.setBackground(Color.lightGray);
 
-    itemsOnPlanetLabel = new JLabel("Items on Planet:");
-    numberOfAstronautsOnPlanetLabel = new JLabel("# of Astronauts on Planet: ");
-    damageConditionLabel = new JLabel("Danger Condition: ");
+    itemsOnPlanetLabel = new JLabel("<html>&emsp Items on Planet: </html>");
+    numberOfAstronautsOnPlanetLabel = new JLabel("<html>&emsp # of Astronauts on Planet: </html>");
+    damageConditionLabel = new JLabel("<html>&emsp Threat: </html>");
+    setStatusPanelFont(itemsOnPlanetLabel);
+    setStatusPanelFont(numberOfAstronautsOnPlanetLabel);
+    setStatusPanelFont(damageConditionLabel);
 
     planetStatusPanel.setLayout(new GridLayout(1, 3, 3, 3)); //Layout to spread labels out
     planetStatusPanel.add(numberOfAstronautsOnPlanetLabel);
@@ -212,15 +216,16 @@ public class Gui {
   private void createCenterDisplayArea() {
     //CREATES CENTER DISPlAY FOR TEXT OUTPUTS
     displayArea = new JTextArea();
-    scrollPanel = new JScrollPane(displayArea); //scrollpane to let text scroll
+    scrollPanel = new JScrollPane(displayArea, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //scrollpane to let text scroll
     displayArea.setEditable(false);//stop display from being edited
     displayArea.setWrapStyleWord(true); //wrap at word boundaries, not characters
     scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     displayArea.setLineWrap(true);
     displayArea.setBackground(Color.black);
-    displayArea.setForeground(Color.white);
+    displayArea.setForeground(Color.lightGray);
     displayArea.setRows(11); //Adjusts size of display area
+//    scrollPanel.setWheelScrollingEnabled(true);
   }
 
   private void createTopOfScreenStatusPanel() {
@@ -228,17 +233,23 @@ public class Gui {
 
     //CREATES TOP PANEL: (Status of Spaceship)
     statusPanel = new JPanel();
-    statusPanel.setBackground(Color.darkGray);
+    statusPanel.setBackground(Color.lightGray);
     statusPanel.setBounds(100, 15, 200, 30);
-    GridLayout panelGridLayout = new GridLayout(3, 2, 2, 3); //Created grid layout
+    GridLayout panelGridLayout = new GridLayout(2, 2, 2, 3); //Created grid layout
     statusPanel.setLayout(panelGridLayout); //Set status panel to gridLayout
 
     //Creating the Labels (for updating and displaying text)
-    currentPlanetLabel = new JLabel("Current Planet:"); //Labels can have string names and icons
-    repairsLeftLabel = new JLabel("Repairs Left:");
+    currentPlanetLabel = new JLabel("<html>&emsp Current Location:</html>"); //Labels can have string names and icons
+    repairsLeftLabel = new JLabel("<html>&emsp Repairs Left:</html>");
     strandedAstronautsLabel = new JLabel("Stranded Astronauts:");
-    inventoryLabel = new JLabel("Inventory:");
-    ticktock.setOxygenTimeLeftLabel(new JLabel("Oxygen Time Remain: 08:00"));
+//    inventoryLabel = new JLabel("Inventory:");
+    ticktock.setOxygenTimeLeftLabel(new JLabel("<html>Oxygen Remaining: <font color='red'>08:00</font></html>"));
+
+    setStatusPanelFont(currentPlanetLabel);
+    setStatusPanelFont(repairsLeftLabel);
+    setStatusPanelFont(strandedAstronautsLabel);
+    setStatusPanelFont(ticktock.getOxygenTimeLeftLabel());
+
 
     //creating time thread (for oxygen display)
     ticktock.setMinutes(8);
@@ -249,7 +260,7 @@ public class Gui {
     //creating ship health bar
     shipHealthBar = new JProgressBar(0, 100);
     shipHealthBar.setForeground(VERY_DARK_RED);
-    shipHealthBar.setBackground(Color.darkGray);
+    shipHealthBar.setBackground(Color.lightGray);
     shipHealthBar.setBorder(BorderFactory.createLineBorder(VERY_DARK_RED, 2));
     shipHealthBar.getUI();
     shipHealthBar.setUI(new BasicProgressBarUI() {
@@ -269,7 +280,7 @@ public class Gui {
     fuelLevelBar = new JProgressBar(0, 100);
     fuelLevelBar.setForeground(DARK_ORANGE);
     fuelLevelBar.setBorder(BorderFactory.createLineBorder(DARK_ORANGE, 2));
-    fuelLevelBar.setBackground(Color.darkGray);
+    fuelLevelBar.setBackground(Color.lightGray);
     fuelLevelBar.getUI();
     fuelLevelBar.setUI(new BasicProgressBarUI() {
       protected Color getSelectionBackground() {
@@ -292,7 +303,7 @@ public class Gui {
     statusPanel.add(repairsLeftLabel);
     statusPanel.add(strandedAstronautsLabel);
     statusPanel.add(fuelLevelBar);
-    statusPanel.add(inventoryLabel);
+//    statusPanel.add(inventoryLabel);
   }
 
   private void createMusicPanelInMenuScreen() {
@@ -363,14 +374,14 @@ public class Gui {
     inventoryLabel.setForeground(Color.BLACK);
 
     //setting color
-    rightSidePanel.setBackground(Color.darkGray);
-    controlPanel.setBackground(Color.darkGray);
-    inventoryPanel.setBackground(Color.darkGray);
+    rightSidePanel.setBackground(Color.lightGray);
+    controlPanel.setBackground(Color.lightGray);
+    inventoryPanel.setBackground(Color.lightGray);
 
 
     //Creating TitleBorder for Inventory
     controlPanel.setSize(100, 300);
-    inventoryPanel.setBorder(new TitledBorder(BorderFactory.createLineBorder(PURPLE, 5), "Inventory", TitledBorder.CENTER, TitledBorder.TOP, new Font("Times New Roman", Font.BOLD, 23), Color.black));
+    inventoryPanel.setBorder(new TitledBorder(BorderFactory.createLineBorder(PURPLE, 10), "Inventory", TitledBorder.CENTER, TitledBorder.TOP, new Font("Times New Roman", Font.BOLD, 22), Color.black));
 
     //pass inventory panel to imageUI to be updated
     imageUI.setGuiInventoryPanel(inventoryPanel);
@@ -405,7 +416,7 @@ public class Gui {
       public void actionPerformed(ActionEvent e) {
         showMap();
         chaChaRealSmooth(mapBtn, "go orbit", true);
-        currentPlanetLabel.setText("Current Planet: Orbit");
+        currentPlanetLabel.setText("<html>&emsp Current Location: <font color='red'>Orbit</font></html>");
         controllerField.updateFuel();
         warningLabel.setVisible(false);
       }
@@ -458,15 +469,15 @@ public class Gui {
 
     topPanel.setFont(titleFont);
     topPanel.setBackground(Color.black);
-    topPanel.setForeground(Color.white);
+    topPanel.setForeground(Color.lightGray);
 
     partnerLabel.setFont(titleFont);
     partnerLabel.setBackground(Color.black);
-    partnerLabel.setForeground(Color.white);
+    partnerLabel.setForeground(Color.lightGray);
 
     youWonLabel.setFont(titleFont);
     youWonLabel.setBackground(Color.BLACK);
-    youWonLabel.setForeground(Color.white);
+    youWonLabel.setForeground(Color.lightGray);
 
     topPanel.add(youWonLabel, BorderLayout.PAGE_START);
     topPanel.add(gameOverLabel, BorderLayout.CENTER);
@@ -478,10 +489,10 @@ public class Gui {
     normalFont = new Font("Times New Roman", Font.PLAIN, 40);
     partnerLabel.setFont(normalFont);
     quitBtn.setBackground(Color.black);
-    quitBtn.setForeground(Color.white);
+    quitBtn.setForeground(Color.lightGray);
     quitBtn.setFont(normalFont);
     startBtn.setBackground(Color.black);
-    startBtn.setForeground(Color.white);
+    startBtn.setForeground(Color.lightGray);
     startBtn.setFont(normalFont);
 
     bottomPanel = new JPanel();
@@ -518,7 +529,7 @@ public class Gui {
     JLabel youSuckLabel = new JLabel("YOU SUCK LOSER!", SwingConstants.CENTER);
 
     youLostLabel.setFont(titleFont);
-    youLostLabel.setForeground(Color.white);
+    youLostLabel.setForeground(Color.lightGray);
 
     topPanel.add(youLostLabel, BorderLayout.PAGE_START);
     topPanel.add(gameOverLabel, BorderLayout.CENTER);
@@ -529,12 +540,12 @@ public class Gui {
     startBtn = new JButton("Start New Game");
     startBtn.setFont(normalFont);
     startBtn.setBackground(Color.black);
-    startBtn.setForeground(Color.white);
+    startBtn.setForeground(Color.lightGray);
 
     JButton quitBtn = new JButton("Quit Game");
     quitBtn.setFont(normalFont);
     quitBtn.setBackground(Color.black);
-    quitBtn.setForeground(Color.white);
+    quitBtn.setForeground(Color.lightGray);
 
     bottomPanel = new JPanel();
     bottomPanel.setBackground(Color.BLACK);
@@ -566,7 +577,7 @@ public class Gui {
     titleScreenPanel.setBackground(Color.black);
     //Set up titleLabel
     titleLabel.setFont(titleFont);
-    titleLabel.setForeground(Color.white);
+    titleLabel.setForeground(Color.lightGray);
     //Set up titleButtons & Panel
     startBtn.setBackground(Color.black);
     continueBtn.setBackground(Color.black);
@@ -863,13 +874,12 @@ public class Gui {
 
   //  STATUS UPDATES
   public void displayPlanetStatus(String item, String damageCondition, int numberOfAstronauts) {
-    itemsOnPlanetLabel.setText("Items on Planet: " + (item == null ? "None" : item));
-    damageConditionLabel.setText(
-        "Damage Condition: " + (damageCondition == null ? "None" : damageCondition));
-    numberOfAstronautsOnPlanetLabel.setText("# Astronauts on Planet: " + numberOfAstronauts);
+    itemsOnPlanetLabel.setText(String.format("<html>&emsp&emsp Items on Planet: <font color='red'>%s</font></html>", (item == null ? "None" : item)));
+    damageConditionLabel.setText(String.format(
+        "<html>&emsp&emsp&emsp&emsp Threat: <font color='red'>%s</font></html>", (damageCondition == null ? "None" : damageCondition)));
+    numberOfAstronautsOnPlanetLabel.setText(String.format("<html>&emsp # Astronauts on Planet: <font color='red'>%s</font></html>", numberOfAstronauts));
 //    imageUI.createPlanetScreen();
   }
-
   public void planetBackgroundUpdate(String item, String dangerCondition,
       int numberOfAstronautsOnPlanet,
       String currentPlanet, List<String> inventory) {
@@ -881,10 +891,10 @@ public class Gui {
 
   public void displayGameStatus(Collection<String> inventory, Planet planet, int repairsLeft,
       int strandedAstros, int refuelsLeft) {
-    inventoryLabel.setText("Inventory: " + inventory);
-    currentPlanetLabel.setText("Current Planet: " + planet.getName());
-    repairsLeftLabel.setText("Repairs Left: " + repairsLeft);
-    strandedAstronautsLabel.setText("Stranded Astronauts: " + strandedAstros);
+//    inventoryLabel.setText("Inventory: " + inventory);
+    currentPlanetLabel.setText(String.format("<html>&emsp Current Location: <font color='red'>%s</font></html>", planet.getName()));
+    repairsLeftLabel.setText(String.format("<html>&emsp Repairs Left: <font color='red'>%s</font></html>", repairsLeft));
+    strandedAstronautsLabel.setText(String.format("<html>Stranded Astronauts: <font color='red'>%s</font></html>", strandedAstros));
     //Sets the refuelsLeft field in imageUI to update station planet
     imageUI.setRefuelsLeft(refuelsLeft);
   }
@@ -899,7 +909,7 @@ public class Gui {
 
     btn.setIcon(planetIcon);
     btn.setBackground(Color.black);
-    btn.setForeground(Color.gray);
+    btn.setForeground(Color.lightGray);
     btn.setBorder(BorderFactory.createLineBorder(Color.black));
     btn.setVerticalTextPosition(SwingConstants.BOTTOM);
     btn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -931,8 +941,8 @@ public class Gui {
     Image newImg = img.getScaledInstance(scaleWidth, scaleHeight, Image.SCALE_DEFAULT);
     btnIcon = new ImageIcon(newImg);
     btn.setIcon(btnIcon);
-    btn.setBackground(Color.darkGray);
-    btn.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+    btn.setBackground(Color.lightGray);
+    btn.setBorder(BorderFactory.createLineBorder(Color.lightGray));
   }
 
   public void imageUiReset() {
@@ -940,6 +950,12 @@ public class Gui {
     imageUI.updateRefuelsOnStation();
     imageUI.getGuiInventoryPanel().removeAll();
   }
+
+  public void setStatusPanelFont(JLabel label){
+    label.setFont(new Font("Times New Roman", Font.BOLD, 20));
+    label.setForeground(Color.black);
+  }
+
 
   //  GETTERS AND SETTERS
 

@@ -152,27 +152,27 @@ public class ImageUI {
       switch(currentPlanet){
         case "Jupiter":
           createBackgroundLabel(2, "backgrounds/jupiter.png");
-          createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+          createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
           break;
         case "Mars":
           createBackgroundLabel(2, "backgrounds/mars.png");
-          createMapObject(2, 0, 150, 499, 499, "backgrounds/spaceship-499x499.png");
+          createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
           break;
         case "Mercury":
           createBackgroundLabel(2, "backgrounds/mercury.png");
-          createMapObject(2, 0, 150, 499, 499, "backgrounds/spaceship-499x499.png");
+          createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
           break;
         case "Moon":
           createBackgroundLabel(2, "backgrounds/moon.png");
-          createMapObject(2, 0, 50, 499, 499, "backgrounds/spaceship-499x499.png");
+          createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
           break;
         case "Neptune":
           createBackgroundLabel(2, "backgrounds/neptune.jpeg");
-          createMapObject(2, 0, 150, 499, 499, "backgrounds/spaceship-499x499.png");
+          createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
           break;
         case "Saturn":
           createBackgroundLabel(2, "backgrounds/saturn.png");
-          createMapObject(2, 0, 150, 499, 499, "backgrounds/spaceship-499x499.png");
+          createMapObject(2, 0, 200, 399, 399, "backgrounds/spaceship-499x499.png");
           break;
         case "Uranus":
           createBackgroundLabel(2, "backgrounds/uranus.png");
@@ -188,36 +188,36 @@ public class ImageUI {
     }
     //Check if astronauts
     if(numberOfAstronauts > 0){ //check is astronauts
-      createObject(2, 725, 325, 225, 225, "backgrounds/astronautGroup.png", loadRunnableListener);
+      createObject(2, 725, 375, 225, 225, "backgrounds/astronautGroup.png", loadRunnableListener);
     }
     //Check if item
     if(item != null){
       //create item based on planet
       switch (item){
-        case "weapon":
-          createObject(2, 725, 50, 320, 320, "backgrounds/weapon.png", loadRunnableListener);
+        case "Blaster":
+          createObject(2, 715, 150, 320, 320, "backgrounds/weapon.png", loadRunnableListener);
           break;
-        case "gas mask":
-          createObject(2, 800, 175, 143, 125, "backgrounds/gasmask.png", loadRunnableListener);
+        case "Gas Mask":
+          createObject(2, 800, 235, 143, 125, "backgrounds/gasmask.png", loadRunnableListener);
           break;
-        case "alien baby":
-          createObject(2, 825, 165, 101, 150, "backgrounds/alienBaby.png", loadRunnableListener);
+        case "Alien Baby":
+          createObject(2, 820, 222, 101, 150, "backgrounds/alienBaby.png", loadRunnableListener);
           break;
-        case "cold shield":
-          createObject(2, 750, 115, 250, 250, "backgrounds/coldShield.png", loadRunnableListener);
+        case "Cold Shield":
+          createObject(2, 740, 215, 250, 150, "backgrounds/coldShield.png", loadRunnableListener);
           break;
         default:
           return;
       }
 
       //create item bubble
-      createObject(2, 650, 100, 450, 316, "backgrounds/itemBubble.png", loadRunnableListener);
+      createObject(2, 715, 220, 300, 200, "backgrounds/itemBubble.png", loadRunnableListener);
 
     }
     //Check which dangerCondition to add
     if(dangerCondition != null) {
       switch (dangerCondition) {
-        case "frost alien":
+        case "Frost Alien":
           createObject(2, 450, 200, 280, 320, "backgrounds/blueAlien.png",
               interactRunnableListener);
           break;
@@ -225,11 +225,11 @@ public class ImageUI {
           createObject(2, 450, 200, 280, 320, "backgrounds/greenAlien.png",
               interactRunnableListener);
           break;
-        case "extreme cold":
-          createObject(2, 350, 65, 400, 500, "backgrounds/extremeCold.png",
+        case "Extreme Cold":
+          createObject(2, 350, 265, 400, 400, "backgrounds/extremeCold.png",
               interactRunnableListener);
           break;
-        case "poisonous gas":
+        case "Poisonous Gas":
           createObject(2, 500, 200, 280, 320, "backgrounds/poisonGas.png",
               interactRunnableListener);
           break;
@@ -248,16 +248,16 @@ public class ImageUI {
 
     for(String item : inventory){
       switch (item){
-        case "weapon":
+        case "Blaster":
           addHeldItemsToInventoryImagePanel("backgrounds/weapon.png");
           break;
-        case "gas mask":
+        case "Gas Mask":
           addHeldItemsToInventoryImagePanel("backgrounds/gasmask.png");
           break;
-        case "alien baby":
+        case "Alien Baby":
           addHeldItemsToInventoryImagePanel("backgrounds/alienBaby.png");
           break;
-        case "cold shield":
+        case "Cold Shield":
           addHeldItemsToInventoryImagePanel("backgrounds/coldShield.png");
           break;
         default:
@@ -273,7 +273,7 @@ public class ImageUI {
     //create icon
     ImageIcon objectIcon = new ImageIcon(getClass().getClassLoader().getResource(fileName));
     Image img = objectIcon.getImage();
-    Image newImg = img.getScaledInstance(110, 75, Image.SCALE_DEFAULT);
+    Image newImg = img.getScaledInstance(100, 90, Image.SCALE_DEFAULT);
     objectIcon = new ImageIcon(newImg);
     //assign icon to label
     itemLabel.setIcon(objectIcon);
