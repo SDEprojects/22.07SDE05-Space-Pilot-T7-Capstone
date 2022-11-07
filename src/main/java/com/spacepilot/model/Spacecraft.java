@@ -16,12 +16,50 @@ public class Spacecraft {
 
   private List<String> inventory = new ArrayList<>();
 
+
   private int spacecraftCapacity = 50;
   private int fuel;
 
   public Spacecraft() {
   }
 
+
+
+  //BUSINESS METHODS
+
+  public void addPassengers(Collection<Object> newPassengers) {
+    int passengersAdded = 0;
+    Object[] boogity = newPassengers.toArray();
+    for(Object passenger: boogity){
+      if(++passengersAdded >  spacecraftCapacity){
+        break;
+      }else{
+        passengers.add(passenger);
+        currentPlanet.removeAstronaut(passenger);
+      }
+    }
+  }
+
+  public void typeAndNumOfPassengersOnBoard() {
+    for (Object passenger : passengers) {
+      totalPassengers++;
+      if (passenger.getClass().getSimpleName().equals("Engineer")) {
+        numOfEngineersOnBoard++;
+      }
+      numOfNonEngineersOnBoard = totalPassengers - numOfEngineersOnBoard;
+    }
+  }
+
+  public void addToInventory(String item) {
+    if(item != null){
+      inventory.add(item);
+    }
+  }
+
+  //GETTERS AND SETTERS
+  public void setSpacecraftCapacity(int spacecraftCapacity) {
+    this.spacecraftCapacity = spacecraftCapacity;
+  }
   public String getName() {
     return name;
   }
@@ -71,34 +109,4 @@ public class Spacecraft {
 
   }
 
-
-
-  public void addPassengers(Collection<Object> newPassengers) {
-    int passengersAdded = 0;
-    Object[] boogity = newPassengers.toArray();
-    for(Object passenger: boogity){
-      if(++passengersAdded >  spacecraftCapacity){
-        break;
-      }else{
-        passengers.add(passenger);
-        currentPlanet.removeAstronaut(passenger);
-      }
-    }
-  }
-
-  public void typeAndNumOfPassengersOnBoard() {
-    for (Object passenger : passengers) {
-      totalPassengers++;
-      if (passenger.getClass().getSimpleName().equals("Engineer")) {
-        numOfEngineersOnBoard++;
-      }
-      numOfNonEngineersOnBoard = totalPassengers - numOfEngineersOnBoard;
-    }
-  }
-
-  public void addToInventory(String item) {
-    if(item != null){
-      inventory.add(item);
-    }
-  }
 }
