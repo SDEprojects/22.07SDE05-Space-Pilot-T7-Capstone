@@ -1093,24 +1093,11 @@ public class Gui {
         controllerField.textParser(command);
         if (!planet) {
           if(command.equals("god")){ //pop up for save
-            JOptionPane.showMessageDialog(frame, "God Mode has been enabled.");
+            CustomDialogBox godDialog = new CustomDialogBox(frame, "Message", "God Mode has Been Enabled.\n"
+                + " \nAll items added to inventory."
+                + " \nStatus bars replenished.");
           }else if(command.equals("save")){ //pop up for save
-            JDialog saveDialog = new JDialog(frame, "This is up?");
-            JLabel label1 = new JLabel("Game Saved!");
-            JButton button = new JButton("OK");
-            button.addActionListener(new ActionListener() {
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                saveDialog.setVisible(false);
-              }
-            });
-            saveDialog.add(label1);
-            saveDialog.add(button);
-            saveDialog.setPreferredSize(new Dimension(100, 100));
-            saveDialog.setLocationRelativeTo(frame);
-            saveDialog.pack();
-            saveDialog.setVisible(true);
-
+              CustomDialogBox saveDialog = new CustomDialogBox(frame, "Save Message", "Game Saved Successfully!");
           }
         } else if (command.equals("go station")) {
           mapPanel.setVisible(false); //hides map panel
