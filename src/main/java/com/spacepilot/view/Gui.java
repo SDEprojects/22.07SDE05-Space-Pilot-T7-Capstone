@@ -672,6 +672,11 @@ public class Gui {
     //Set up titlePanel
     backgroundScreenPanel.setLayout(null);
     backgroundScreenPanel.setBackground(Color.black);
+
+    JLabel starsLabel = new JLabel("");
+    starsLabel.setIcon(
+        new ImageIcon(getClass().getClassLoader().getResource("images/Space.jpg")));
+    starsLabel.setBounds(0, 0, 1140, 900);
     //Set up titleLabel
     planetIcons(continueBtn, "images/Continue.png", 0, 0, 200, 100, 300, 100);
     //Set up titleButtons & Panel
@@ -683,6 +688,8 @@ public class Gui {
     backgroundScreenPanel.add(backgroundLabel);
     backgroundBtnPanel.add(continueBtn);
     backgroundScreenPanel.add(backgroundBtnPanel);
+    backgroundScreenPanel.add(starsLabel);
+
 
     //Add btn listeners
     continueBtn.addActionListener(new ActionListener() {
@@ -715,7 +722,7 @@ public class Gui {
             + "<font color=#C0C0C0>Unload astronauts by clicking the unload platform on Earth!</font><br><br></center></html>"); //centers label
     helpLabel.setVerticalTextPosition(SwingConstants.TOP);
     helpLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-    Font titleFont = new Font("Times New Roman", Font.BOLD, 28);
+    Font titleFont = new Font("Times New Roman", Font.BOLD, 30);
 
     continueBtn = new JButton("Continue");
     helpBtnPanel = new JPanel();
@@ -725,7 +732,12 @@ public class Gui {
     //Set up titleLabel
     helpLabel.setFont(titleFont);
     helpLabel.setForeground(Color.lightGray);
-    helpLabel.setBounds(35, -50, 1070, 900);
+    helpLabel.setBounds(35, -65, 1070, 900);
+
+    JLabel starsLabel = new JLabel("");
+    starsLabel.setIcon(
+        new ImageIcon(getClass().getClassLoader().getResource("images/Space.jpg")));
+    starsLabel.setBounds(0, 0, 1140, 900);
 
     planetIcons(continueBtn, "images/Continue.png", 0, 0, 200, 100, 300, 100);
     //Set up titleButtons & Panel
@@ -737,7 +749,7 @@ public class Gui {
     helpScreenPanel.add(helpLabel);
     helpBtnPanel.add(continueBtn);
     helpScreenPanel.add(helpBtnPanel);
-//    helpScreenPanel.add(backgroundLabel);
+    helpScreenPanel.add(starsLabel);
 
     //Add btn listeners
     continueBtn.addActionListener(new ActionListener() {
