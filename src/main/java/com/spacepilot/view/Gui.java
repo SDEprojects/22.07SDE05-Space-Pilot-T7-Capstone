@@ -6,6 +6,7 @@ import com.spacepilot.model.Planet;
 import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -21,6 +22,7 @@ import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -1090,8 +1092,25 @@ public class Gui {
         }
         controllerField.textParser(command);
         if (!planet) {
-          if(command.equals("god")){
+          if(command.equals("god")){ //pop up for save
             JOptionPane.showMessageDialog(frame, "God Mode has been enabled.");
+          }else if(command.equals("save")){ //pop up for save
+            JDialog saveDialog = new JDialog(frame, "This is up?");
+            JLabel label1 = new JLabel("Game Saved!");
+            JButton button = new JButton("OK");
+            button.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                saveDialog.setVisible(false);
+              }
+            });
+            saveDialog.add(label1);
+            saveDialog.add(button);
+            saveDialog.setPreferredSize(new Dimension(100, 100));
+            saveDialog.setLocationRelativeTo(frame);
+            saveDialog.pack();
+            saveDialog.setVisible(true);
+
           }
         } else if (command.equals("go station")) {
           mapPanel.setVisible(false); //hides map panel
