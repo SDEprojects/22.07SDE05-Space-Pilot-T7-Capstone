@@ -7,6 +7,7 @@ import com.spacepilot.model.Planet;
 import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -382,22 +385,11 @@ public class Gui {
     helpBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-//        JOptionPane.showMessageDialog(frame, Arrays.toString(View.printInstructionsToGuiPopUp()), "Instructions", JOptionPane.PLAIN_MESSAGE);
 
-//        View.printInstructionsToGuiPopUp();
-//        JDialog d = new JDialog(frame, "And its up");
-//        // create a label
-//        JLabel l = new JLabel("this is a dialog box");
-//
-//        d.add(l);
-//
-//        // setsize of dialog
-//        d.setSize(100, 100);
-//        d.setVisible(true);
-
-        CustomDialogBox customDialogBox  = new CustomDialogBox();
-
+        String[] instrArr = View.printInstructionsToGuiPopUp();
+        CustomDialogBox instructionBox = new CustomDialogBox(frame,"Instructions", instrArr);
       }
+
     });
 
     // When a user presses a button, the respective word is given to the Controller to use for function
