@@ -332,6 +332,7 @@ public class Gui {
     JButton track3B = new JButton();
     JButton track4B = new JButton();
     JPanel sliderPanel = new JPanel();
+    JButton exitMenuBtn = new JButton();
     slider = new JSlider(-40, 6);
 
     //button plays current track
@@ -349,19 +350,26 @@ public class Gui {
     //button plays track 1 as background music
     method = wavFile -> Music.track1(wavFile);
     soundButtons(track1B, method, "sounds/Space_Chill.wav");
-    planetIcons(track1B, "images/Track1.png", 150, 275, 700, 100, 700, 100);
+    planetIcons(track1B, "images/Track1.png", 50, 350, 400, 75, 400, 75);
     //button plays track 2 as background music
     method = wavFile -> Music.track2(wavFile);
     soundButtons(track2B, method, "sounds/Space_Ambient.wav");
-    planetIcons(track2B, "images/Track2.png", 150, 400, 700, 100, 700, 100);
+    planetIcons(track2B, "images/Track2.png", 550, 350, 400, 75, 400, 75);
     //button plays track 3 as background music
     method = wavFile -> Music.track3(wavFile);
     soundButtons(track3B, method, "sounds/Space_Cinematic.wav");
-    planetIcons(track3B, "images/Track3.png", 150, 525, 700, 100, 700, 100);
+    planetIcons(track3B, "images/Track3.png", 50, 450, 400, 75, 400, 75);
     //button plays track 4 as background music
     method = wavFile -> Music.track4(wavFile);
     soundButtons(track4B, method, "sounds/Space_Cyber.wav");
-    planetIcons(track4B, "images/Track4.png", 150, 650, 700, 100, 700, 100);
+    planetIcons(track4B, "images/Track4.png", 550, 450, 400, 75, 400, 75);
+//exits back to main screen
+    planetIcons(exitMenuBtn, "images/Return.png", 195, 600, 600, 150, 600, 150);
+    exitMenuBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        showMain();
+      }
+    });
     //slider is implemented to adjust volume up and down for current background music
     slider.addChangeListener(new ChangeListener() {
       @Override
@@ -389,6 +397,7 @@ public class Gui {
     soundPanel.add(track3B);
     soundPanel.add(track4B);
     soundPanel.add(sliderPanel);
+    soundPanel.add(exitMenuBtn);
     sliderPanel.add(slider);
     soundPanel.add(backgroundLabel);
   }
@@ -659,10 +668,17 @@ menuPanel.setLayout(null);
     planetIcons(soundSettingsBtn, "images/Sound.png", 195, 75, 600, 150, 600, 150);
     JButton saveGameBtn = new JButton();
     planetIcons(saveGameBtn, "images/Save.png", 195, 250, 600, 150, 600, 150);
+    chaChaRealSmooth(saveGameBtn, "save", false);
     JButton quitGameBtn = new JButton();
     planetIcons(quitGameBtn, "images/Quit.png", 195, 425, 600, 150, 600, 150);
+    chaChaRealSmooth(quitGameBtn, "quit", false);
     JButton exitMenuBtn = new JButton();
     planetIcons(exitMenuBtn, "images/Return.png", 195, 600, 600, 150, 600, 150);
+    exitMenuBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        showMain();
+      }
+    });
     menuPanel.add(soundSettingsBtn); //Adding all buttons to menu frame
     menuPanel.add(saveGameBtn);
     menuPanel.add(quitGameBtn);
