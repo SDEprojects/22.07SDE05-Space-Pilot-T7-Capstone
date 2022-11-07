@@ -147,6 +147,9 @@ public class Controller {
     //starts Gui and shows titleScreen
     gui.showGuiStart();
 
+    //Set gui field to true to represent start of game
+    gui.setInitialGame(true);
+
     //Redirects all SOUT to gui
     View.consoleToGUI(gui);
 

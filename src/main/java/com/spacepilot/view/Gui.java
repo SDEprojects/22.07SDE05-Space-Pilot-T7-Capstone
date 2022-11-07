@@ -71,6 +71,7 @@ public class Gui {
   private JPanel gameOverLosePanel = new JPanel();
   private JPanel bottomPanel;
   private JPanel gameOverWinPanel = new JPanel();
+  private Boolean isInitialGame;
 
   //CONSUMER TIPS
 //  private Consumer <String> movePlanetsListenerConsumer;
@@ -765,9 +766,14 @@ public class Gui {
     continueBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        showGameScreenPanels();
-        ticktock.getTimer().start();
-        controllerField.stopTimer();
+        //Conditional to show help at start at game vs help while playing game that returns to current screen.
+        if(isInitialGame){
+          showGameScreenPanels();
+          isInitialGame = false;
+        }
+        else{
+          showMain();
+        }
       }
     });
   }
@@ -960,77 +966,92 @@ public class Gui {
     menuPanel.setVisible(false);
     soundPanel.setVisible(false);
     mapPanel.setVisible(false);
+    helpScreenPanel.setVisible(false);
+
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
+    statusPanel.setVisible(true);
+    rightSidePanel.setVisible(true);
+
     centralDisplayPanel.setVisible(true);
   }
 
+  //Part of game initialization to start new game Gui
   public void showGameScreenPanels() {
-    //Attach panels to the outermost Main Frame
-//    if(titleScreenPanel.isVisible()) {
+    //Set panels to false visibility
     titleScreenPanel.setVisible(false);
-//    }
-//    if (gameOverWinPanel.isVisible()){
     gameOverWinPanel.setVisible(false);
-//    }
-//    if(gameOverLosePanel.isVisible()){
     gameOverLosePanel.setVisible(false);
-
     helpScreenPanel.setVisible(false);
 
+    //Attach panels to the outermost Main Frame
     frame.add(statusPanel, BorderLayout.PAGE_START);
     frame.add(centralDisplayPanel, BorderLayout.CENTER);
     frame.add(rightSidePanel, BorderLayout.LINE_END);
+
+    //Set correct panels to visible
     statusPanel.setVisible(true);
     centralDisplayPanel.setVisible(true);
     rightSidePanel.setVisible(true);
-    imageUI.showEarthScreen2(); //Gets earth background screen.
+
+    //Get earth background scene
+    imageUI.showEarthScreen2();
+
     frame.setVisible(true);
+
+    //starts the timer
+    ticktock.getTimer().start();
   }
 
 
+  //Displays introduction of game in window
   public void showBackgroundScreen() {
     //Attach panels to the outermost Main Frame
-//    if(titleScreenPanel.isVisible()) {
+
     titleScreenPanel.setVisible(false);
-//    }
-//    if (gameOverWinPanel.isVisible()){
+
     gameOverWinPanel.setVisible(false);
-//    }
-//    if(gameOverLosePanel.isVisible()){
+
     gameOverLosePanel.setVisible(false);
 
     frame.add(backgroundScreenPanel, BorderLayout.CENTER);
     frame.setVisible(true);
     backgroundScreenPanel.setVisible(true);
   }
-
+  //Displays help screen at start of game as part of intro
   public void showHelpScreen() {
     //Attach panels to the outermost Main Frame
-//    if(titleScreenPanel.isVisible()) {
+
     titleScreenPanel.setVisible(false);
-//    }
-//    if (gameOverWinPanel.isVisible()){
+
     gameOverWinPanel.setVisible(false);
-//    }
-//    if(gameOverLosePanel.isVisible()){
+
     gameOverLosePanel.setVisible(false);
 
     backgroundScreenPanel.setVisible(false);
+
+
+    menuPanel.setVisible(false);
+    soundPanel.setVisible(false);
+    mapPanel.setVisible(false);
+    centralDisplayPanel.setVisible(false);
 
     frame.add(helpScreenPanel, BorderLayout.CENTER);
     frame.setVisible(true);
     helpScreenPanel.setVisible(true);
   }
 
+  //Displays help screen after game has started
   public void showHelpScreenBtn() {
     statusPanel.setVisible(false);
     centralDisplayPanel.setVisible(false);
     rightSidePanel.setVisible(false);
+
     menuPanel.setVisible(false);
     mapPanel.setVisible(false);
     soundPanel.setVisible(false);
     helpScreenPanel.setVisible(true);
   }
+
 
   public void showNewGameReplay() {
     if (gameOverWinPanel.isVisible()) {
@@ -1246,6 +1267,9 @@ public class Gui {
     this.warningLabel = warningLabel;
   }
 
+  public void setInitialGame(Boolean initialGame) {
+    isInitialGame = initialGame;
+  }
 }
 
 
