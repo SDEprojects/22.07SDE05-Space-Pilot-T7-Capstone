@@ -11,7 +11,7 @@
     "Aria"
   ],
   "arrayOfAstronautsOnPlanet": [],
-  "preReq": "cold shield",
-  "damageCondition": "extreme cold",
+  "preReq": "Cold Shield",
+  "damageCondition": "Extreme Cold",
   "item": null
 }

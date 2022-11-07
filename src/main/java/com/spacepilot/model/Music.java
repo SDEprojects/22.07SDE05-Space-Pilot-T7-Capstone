@@ -13,6 +13,9 @@ public final class Music {
   private static Clip clip2;
   public static FloatControl gainControl;
   private static String volume = "5";
+
+
+
   private static Boolean musicMute = true;
   private static Boolean fxMute = true;
   private static URL audio;
@@ -49,15 +52,20 @@ public final class Music {
   }
 
 
-  public static Void musicMute() {
-    if (musicMute) {
-      clip.stop();
-      musicMute = false;
-    } else if (!musicMute) {
+  public static Void musicPlay() {
+    if (!musicMute) {
       clip.start();
       musicMute = true;
     }
     return null;
+  }
+
+  public static Void musicPause() {
+    if (musicMute) {
+      clip.stop();
+      musicMute = false;
+    }
+      return null;
   }
 
   public static void fxMute() {
@@ -69,10 +77,9 @@ public final class Music {
   }
 
 
-  public static void startAudio() throws InterruptedException {
+  public static void startAudio() {
     clip2.start();
     clip2.loop(0);
-    clip2.wait();
   }
 
   public static void stopAudio() {
@@ -117,6 +124,14 @@ public final class Music {
   public static FloatControl gainControl(){
     gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
     return gainControl;
+  }
+
+  public static Boolean getMusicMute() {
+    return musicMute;
+  }
+
+  public static void setMusicMute(Boolean musicMute) {
+    Music.musicMute = musicMute;
   }
 
 }

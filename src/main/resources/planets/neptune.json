@@ -11,8 +11,8 @@
     "Aria"
   ],
   "arrayOfAstronautsOnPlanet": [],
-  "preReq": "weapon",
-  "damageCondition": "frost alien",
-  "item": "cold shield"
+  "preReq": "Blaster",
+  "damageCondition": "Frost Alien",
+  "item": "Cold Shield"
 
 }
