@@ -15,7 +15,7 @@ import javax.sound.midi.MidiUnavailableException;
 public class Main {
 
   public static void main(String[] args) {
-//    Release 2.2 into main
+    // Release 2.2 into main
     try (Reader input =
         new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input)) {

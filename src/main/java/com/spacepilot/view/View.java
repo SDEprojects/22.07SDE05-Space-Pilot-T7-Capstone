@@ -8,13 +8,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.util.List;
 import java.util.Random;
 
 public class View {
-
   public static GameText gameText;
-
   public static String printOutOfFuelDeath = "<html><center><font size='30'><font color=C0C0C0>Your ship ran out of fuel mid flight...<br>Better luck in your next life!<br></font></center></html>";
   public static String printOutOfHealthDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of health...<br>Better luck in your next life!<br></font></center></html>";
   public static String printOutOfTimeDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of oxygen...<br>Better luck in your next life!<br></font></center></html>";
@@ -24,7 +21,6 @@ public class View {
   public static void consoleToGUI(Gui gui) {
     System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
   }
-
   public static void getGameTextJson() {
     // create a reader
     try (Reader reader = new InputStreamReader(

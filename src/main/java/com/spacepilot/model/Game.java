@@ -4,33 +4,31 @@ import java.util.List;
 
 public class Game {
 
+  //FIELDS
   private boolean isOver;
-  private int remainingDays;
   private Spacecraft spacecraft;
   private int totalNumberOfAstronauts;
   private List<Planet> planets;
-
   private int startingRefuels;
   private int remainingRefuels;
   private int startingRepairs;
   private int remainingRepairs;
 
 
+  //METHODS
+  public int calculateRemainingAstronautsViaTotalNumOfAstronauts() {
+    int totalNumberOfAstronauts = getTotalNumberOfAstronauts()-spacecraft.getPassengers().size();
+    return totalNumberOfAstronauts;
+  }
 
+
+  //GETTERS AND SETTERS
   public boolean isOver() { // Getter for isOver
     return isOver;
   }
 
   public void setOver(boolean over) {
     isOver = over;
-  }
-
-  public int getRemainingDays() {
-    return remainingDays;
-  }
-
-  public void setRemainingDays(int remainingDays) {
-    this.remainingDays = remainingDays;
   }
 
   public Spacecraft getSpacecraft() {
@@ -55,11 +53,6 @@ public class Game {
 
   public void setPlanets(List<Planet> planets) {
     this.planets = planets;
-  }
-
-  public int calculateRemainingAstronautsViaTotalNumOfAstronauts() {
-    int totalNumberOfAstronauts = getTotalNumberOfAstronauts()-spacecraft.getPassengers().size();
-    return totalNumberOfAstronauts;
   }
 
   public int getStartingRefuels() {

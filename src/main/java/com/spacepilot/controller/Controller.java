@@ -10,8 +10,6 @@ import com.spacepilot.model.Spacecraft;
 import com.spacepilot.view.Gui;
 import com.spacepilot.view.View;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,26 +26,25 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.swing.Timer;
 
 public class Controller {
-
+  //FIELDS
   public static Game game; // model, where the current state of the game is stored
   private BufferedReader reader; // buffered reader used to read in what user enters
   private Gui gui;
-  private int repairCounter;
-  private int refuelCounter;
   private String userInput;
-
   private Timer healthTimer, alienTimer;
   private Boolean healthTimerBoolean = true;
   private Boolean alienTimerBoolean = true;
 
 
+  //CONSTRUCTOR
   public Controller(Game game, BufferedReader reader, Gui gui) {
     this.reader = reader;
     this.gui = gui;
     this.game = game;
   }
 
-  //method to create a new game
+
+//THESE METHODS HELP START AND SET UP THE GAME
   public static Game createNewGame() {
     // create a reader
     try (Reader reader = new InputStreamReader(Main.class.getResourceAsStream("/game.json"))) {
@@ -57,7 +54,6 @@ public class Controller {
       throw new RuntimeException(e);
     }
   }
-
   public void loadSavedGame() {
     try (Reader reader = Files.newBufferedReader(Paths.get("./saved-game.json"))) {
       Game savedGame = new Gson().fromJson(reader, Game.class);
@@ -105,9 +101,6 @@ public class Controller {
       throw new RuntimeException(e);
     }
   }
-
-//METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
-
   public static void saveGame(Game game) throws IOException {
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
@@ -116,21 +109,38 @@ public class Controller {
     writer.close();
     View.printSaveGameMessage();
   }
-
-  // Returns an instance of the desired planet when given a planet name
-  // If the desired planet by the name does not exist, returns null
-  public static Planet returnPlanet(String destination) {
-    // capitalize the destination
-    String planetName =
-        destination.substring(0, 1).toUpperCase() + destination.substring(1).toLowerCase();
-    for (Planet planet : game.getPlanets()) {
-      if (planet.getName().equals(planetName)) {
-        return planet;
-      }
+  public void newGameInitialization() {
+    try (Reader input =
+        new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(input)) {
+      //Creates new game from model
+      game = createNewGame();
+      //Sets up gui and controller again
+      replay();
+      //Shows correct gui panels
+      gui.showGameScreenPanels();//Takes you back to earth
+    } catch (IOException | URISyntaxException e) {
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
     }
-    return null;
   }
+  public void setUpGame() throws URISyntaxException, IOException {
+    // create planets based on planets' json files and set them as the current game's planets
+    game.setPlanets(createPlanets());
+    // for each planet in the current game
+    for (Planet planet : game.getPlanets()) {
+      // place random number of astronauts on each planet
+      planet.placeAstronauts(planet);
+      // and increment the number of total astronauts by the number of astronauts on each planet
+      game.setTotalNumberOfAstronauts(
+          game.getTotalNumberOfAstronauts() + planet.getNumOfAstronautsOnPlanet());
+    }
+    // create a new spacecraft instance for the current game, using data from a .json file
+    game.setSpacecraft(createSpacecraft());
+    // set the current spacecraft's current planet to be Earth
+    game.getSpacecraft().setCurrentPlanet(returnPlanet("earth"));
 
+  }
   public static Spacecraft createSpacecraft() {
     // create a reader
     try (Reader reader = new InputStreamReader(
@@ -141,7 +151,6 @@ public class Controller {
       throw new RuntimeException(e);
     }
   }
-
   public static List<Planet> createPlanets() throws URISyntaxException, IOException {
 
     List<Planet> planets = new ArrayList<>();
@@ -169,6 +178,8 @@ public class Controller {
     return planets;
   }
 
+
+  //METHODS FOR MAIN GAME PLAY
   public void play()
       throws IOException, URISyntaxException, MidiUnavailableException, InvalidMidiDataException, InterruptedException {
 
@@ -203,9 +214,7 @@ public class Controller {
     });
     userInput = "";
     textParser(userInput);
-
   }
-
   public void replay() throws URISyntaxException, IOException, InterruptedException {
     // create and set up game environment
     setUpGame();
@@ -229,11 +238,6 @@ public class Controller {
     gui.getFuelLevelBar().setString("Fuel: " + spacecraft.getFuel() + "%");
     gui.getShipHealthBar().setValue(spacecraft.getHealth());
     gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
-    //needs to connect health and fuel to spacecraft model
-
-////    resetting refuels and repairs (Will start off full)
-//    repairCounter = game.getRemainingRepairs();
-//    refuelCounter = game.getStartingRefuels();
 
     //resets images in inventory
     gui.inventoryImagesReset();
@@ -248,50 +252,12 @@ public class Controller {
       }
     });
   }
-
-  public void newGameInitialization() {
-    try (Reader input =
-        new InputStreamReader(System.in);
-        BufferedReader reader = new BufferedReader(input)) {
-      //Creates new game from model
-      game = createNewGame();
-      //Sets up gui and controller again
-      replay();
-      //Shows correct gui panels
-      gui.showGameScreenPanels();//Takes you back to earth
-    } catch (IOException | URISyntaxException e) {
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-
-  //KEEP DIS
-  public void setUpGame() throws URISyntaxException, IOException {
-    // create planets based on planets' json files and set them as the current game's planets
-    game.setPlanets(createPlanets());
-    // for each planet in the current game
-    for (Planet planet : game.getPlanets()) {
-      // place random number of astronauts on each planet
-      planet.placeAstronauts(planet);
-      // and increment the number of total astronauts by the number of astronauts on each planet
-      game.setTotalNumberOfAstronauts(
-          game.getTotalNumberOfAstronauts() + planet.getNumOfAstronautsOnPlanet());
-    }
-    // create a new spacecraft instance for the current game, using data from a .json file
-    game.setSpacecraft(createSpacecraft());
-    // set the current spacecraft's current planet to be Earth
-    game.getSpacecraft().setCurrentPlanet(returnPlanet("earth"));
-
-  }
-
   public void gameIntro() throws IOException, InterruptedException {
     View.getGameTextJson();
 
     // display user to hurry
     View.printHurryUp();
   }
-
   public void textParser(String text) {
     String[] result = new String[2];
     String[] splitText = text.split(" ");
@@ -301,21 +267,15 @@ public class Controller {
     result[1] = noun;
     try {
       nextMove(result);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    } catch (InterruptedException e) {
+    } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
   }
-
   public void nextMove(String[] command) throws IOException, InterruptedException {
     Spacecraft spacecraft = game.getSpacecraft();
     View.textSpacing();
     if (command[0].equals("quit")) {
       System.exit(0);
-    } else if (command[0].equals("help")) {
-//      View.printInstructions();
-
     } else if (command[0].equals("new")) {
       newGameInitialization();//creates new game?
 
@@ -366,11 +326,8 @@ public class Controller {
             String dangerOnPlanet = game.getSpacecraft().getCurrentPlanet().getDamageCondition() != null ? game.getSpacecraft().getCurrentPlanet().getDamageCondition() : "no danger";
             View.printPlanetArrivalMessage(game.getSpacecraft().getCurrentPlanet().getName(), astronautsPresent,dangerOnPlanet );
           }
-
-
-
           Music.playAudioFX("sounds/Rocket_Ship.wav");
-//deducts fuels from planets after moving
+          //deducts fuels from planets after moving
           if (!command[1].equals("orbit")) {
             gui.getFuelLevelBar().setValue((spacecraft.getFuel() - 10));
             spacecraft.setFuel((spacecraft.getFuel() - 10));
@@ -422,7 +379,6 @@ public class Controller {
         View.printNoEngineerAlert();
         return;
       }
-
       if (spacecraft.getHealth() == 100) {
         View.printYourHealthisFullAlready();
       } else if (game.getRemainingRepairs() > 0) {
@@ -431,7 +387,6 @@ public class Controller {
         gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
         View.printRepair();
         Music.playAudioFX("sounds/Repair.wav");
-//        repairCounter--;
         game.setRemainingRepairs(game.getStartingRepairs()-1);
       } else if (game.getRemainingRepairs() == 0) {
         View.printRepairLimit();
@@ -466,8 +421,7 @@ public class Controller {
         }
         interactAlien();
       }
-    } else { // invalid command message
-//      View.printInvalidCommandAlert();
+    } else {
       return;
     }
 
@@ -478,6 +432,8 @@ public class Controller {
     checkGameResult();
   }
 
+
+  //METHODS FOR VIEW UPDATES
   public void getStatusUpdateForBackgrounds() {
     gui.planetBackgroundUpdate(
         game.getSpacecraft().getCurrentPlanet().getItem(),
@@ -488,7 +444,6 @@ public class Controller {
         game.getStartingRefuels(),
         game.getRemainingRefuels());
   }
-
   public void displayCurrentPlanetStatus() {
     //Calls gui method to display current status of planet user is on.
     gui.displayPlanetStatus(
@@ -496,11 +451,6 @@ public class Controller {
         game.getSpacecraft().getCurrentPlanet().getDamageCondition(),
         game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet());
   }
-
-  /*
-  HELPER METHODS
-   */
-
   private void displayGameStatusPanel() {
     Collection<String> inventory = game.getSpacecraft().getInventory();
     Planet planet = game.getSpacecraft().getCurrentPlanet();
@@ -512,6 +462,46 @@ public class Controller {
     gui.displayGameStatus(inventory, planet, game.getRemainingRepairs(), game.getStartingRepairs(), startingStrandedAstronauts, rescuedAstronauts);
   }
 
+
+  //TIMER STUFF
+  public void alienInteractionTimer() {
+    Spacecraft spacecraft = game.getSpacecraft();
+    alienTimer = new Timer(250, e -> gui.warningMessage());
+  }
+  public void healthTickTimer() {
+    Spacecraft spacecraft = game.getSpacecraft();
+    //health timer should be 250
+    healthTimer = new Timer(250, e -> {
+      gui.getShipHealthBar().setValue((spacecraft.getHealth() - 1));
+      spacecraft.setHealth((spacecraft.getHealth() - 1));
+      gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
+      gui.warningMessage();
+      if (spacecraft.getHealth() < 1) {
+        healthTimer.stop();
+        gui.getShipHealthBar().setValue(0);
+        gui.getShipHealthBar().setString("Health: " + 0 + "%");
+        spacecraft.setHealth(0);
+        checkGameResult();
+      }
+    });
+  }
+  public void stopTimer() {
+    if (!healthTimerBoolean) {
+      healthTimer.stop();
+      healthTimerBoolean = true;
+      gui.removeWarningMessage();
+    } else if (!alienTimerBoolean) {
+      alienTimer.stop();
+      alienTimerBoolean = true;
+      gui.removeWarningMessage();
+    }
+
+  }
+
+
+  /*
+  HELPER METHODS
+   */
   public void loadNewPassengers() {
     Collection<Object> arrayOfAstronautsOnCurrentPlanet = game.getSpacecraft().getCurrentPlanet()
         .getArrayOfAstronautsOnPlanet();
@@ -560,7 +550,6 @@ public class Controller {
       game.getSpacecraft().getInventory().remove(preReq);
     }
   }
-
   public void unloadPassengersOnEarth() {
     Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
     Spacecraft spacecraft = game.getSpacecraft();
@@ -577,7 +566,6 @@ public class Controller {
       View.printYouCantUnloadPassengersIfCurrentPlanetNotEarth();
     }
   }
-
   public void refuelShip() {
     Planet currentPlanet = game.getSpacecraft().getCurrentPlanet();
     Spacecraft spacecraft = game.getSpacecraft();
@@ -592,17 +580,18 @@ public class Controller {
       gui.getFuelLevelBar().setValue(100);
       spacecraft.setFuel(100);
       gui.getFuelLevelBar().setString("Fuel: " + spacecraft.getFuel() + "%");
-//      refuelCounter--;
       game.setRemainingRefuels(game.getRemainingRefuels()-1);
       Music.playAudioFX("sounds/Fuel.wav");// success
       View.printSpacecraftHasBeenFilled();
     }
   }
-
   public void interactAlien() {
     Spacecraft spacecraft = game.getSpacecraft();
     Planet destinationPlanet = returnPlanet(spacecraft.getCurrentPlanet().getName());
-    String preReq = destinationPlanet.getPreReq();
+    String preReq = null;
+    if (destinationPlanet != null) {
+      preReq = destinationPlanet.getPreReq();
+    }
     if (preReq != null && !spacecraft.getInventory().contains(preReq)) {
       String damageCondition = destinationPlanet.getDamageCondition();
       gui.getShipHealthBar().setValue(spacecraft.getHealth() - 45);
@@ -633,11 +622,9 @@ public class Controller {
 
     }
   }
-
-//METHOD TO CREATE A NEW GAME OR CONTINUE GAME OR QUIT GAME
-
-  //gives the user all the astronauts, items, and sets health and fuel to 100
   public void godMode() {
+    //gives the user all the astronauts, items, and sets health and fuel to 100
+
     Music.playAudioFX("sounds/God_Mode.wav");
     for (Planet planet : game.getPlanets()) {
       Collection<Object> astronauts = planet.getArrayOfAstronautsOnPlanet();
@@ -656,15 +643,13 @@ public class Controller {
     gui.getShipHealthBar().setValue(game.getSpacecraft().getHealth());
     gui.getShipHealthBar().setString("Health: " + 100 + "%");
 
-//    set timer to 8:00
+    //set timer to 8:00
     gui.getTicktock().setMinutes(8);
     gui.getTicktock().setSeconds(1);
   }
-
   public void checkGameResult() {
     //Checks if planet complete to add checkmark
     gui.addCheckMarkToCompletedPlanets(game.getSpacecraft().getCurrentPlanet());
-
 
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
@@ -680,7 +665,6 @@ public class Controller {
       }
       if (game.getSpacecraft().getFuel() < 0) {
         gui.getFuelLevelBar().setString("Fuel: " + 0 + "%");
-//        game.setOver(true);
         gui.showGameOverLoseScreen();
       } else if (gui.getShipHealthBar().getValue() < 1) {
         gui.showGameOverLoseScreen();
@@ -699,54 +683,20 @@ public class Controller {
     } else if (userWon) {
       gui.showGameOverWinScreen();
     }
-
   }
-
-  public void healthTickTimer() {
-    Spacecraft spacecraft = game.getSpacecraft();
-    healthTimer = new Timer(250, new ActionListener() {//health timer should be 250
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        gui.getShipHealthBar().setValue((spacecraft.getHealth() - 1));
-        spacecraft.setHealth((spacecraft.getHealth() - 1));
-        gui.getShipHealthBar().setString("Health: " + spacecraft.getHealth() + "%");
-        gui.warningMessage();
-        if (spacecraft.getHealth() < 1) {
-          healthTimer.stop();
-          gui.getShipHealthBar().setValue(0);
-          gui.getShipHealthBar().setString("Health: " + 0 + "%");
-          spacecraft.setHealth(0);
-          checkGameResult();
-        }
+  public static Planet returnPlanet(String destination) {
+    // Returns an instance of the desired planet when given a planet name
+    // If the desired planet by the name does not exist, returns null
+    // capitalize the destination
+    String planetName =
+        destination.substring(0, 1).toUpperCase() + destination.substring(1).toLowerCase();
+    for (Planet planet : game.getPlanets()) {
+      if (planet.getName().equals(planetName)) {
+        return planet;
       }
-    });
-  }
-
-
-  public void stopTimer() {
-    if (!healthTimerBoolean) {
-      healthTimer.stop();
-      healthTimerBoolean = true;
-      gui.removeWarningMessage();
-    } else if (!alienTimerBoolean) {
-      alienTimer.stop();
-      alienTimerBoolean = true;
-      gui.removeWarningMessage();
     }
-
+    return null;
   }
-
-  public void alienInteractionTimer() {
-    Spacecraft spacecraft = game.getSpacecraft();
-    alienTimer = new Timer(250, new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        gui.warningMessage();
-      }
-
-    });
-  }
-
   public void updateFuel() {
     Spacecraft spacecraft = game.getSpacecraft();
     gui.getFuelLevelBar().setValue((spacecraft.getFuel() - 10));

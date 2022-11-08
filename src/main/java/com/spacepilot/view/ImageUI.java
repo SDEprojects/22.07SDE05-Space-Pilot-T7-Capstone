@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 public class ImageUI {
 
+  //FIELDS
   private JPanel containerPanel;
   private JPanel imagePanel;
   private JPanel bgPanel[] = new JPanel[10];
@@ -22,7 +23,6 @@ public class ImageUI {
   private Runnable refuelRunnableListener;
   private Runnable interactRunnableListener;
   private Runnable goOrbitRunnableListener;
-
   private List<String> allPlanets = new ArrayList<>(Arrays.asList("Jupiter", "Mars",
       "Mercury", "Moon", "Neptune", "Orbit", "Saturn", "Uranus", "Venus"));
   private String item;
@@ -35,9 +35,7 @@ public class ImageUI {
   private int refuelsLeft;
   private int startingRefuels;
 
-
-
-
+//CONSTRUCTOR
   public ImageUI(JPanel containerPanel, Runnable loadRunnable,
       Runnable unloadRunnable, Runnable refuelRunnable,
       Runnable interactRunnable, Runnable goOrbitRunnable) {
@@ -50,40 +48,32 @@ public class ImageUI {
 
   }
 
-
-  public void addUpdateToPanel(){
-    containerPanel.add(imagePanel, BorderLayout.CENTER);
-  }
-
+//METHODS
+  //CREATE VISUALS
   public void createTopLevelPanel(){
     imagePanel = new JPanel();
     imagePanel.setBackground(Color.black);
     imagePanel.setLayout(new BorderLayout());
   }
-
-  //Creates panel to hold background label
   public void createBackgroundPanel(int bgNum){
-
+    //Creates panel to hold background label
     //creating background panels
     bgPanel[bgNum] = new JPanel();
     bgPanel[bgNum].setBackground(Color.red);
     bgPanel[bgNum].setBounds(0, 0, 1024, 640); //since layout null, setBounds
     bgPanel[bgNum].setLayout(null);
     imagePanel.add(bgPanel[bgNum]);
-
   }
-
-  //Creates label with background image
   public void createBackgroundLabel(int bgNum, String bgFileName){
+    //Creates label with background image
     //Set label to icon. Sizing should match panel its within
     ImageIcon bgIcon = new ImageIcon(getClass().getClassLoader().getResource(bgFileName));
     bgLabel[bgNum] = new JLabel();
     bgLabel[bgNum].setBounds(0,0, 1024, 640);
     bgLabel[bgNum].setIcon(bgIcon);
   }
-
-  //Creates object image within background
   public void createObject(int bgNum, int objx, int objy, int objWidth, int objHeight, String objFileName, Runnable cmdRunnable){
+    //Creates object image within background
     //create label
     JButton objectButton = new JButton();
     objectButton.setBounds(objx, objy, objWidth, objHeight); //sets location for astronaut
@@ -105,9 +95,8 @@ public class ImageUI {
     bgPanel[bgNum].add(bgLabel[bgNum]); //adds background here
 
   }
-
-  //Creates map object to open map with click
   public void createMapObject(int bgNum, int objx, int objy, int objWidth, int objHeight, String objFileName){
+    //Creates map object to open map with click
     //create label
     JButton objectLabel = new JButton();
     objectLabel.setBounds(objx, objy, objWidth, objHeight); //sets location for astronaut
@@ -130,21 +119,8 @@ public class ImageUI {
     bgPanel[bgNum].add(bgLabel[bgNum]); //adds background here
 
   }
-
-
-  //Method to update fields to current game statuses
-  public void planetBackgroundCustomization(String item, String dangerCondition,
-      int numberOfAstronauts, String currentPlanet, List<String> inventory){
-    //Assign all values to fields
-    this.item = item;
-    this.dangerCondition = dangerCondition;
-    this.numberOfAstronauts = numberOfAstronauts;
-    this.currentPlanet = currentPlanet;
-    this.inventory = inventory;
-  }
-
-  //Uses current game status to create updated planet backgrounds
   public void createPlanetScreen(){
+    //Uses current game status to create updated planet backgrounds
     //Clear entire panel
     bgPanel[2].removeAll();
 
@@ -242,11 +218,20 @@ public class ImageUI {
     loopThroughInventoryToCheckCurrentItems();
   }
 
-  //Loops through current inventory to check which items there
+
+  public void planetBackgroundCustomization(String item, String dangerCondition,
+      int numberOfAstronauts, String currentPlanet, List<String> inventory){
+    //Assign all values to fields
+    this.item = item;
+    this.dangerCondition = dangerCondition;
+    this.numberOfAstronauts = numberOfAstronauts;
+    this.currentPlanet = currentPlanet;
+    this.inventory = inventory;
+  }
   public void loopThroughInventoryToCheckCurrentItems(){
+    //Loops through current inventory to check which items there
     //Clears inventory panel
     guiInventoryPanel.removeAll();
-
     for(String item : inventory){
       switch (item){
         case "Blaster":
@@ -266,9 +251,8 @@ public class ImageUI {
       }
     }
   }
-
-  //Adds items in inventory to panel with an image
   public void addHeldItemsToInventoryImagePanel(String fileName){
+    //Adds items in inventory to panel with an image
     //Create a new label
     JLabel itemLabel = new JLabel();
     //create icon
@@ -284,9 +268,8 @@ public class ImageUI {
     //add to inventory panel
     guiInventoryPanel.add(itemLabel);
   }
-
-  //Creates each background panel with image buttons
   public void generateScene(){
+    //Creates each background panel with image buttons
     //Earth Scene 1
     createBackgroundPanel(1);
     createBackgroundLabel(1, "backgrounds/earth.png");
@@ -313,11 +296,14 @@ public class ImageUI {
 
     addUpdateToPanel();
   }
-
-  //Updates fuel count after refuel is clicked
+  public void addUpdateToPanel(){
+    containerPanel.add(imagePanel, BorderLayout.CENTER);
+  }
   public void updateRefuelsOnStation(){
+    //Updates fuel count after refuel is clicked
     refuelsLeftLabel.setText(refuelsLeft + " / " + startingRefuels);
   }
+
 
   //Rotates background scenes
   public void showPlanetScreen1(){
@@ -325,13 +311,11 @@ public class ImageUI {
     bgPanel[3].setVisible(false);
     bgPanel[2].setVisible(true);
   }
-
   public void showEarthScreen2(){
     bgPanel[2].setVisible(false);
     bgPanel[3].setVisible(false);
     bgPanel[1].setVisible(true);
   }
-
   public void showStationScreen3(){
     bgPanel[1].setVisible(false);
     bgPanel[2].setVisible(false);
@@ -339,22 +323,19 @@ public class ImageUI {
   }
 
 
+  //GETTERS AND SETTERS
   public void setCurrentPlanet(String currentPlanet) {
     this.currentPlanet = currentPlanet;
   }
-
   public void setGuiInventoryPanel(JPanel guiInventoryPanel) {
     this.guiInventoryPanel = guiInventoryPanel;
   }
-
   public void setRefuelsLeft(int refuelsLeft) {
     this.refuelsLeft = refuelsLeft;
   }
-
   public JPanel getGuiInventoryPanel() {
     return guiInventoryPanel;
   }
-
   public void setStartingRefuels(int startingRefuels) {
     this.startingRefuels = startingRefuels;
   }
