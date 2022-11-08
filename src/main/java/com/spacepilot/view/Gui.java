@@ -942,42 +942,42 @@ deathStatement();
       switch (planetName){
         case "Neptune":
           checkButtonArr[0]  = new JButton();
-          planetIcons(checkButtonArr[0], "images/checkMark.png", neptuneBtn.getLocation().x, neptuneBtn.getLocation().y -70, 115, 121, 25, 25);
+          planetIcons(checkButtonArr[0], "images/checkMark.png", neptuneBtn.getLocation().x +43, neptuneBtn.getLocation().y-30, 25, 25, 25, 25);
           mapPanel.add(checkButtonArr[0]);
           break;
         case "Saturn":
           checkButtonArr[1] = new JButton();
-          planetIcons(checkButtonArr[1], "images/checkMark.png", saturnBtn.getLocation().x, saturnBtn.getLocation().y -70, 115, 121, 25, 25);
+          planetIcons(checkButtonArr[1], "images/checkMark.png", saturnBtn.getLocation().x +45, saturnBtn.getLocation().y -30, 25, 25, 25, 25);
           mapPanel.add(checkButtonArr[1]);
           break;
         case "Mercury":
           checkButtonArr[2] = new JButton();
-          planetIcons(checkButtonArr[2], "images/checkMark.png", mercuryBtn.getLocation().x, mercuryBtn.getLocation().y -70, 115, 121, 25, 25);
+          planetIcons(checkButtonArr[2], "images/checkMark.png", mercuryBtn.getLocation().x +20, mercuryBtn.getLocation().y -30, 25, 25, 25, 25);
           mapPanel.add(checkButtonArr[2]);
           break;
         case "Mars":
           checkButtonArr[3] = new JButton();
-          planetIcons(checkButtonArr[3], "images/checkMark.png", marsBtn.getLocation().x, marsBtn.getLocation().y -70, 115, 121, 25, 25);
+          planetIcons(checkButtonArr[3], "images/checkMark.png", marsBtn.getLocation().x +40, marsBtn.getLocation().y -30, 25, 25, 25, 25);
           mapPanel.add(checkButtonArr[3]);
           break;
         case "Moon":
           checkButtonArr[7] = new JButton();
-          planetIcons(checkButtonArr[7], "images/checkMark.png", moonBtn.getLocation().x, moonBtn.getLocation().y -70, 115, 121, 25, 25);
+          planetIcons(checkButtonArr[7], "images/checkMark.png", moonBtn.getLocation().x +15, moonBtn.getLocation().y -30, 25, 25, 25, 25);
           mapPanel.add(checkButtonArr[7]);
           break;
         case "Jupiter":
           checkButtonArr[5] = new JButton();
-          planetIcons(checkButtonArr[5], "images/checkMark.png", jupiterBtn.getLocation().x, jupiterBtn.getLocation().y -70, 115, 121, 25, 25);
+          planetIcons(checkButtonArr[5], "images/checkMark.png", jupiterBtn.getLocation().x +70, jupiterBtn.getLocation().y -30, 25, 25, 25, 25);
           mapPanel.add(checkButtonArr[5]);
           break;
         case "Venus":
           checkButtonArr[6] = new JButton();
-          planetIcons(checkButtonArr[6], "images/checkMark.png", venusBtn.getLocation().x, venusBtn.getLocation().y -70, 115, 121, 25, 25);
+          planetIcons(checkButtonArr[6], "images/checkMark.png", venusBtn.getLocation().x +35, venusBtn.getLocation().y -30, 25, 25, 25, 25);
           mapPanel.add(checkButtonArr[6]);
           break;
         case "Uranus":
           checkButtonArr[4] = new JButton();
-          planetIcons(checkButtonArr[4], "images/checkMark.png", uranusBtn.getLocation().x, uranusBtn.getLocation().y -70, 115, 121, 25, 25);
+          planetIcons(checkButtonArr[4], "images/checkMark.png", uranusBtn.getLocation().x  +33, uranusBtn.getLocation().y -30, 25, 25, 25, 25);
           mapPanel.add(checkButtonArr[4]);
           break;
       }
