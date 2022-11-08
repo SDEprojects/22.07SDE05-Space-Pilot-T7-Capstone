@@ -52,8 +52,9 @@ public class Gui {
   private JPanel titleScreenPanel, titleBtnPanel, controlPanel, statusPanel, centralDisplayPanel, inventoryPanel, rightSidePanel,
       planetStatusPanel, menuPanel, soundPanel, mapPanel, helpScreenPanel, helpBtnPanel, backgroundScreenPanel;
   private JLabel titleLabel, currentPlanetLabel, damageConditionLabel, itemsOnPlanetLabel,
-      numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel, warningLabel, helpLabel, youSuckLabel;
-  private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn, godStarBtn;
+      numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel, warningLabel, helpLabel,backgroundLabel, youSuckLabel;
+  private JButton moonBtn, marsBtn, mercuryBtn, saturnBtn,venusBtn,uranusBtn,jupiterBtn,neptuneBtn
+  , continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn, godStarBtn;
   private Boolean warningBoolean = true;
 
   private float currentVolume;
@@ -69,6 +70,7 @@ public class Gui {
   private JPanel bottomPanel;
   private JPanel gameOverWinPanel = new JPanel();
   private Boolean isInitialGame;
+  private JButton[] checkButtonArr = new JButton[8];
 
   //CONSUMER TIPS
 //  private Consumer <String> movePlanetsListenerConsumer;
@@ -826,7 +828,7 @@ deathStatement();
     mapPanel.setBackground(Color.black);
     mapPanel.setLayout(null);
 
-    JLabel backgroundLabel = new JLabel("");
+    backgroundLabel = new JLabel("");
     backgroundLabel.setIcon(
         new ImageIcon(getClass().getClassLoader().getResource("images/Space.jpg")));
     backgroundLabel.setBounds(0, 0, 1140, 900);
@@ -848,39 +850,39 @@ deathStatement();
     planetIcons(earthBtn, "images/Earth.png", 440, 80, 100, 118, 100, 98);
     chaChaRealSmooth(earthBtn, "go earth", true);
 //    creates moon btn, icon, and functionality
-    JButton moonBtn = new JButton("Moon");
+    moonBtn = new JButton("Moon");
     planetIcons(moonBtn, "images/Moon.png", 380, 40, 47, 48, 27, 28);
     chaChaRealSmooth(moonBtn, "go moon", true);
     //    creates mars btn, icon, and functionality
-    JButton marsBtn = new JButton("Mars");
+    marsBtn = new JButton("Mars");
     planetIcons(marsBtn, "images/Mars.png", 80, 280, 100, 122, 100, 102);
     chaChaRealSmooth(marsBtn, "go mars", true);
 
     //CONSUMER TIPS
 //    marsBtn.addActionListener(e -> movePlanetsListenerConsumer.accept("mars"));
     //    creates mercury btn, icon, and functionality
-    JButton mercuryBtn = new JButton("Mercury");
+    mercuryBtn = new JButton("Mercury");
     planetIcons(mercuryBtn, "images/Mercury.png", 230, 400, 60, 84, 60, 64);
     chaChaRealSmooth(mercuryBtn, "go mercury", true);
     //    creates saturn btn, icon, and functionality
-    JButton saturnBtn = new JButton("Saturn");
+    saturnBtn = new JButton("Saturn");
     planetIcons(saturnBtn, "images/Saturn.png", 115, 540, 116, 104, 116, 84);
     chaChaRealSmooth(saturnBtn, "go saturn", true);
     //    creates venus btn, icon, and functionality
-    JButton venusBtn = new JButton("Venus");
+    venusBtn = new JButton("Venus");
     planetIcons(venusBtn, "images/Venus.png", 775, 375, 74, 96, 74, 76);
     chaChaRealSmooth(venusBtn, "go venus", true);
     //    creates neptune btn, icon, and functionality
-    JButton neptuneBtn = new JButton("Neptune");
+    neptuneBtn = new JButton("Neptune");
     planetIcons(neptuneBtn, "images/Neptune.png", 100, 100, 110, 100, 110, 80);
     chaChaRealSmooth(neptuneBtn, "go neptune", true);
     //    creates jupiter btn, icon, and functionality
-    JButton jupiterBtn = new JButton("Jupiter");
+    jupiterBtn = new JButton("Jupiter");
     planetIcons(jupiterBtn, "images/Jupiter.png", 800, 550, 158, 182, 158, 162);
     chaChaRealSmooth(jupiterBtn, "go jupiter", true);
     //    creates uranus btn, icon, and functionality
-    JButton uranusBtn = new JButton("Uranus");
-    planetIcons(uranusBtn, "images/Uranus.png", 500, 590, 86, 110, 86, 90);
+    uranusBtn = new JButton("Uranus");
+    planetIcons(uranusBtn, "images/Uranus.png", 500, 620, 86, 110, 86, 90);
     chaChaRealSmooth(uranusBtn, "go uranus", true);
     //    creates station btn, icon, and functionality
     stationBtn = new JButton("Station");
@@ -913,6 +915,77 @@ deathStatement();
     godStarBtn.setOpaque(false);
     godStarBtn.setContentAreaFilled(false);
     godStarBtn.setBorderPainted(false);
+
+  }
+
+  //remove check marks from map btns
+  public void removeCheckMarks(){
+    for(JButton button : checkButtonArr){
+      if(button != null){//check if button has assignment
+        mapPanel.remove(button);
+      }
+    }
+  }
+
+  public void addCheckMarksFromLoadGame(List<Planet> allPlanets){
+    for(Planet planet : allPlanets){
+      addCheckMarkToCompletedPlanets(planet);
+    }
+  }
+
+  public void addCheckMarkToCompletedPlanets(Planet currentPlanet){
+    //get planet name and num astronauts on planet
+    String planetName = currentPlanet.getName();
+    int astronautsPresent = currentPlanet.getNumOfAstronautsOnPlanet();
+    //add check to planets that cleared astronauts
+    if(astronautsPresent <= 0){ //if current planet astronauts cleared, add checkmark
+      switch (planetName){
+        case "Neptune":
+          checkButtonArr[0]  = new JButton();
+          planetIcons(checkButtonArr[0], "images/checkMark.png", neptuneBtn.getLocation().x, neptuneBtn.getLocation().y -70, 115, 121, 25, 25);
+          mapPanel.add(checkButtonArr[0]);
+          break;
+        case "Saturn":
+          checkButtonArr[1] = new JButton();
+          planetIcons(checkButtonArr[1], "images/checkMark.png", saturnBtn.getLocation().x, saturnBtn.getLocation().y -70, 115, 121, 25, 25);
+          mapPanel.add(checkButtonArr[1]);
+          break;
+        case "Mercury":
+          checkButtonArr[2] = new JButton();
+          planetIcons(checkButtonArr[2], "images/checkMark.png", mercuryBtn.getLocation().x, mercuryBtn.getLocation().y -70, 115, 121, 25, 25);
+          mapPanel.add(checkButtonArr[2]);
+          break;
+        case "Mars":
+          checkButtonArr[3] = new JButton();
+          planetIcons(checkButtonArr[3], "images/checkMark.png", marsBtn.getLocation().x, marsBtn.getLocation().y -70, 115, 121, 25, 25);
+          mapPanel.add(checkButtonArr[3]);
+          break;
+        case "Moon":
+          checkButtonArr[7] = new JButton();
+          planetIcons(checkButtonArr[7], "images/checkMark.png", moonBtn.getLocation().x, moonBtn.getLocation().y -70, 115, 121, 25, 25);
+          mapPanel.add(checkButtonArr[7]);
+          break;
+        case "Jupiter":
+          checkButtonArr[5] = new JButton();
+          planetIcons(checkButtonArr[5], "images/checkMark.png", jupiterBtn.getLocation().x, jupiterBtn.getLocation().y -70, 115, 121, 25, 25);
+          mapPanel.add(checkButtonArr[5]);
+          break;
+        case "Venus":
+          checkButtonArr[6] = new JButton();
+          planetIcons(checkButtonArr[6], "images/checkMark.png", venusBtn.getLocation().x, venusBtn.getLocation().y -70, 115, 121, 25, 25);
+          mapPanel.add(checkButtonArr[6]);
+          break;
+        case "Uranus":
+          checkButtonArr[4] = new JButton();
+          planetIcons(checkButtonArr[4], "images/checkMark.png", uranusBtn.getLocation().x, uranusBtn.getLocation().y -70, 115, 121, 25, 25);
+          mapPanel.add(checkButtonArr[4]);
+          break;
+      }
+
+
+    }
+    mapPanel.add(backgroundLabel);
+
   }
 
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
@@ -1238,6 +1311,7 @@ deathStatement();
     btn.setHorizontalTextPosition(SwingConstants.CENTER);
     btn.setBounds(x, y, width, height);
   }
+
 
   public void warningMessage() {
     if (warningBoolean) {

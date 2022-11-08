@@ -65,6 +65,9 @@ public class Controller {
         game = savedGame;
         View.printLoadGameResult(true);
 
+        //Add checkmarks back for loaded game
+        gui.addCheckMarksFromLoadGame(game.getPlanets());
+
         //Update status panels to empty
         displayCurrentPlanetStatus();
         displayGameStatusPanel();
@@ -206,7 +209,11 @@ public class Controller {
   public void replay() throws URISyntaxException, IOException, InterruptedException {
     // create and set up game environment
     setUpGame();
+    //hide game over panel to show new game panel
     gui.showNewGameReplay();
+
+    //reset completion checkmarks in map
+    gui.removeCheckMarks();
 
     // display game's introduction with flash screen and story and prompt the user to continue
     gameIntro();
@@ -346,8 +353,22 @@ public class Controller {
           }
           //Check if planet has prereq/damageCondition that causes damage to ship
           String preReq = destinationPlanet.getPreReq();
-
+          //set current planet
           spacecraft.setCurrentPlanet(returnPlanet(command[1]));
+
+          //Print string for arriving at planet or station
+          if(command[1].equals("station")){
+            View.printStationArrivalMessage(game.getStartingRefuels(), game.getRemainingRefuels());
+          }else if(!command[1].equals("orbit")){
+            //Send correct string if astronauts are present on planet
+            String astronautsPresent = game.getSpacecraft().getCurrentPlanet().getNumOfAstronautsOnPlanet() >0 ? "some" : "no";
+            //Send correct string if danger
+            String dangerOnPlanet = game.getSpacecraft().getCurrentPlanet().getDamageCondition() != null ? game.getSpacecraft().getCurrentPlanet().getDamageCondition() : "no danger";
+            View.printPlanetArrivalMessage(game.getSpacecraft().getCurrentPlanet().getName(), astronautsPresent,dangerOnPlanet );
+          }
+
+
+
           Music.playAudioFX("sounds/Rocket_Ship.wav");
 //deducts fuels from planets after moving
           if (!command[1].equals("orbit")) {
@@ -641,6 +662,10 @@ public class Controller {
   }
 
   public void checkGameResult() {
+    //Checks if planet complete to add checkmark
+    gui.addCheckMarkToCompletedPlanets(game.getSpacecraft().getCurrentPlanet());
+
+
     int numRescuedPassengers = returnPlanet("earth").getNumOfAstronautsOnPlanet();
     int totalNumberOfPersonsCreatedInSolarSystem = game.getTotalNumberOfAstronauts();
     boolean userWon = (double) numRescuedPassengers / totalNumberOfPersonsCreatedInSolarSystem
@@ -674,6 +699,7 @@ public class Controller {
     } else if (userWon) {
       gui.showGameOverWinScreen();
     }
+
   }
 
   public void healthTickTimer() {
