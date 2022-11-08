@@ -32,20 +32,14 @@ public class CustomDialogBox implements ActionListener {
     dialog = new JDialog(dialogOwner, dialogTitle);
     //prevent clicking when dialog up
     dialog.setModal(true);
-    //set dialog size
-//    dialog.setPreferredSize(new Dimension(170, 100));
     //make dialog box transparent
     dialog.setUndecorated(true);
-
     //Create Font styling
     Font font = new Font("Times New Roman", Font.BOLD, 30);
-
-
     //Create panel to hold text and button
     JPanel panel = new JPanel(){
       public void paintComponent(Graphics g)
       {
-
         g.setColor(new Color(190, 17, 16));
         g.fillRoundRect(0, 0, dialog.getWidth(), dialog.getHeight(), 0, 0);
 
@@ -54,13 +48,8 @@ public class CustomDialogBox implements ActionListener {
       }
     };
     panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS)); //layout that stacks
-
     //Create text area and format
     JTextArea textArea = new JTextArea();
-    //wrap lines
-//    textArea.setLineWrap(true);
-//    //wrap around words, not characters
-//    textArea.setWrapStyleWord(true);
     //stop editing, center alignment
     textArea.setEditable(false);
     //clear color
@@ -73,16 +62,12 @@ public class CustomDialogBox implements ActionListener {
       textArea.append("\n");
     }
 
-
     //create exit button
     JButton button = new JButton("OK");
     //center button
     button.setAlignmentX(Component.CENTER_ALIGNMENT);
     //add action listener
     button.addActionListener(this);
-    //set button size
-//    button.setPreferredSize(new Dimension(30, 30));
-
     //Adds label and button to panel
     panel.add(textArea);
     //Adds invisible component go give spacing.
@@ -113,63 +98,44 @@ public class CustomDialogBox implements ActionListener {
     dialog = new JDialog(dialogOwner, dialogTitle);
     //prevent clicking when dialog up
     dialog.setModal(true);
-    //set dialog size
-//    dialog.setPreferredSize(new Dimension(170, 100));
     //make dialog box transparent
     dialog.setUndecorated(true);
-
     //Create Font styling
     Font font = new Font("Times New Roman", Font.BOLD, 30);
-
     //Create panel to hold text and button
     JPanel panel = new JPanel(){
       public void paintComponent(Graphics g)
       {
-
         g.setColor(new Color(190, 17, 16));
         g.fillRoundRect(0, 0, dialog.getWidth(), dialog.getHeight(), 0, 0);
-
         g.setColor(new Color(190, 17, 16));
         g.drawRoundRect(0, 0, dialog.getWidth(), dialog.getHeight(), 0, 0);
       }
     };
     panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS)); //layout that stacks
-
-
     //Create text area and format
     JTextArea textArea = new JTextArea();
-    //wrap lines
-//    textArea.setLineWrap(true);
-//    //wrap around words, not characters
-//    textArea.setWrapStyleWord(true);
     //stop editing, center alignment
     textArea.setEditable(false);
     //clear color
     textArea.setBackground(new Color(0,0,0,0));
     //set font
     textArea.setFont(font);
-
     //Adds strings to textarea
     textArea.append(stringMessage);
-
     //create exit button
     JButton button = new JButton("OK");
     //center button
     button.setAlignmentX(Component.CENTER_ALIGNMENT);
     //add action listener
     button.addActionListener(this);
-    //set button size
-//    button.setPreferredSize(new Dimension(30, 30));
-
     //Adds label and button to panel
     panel.add(textArea);
     //Adds invisible component go give spacing.
     panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
     panel.add(button);
-
     //Add panel to dialog
     dialog.add(panel);
-
     //sets dialog ot preferred size
     dialog.pack();
     //Centers dialog to frame when it opens

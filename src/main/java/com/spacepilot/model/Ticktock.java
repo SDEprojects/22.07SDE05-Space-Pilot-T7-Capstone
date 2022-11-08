@@ -8,7 +8,7 @@ import javax.swing.Timer;
 
 public class Ticktock {
 
-
+//FIELDS
   private Timer timer, healthTimer;
   private int seconds;
   private int minutes;
@@ -17,14 +17,7 @@ public class Ticktock {
   private DecimalFormat dFormat = new DecimalFormat("00");
   private JLabel oxygenTimeLeftLabel;
   private Boolean oxygenTickerLose = false;
-
   Runnable runDis;
-
-
-  public void setRunDis(Runnable runDis) {
-    this.runDis = runDis;
-  }
-
 
   public void ticktock() {
     timer = new Timer(500, new ActionListener() {
@@ -51,58 +44,32 @@ public class Ticktock {
     });
   }
 
+  public void setRunDis(Runnable runDis) {
+    this.runDis = runDis;
+  }
+
+//  GETTERS AND SETTERS
   public Timer getTimer() {
     return timer;
   }
-
   public void setTimer(Timer timer) {
     this.timer = timer;
   }
-
   public int getSeconds() {
     return seconds;
   }
-
   public void setSeconds(int seconds) {
     this.seconds = seconds;
   }
-
   public int getMinutes() {
     return minutes;
   }
-
   public void setMinutes(int minutes) {
     this.minutes = minutes;
   }
-
-  public String getDoubleDigitSeconds() {
-    return doubleDigitSeconds;
-  }
-
-  public void setDoubleDigitSeconds(String doubleDigitSeconds) {
-    this.doubleDigitSeconds = doubleDigitSeconds;
-  }
-
-  public String getDoubleDigitMinutes() {
-    return doubleDigitMinutes;
-  }
-
-  public void setDoubleDigitMinutes(String doubleDigitMinutes) {
-    this.doubleDigitMinutes = doubleDigitMinutes;
-  }
-
-  public DecimalFormat getdFormat() {
-    return dFormat;
-  }
-
-  public void setdFormat(DecimalFormat dFormat) {
-    this.dFormat = dFormat;
-  }
-
   public JLabel getOxygenTimeLeftLabel() {
     return oxygenTimeLeftLabel;
   }
-
   public void setOxygenTimeLeftLabel(JLabel oxygenTimeLeftLabel) {
     this.oxygenTimeLeftLabel = oxygenTimeLeftLabel;
   }
