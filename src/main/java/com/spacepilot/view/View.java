@@ -18,7 +18,7 @@ public class View {
   public static String printOutOfFuelDeath = "<html><center><font size='30'><font color=C0C0C0>Your ship ran out of fuel mid flight...<br>Better luck in your next life!<br></font></center></html>";
   public static String printOutOfHealthDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of health...<br>Better luck in your next life!<br></font></center></html>";
   public static String printOutOfTimeDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of oxygen...<br>Better luck in your next life!<br></font></center></html>";
-  public static String printCrashIntoSunDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of health...<br>Better luck in your next life!<br></font></center></html>";
+  public static String printCrashIntoSunDeath = "<html><center><font size='30'><font color=C0C0C0>You were too ambitious and flew into the sun...<br>Better luck in your next life!<br></font></center></html>";
 
 
   public static void consoleToGUI(Gui gui) {
