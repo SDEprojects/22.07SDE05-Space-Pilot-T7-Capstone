@@ -7,13 +7,9 @@ import com.spacepilot.model.Ticktock;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
@@ -30,8 +26,6 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
 public class Gui {
@@ -329,22 +323,15 @@ public class Gui {
     planetIcons(track4B, "images/Track4.png", 550, 450, 400, 75, 400, 75);
 //exits back to main screen
     planetIcons(exitMenuBtn, "images/Return.png", 195, 600, 600, 150, 600, 150);
-    exitMenuBtn.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        showMain();
-      }
-    });
+    exitMenuBtn.addActionListener(e -> showMain());
     //slider is implemented to adjust volume up and down for current background music
-    slider.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
+    slider.addChangeListener(e -> {
 
-        currentVolume = Music.currentVolume();
-        currentVolume = slider.getValue();
-        gainControl = Music.gainControl();
-        gainControl.setValue(currentVolume);
+      currentVolume = Music.currentVolume();
+      currentVolume = slider.getValue();
+      gainControl = Music.gainControl();
+      gainControl.setValue(currentVolume);
 
-      }
     });
     sliderPanel.setBounds(550, 200, 400, 25);
     sliderPanel.setBackground(Color.black);
@@ -409,35 +396,25 @@ public class Gui {
     chaChaRealSmooth(unloadBtn, "unload", false);
     chaChaRealSmooth(refuelBtn, "refuel", false);
     chaChaRealSmooth(repairBtn, "repair", false);
-    helpBtn.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        showHelpScreenBtn();
-        controllerField.stopTimer();
-      }
+    helpBtn.addActionListener(e -> {
+      showHelpScreenBtn();
+      controllerField.stopTimer();
     });
     chaChaRealSmooth(interactBtn, "interact", false);
     //Event Listener for menu button to open new window w/menu options
-    menuBtn.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        showMenu();
-        controllerField.stopTimer();
-      }
+    menuBtn.addActionListener(e -> {
+      showMenu();
+      controllerField.stopTimer();
     });
-    mapBtn.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        showMap();
-        chaChaRealSmooth(mapBtn, "go orbit", true);
-        currentPlanetLabel.setText(
-            "<html>&emsp Current Location: <font color=#990000>Orbit</font></html>");
-        controllerField.updateFuel();
-        warningLabel.setVisible(false);
-      }
+    mapBtn.addActionListener(e -> {
+      showMap();
+      chaChaRealSmooth(mapBtn, "go orbit", true);
+      currentPlanetLabel.setText(
+          "<html>&emsp Current Location: <font color=#990000>Orbit</font></html>");
+      controllerField.updateFuel();
+      warningLabel.setVisible(false);
     });
-    mainBtn.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        showMain();
-      }
-    });
+    mainBtn.addActionListener(e -> showMain());
 
     rightSidePanel.add(controlPanel);
     rightSidePanel.add(inventoryPanel);
@@ -595,18 +572,8 @@ deathStatement();
     titleScreenPanel.add(titleBtnPanel);
 
     //Add btn listeners
-    startBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        showBackgroundScreen();
-      }
-    });
-    continueBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        controllerField.textParser("continue");
-      }
-    });
+    startBtn.addActionListener(e -> showBackgroundScreen());
+    continueBtn.addActionListener(e -> controllerField.textParser("continue"));
   }
   public void createBackgroundScreen() {
     backgroundScreenPanel = new JPanel();
@@ -642,12 +609,7 @@ deathStatement();
 
 
     //Add btn listeners
-    continueBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        showHelpScreen();
-      }
-    });
+    continueBtn.addActionListener(e -> showHelpScreen());
   }
   public void createHelpScreen() {
     //Create components
@@ -725,12 +687,7 @@ deathStatement();
     backgroundLabel.setBounds(0, 0, 1140, 900);
     //Creating menu buttons
     JButton soundSettingsBtn = new JButton();
-    soundSettingsBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        showSoundSettings();
-      }
-    });
+    soundSettingsBtn.addActionListener(e -> showSoundSettings());
     planetIcons(soundSettingsBtn, "images/Sound.png", 195, 75, 600, 150, 600, 150);
     JButton saveGameBtn = new JButton();
     planetIcons(saveGameBtn, "images/Save.png", 195, 250, 600, 150, 600, 150);
@@ -740,11 +697,7 @@ deathStatement();
     chaChaRealSmooth(quitGameBtn, "quit", false);
     JButton exitMenuBtn = new JButton();
     planetIcons(exitMenuBtn, "images/Return.png", 195, 600, 600, 150, 600, 150);
-    exitMenuBtn.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        showMain();
-      }
-    });
+    exitMenuBtn.addActionListener(e -> showMain());
     menuPanel.add(soundSettingsBtn); //Adding all buttons to menu frame
     menuPanel.add(saveGameBtn);
     menuPanel.add(quitGameBtn);
@@ -767,13 +720,10 @@ deathStatement();
     //    creates sun btn, icon, and functionality
     JButton sunBtn = new JButton();
     planetIcons(sunBtn, "images/Sun.png", 330, 200, 400, 380, 400, 400);
-    sunBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Music.playAudioFX("sounds/Explosion.wav");
-        youSuckLabel.setText(View.getPrintCrashIntoSunDeath());
-        showGameOverLoseScreen();
-      }
+    sunBtn.addActionListener(e -> {
+      Music.playAudioFX("sounds/Explosion.wav");
+      youSuckLabel.setText(View.getPrintCrashIntoSunDeath());
+      showGameOverLoseScreen();
     });
     //    creates earth btn, icon, and functionality
     JButton earthBtn = new JButton("Earth");
@@ -789,7 +739,6 @@ deathStatement();
     chaChaRealSmooth(marsBtn, "go mars", true);
 
     //CONSUMER TIPS
-//    marsBtn.addActionListener(e -> movePlanetsListenerConsumer.accept("mars"));
     //    creates mercury btn, icon, and functionality
     mercuryBtn = new JButton("Mercury");
     planetIcons(mercuryBtn, "images/Mercury.png", 230, 400, 60, 84, 60, 64);
@@ -918,15 +867,11 @@ deathStatement();
 
   }
   public void soundButtons(JButton btn, Consumer<String> musicMethod, String wavFile) {
-    btn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (wavFile != null) {
-          Music.setMusicMute(true);
-        }
-        musicMethod.accept(wavFile);
-
+    btn.addActionListener(e -> {
+      if (wavFile != null) {
+        Music.setMusicMute(true);
       }
+      musicMethod.accept(wavFile);
     });
   }
 
@@ -992,7 +937,6 @@ deathStatement();
 
     //Get earth background scene
     imageUI.showEarthScreen2();
-
     frame.setVisible(true);
 
     //starts the timer
@@ -1037,7 +981,6 @@ deathStatement();
   }
   public void showBackgroundScreen() {
     //Attach panels to the outermost Main Frame
-
     titleScreenPanel.setVisible(false);
 
     gameOverWinPanel.setVisible(false);
