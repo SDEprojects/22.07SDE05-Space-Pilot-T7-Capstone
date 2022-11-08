@@ -8,92 +8,72 @@ import javax.swing.Timer;
 
 public class Ticktock {
 
+//FIELDS
+  private Timer timer, healthTimer;
+  private int seconds;
+  private int minutes;
+  private String doubleDigitSeconds;
+  private String doubleDigitMinutes;
+  private DecimalFormat dFormat = new DecimalFormat("00");
+  private JLabel oxygenTimeLeftLabel;
+  private Boolean oxygenTickerLose = false;
+  Runnable runDis;
 
-  private static Timer timer;
-  private static int seconds;
-  private static int minutes;
-  private static String doubleDigitSeconds;
-  private static String doubleDigitMinutes;
-  private static DecimalFormat dFormat = new DecimalFormat("00");
-  private static JLabel oxygenTimeLeftLabel;
-
-  public static void ticktock() {
-    timer = new Timer(1000, new ActionListener() {
+  public void ticktock() {
+    timer = new Timer(500, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         seconds--;
+        if(minutes == 0 && seconds ==0){
+          oxygenTickerLose = true;
+          runDis.run();
+
+        }
         doubleDigitSeconds = dFormat.format(seconds);
         doubleDigitMinutes = dFormat.format(minutes);
-        oxygenTimeLeftLabel.setText("Oxygen Time Remaining: " +  doubleDigitMinutes + ":" + doubleDigitSeconds);
+        oxygenTimeLeftLabel.setText(String.format("<html>Oxygen Remaining: <font color=#990000>%s:%2s</font></html>", doubleDigitMinutes, doubleDigitSeconds));
 
         if (seconds == -1){
           seconds = 59;
           minutes --;
           doubleDigitSeconds = dFormat.format(seconds);
           doubleDigitMinutes = dFormat.format(minutes);
-          oxygenTimeLeftLabel.setText("Oxygen Time Remaining: " +  doubleDigitMinutes + ":" + doubleDigitSeconds);
+          oxygenTimeLeftLabel.setText(String.format("<html>Oxygen Remaining: <font color=#990000>%s:%2s</font></html>", doubleDigitMinutes, doubleDigitSeconds));
         }
-        if(minutes == 0 && seconds ==0){
-          timer.stop();
-        }
-
       }
     });
   }
-  public static Timer getTimer() {
+
+  public void setRunDis(Runnable runDis) {
+    this.runDis = runDis;
+  }
+
+//  GETTERS AND SETTERS
+  public Timer getTimer() {
     return timer;
   }
-
-  public static void setTimer(Timer timer) {
-    Ticktock.timer = timer;
+  public void setTimer(Timer timer) {
+    this.timer = timer;
   }
-
-  public static int getSeconds() {
+  public int getSeconds() {
     return seconds;
   }
-
-  public static void setSeconds(int seconds) {
-    Ticktock.seconds = seconds;
+  public void setSeconds(int seconds) {
+    this.seconds = seconds;
   }
-
-  public static int getMinutes() {
+  public int getMinutes() {
     return minutes;
   }
-
-  public static void setMinutes(int minutes) {
-    Ticktock.minutes = minutes;
+  public void setMinutes(int minutes) {
+    this.minutes = minutes;
   }
-
-  public static String getDoubleDigitSeconds() {
-    return doubleDigitSeconds;
-  }
-
-  public static void setDoubleDigitSeconds(String doubleDigitSeconds) {
-    Ticktock.doubleDigitSeconds = doubleDigitSeconds;
-  }
-
-  public static String getDoubleDigitMinutes() {
-    return doubleDigitMinutes;
-  }
-
-  public static void setDoubleDigitMinutes(String doubleDigitMinutes) {
-    Ticktock.doubleDigitMinutes = doubleDigitMinutes;
-  }
-
-  public static DecimalFormat getdFormat() {
-    return dFormat;
-  }
-
-  public static void setdFormat(DecimalFormat dFormat) {
-    Ticktock.dFormat = dFormat;
-  }
-
-  public static JLabel getOxygenTimeLeftLabel() {
+  public JLabel getOxygenTimeLeftLabel() {
     return oxygenTimeLeftLabel;
   }
-
-  public static void setOxygenTimeLeftLabel(JLabel oxygenTimeLeftLabel) {
-    Ticktock.oxygenTimeLeftLabel = oxygenTimeLeftLabel;
+  public void setOxygenTimeLeftLabel(JLabel oxygenTimeLeftLabel) {
+    this.oxygenTimeLeftLabel = oxygenTimeLeftLabel;
   }
-
+  public Boolean getOxygenTickerLose() {
+    return oxygenTickerLose;
+  }
 }

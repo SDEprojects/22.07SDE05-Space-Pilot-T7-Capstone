@@ -11,7 +11,7 @@
     "Aria"
   ],
   "arrayOfAstronautsOnPlanet": [],
-  "preReq": "gas mask",
-  "damageCondition": "poisonous gas",
+  "preReq": "Gas Mask",
+  "damageCondition": "Poisonous Gas",
   "item": null
 }

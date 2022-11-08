@@ -1,32 +1,26 @@
 package com.spacepilot.view;
 
-import static com.spacepilot.view.Gui.strandedAstronautsLabel;
 
 import com.google.gson.Gson;
 import com.spacepilot.Main;
-import com.spacepilot.controller.Controller;
 import com.spacepilot.model.GameText;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.util.List;
 import java.util.Random;
 
 public class View {
-
   public static GameText gameText;
-  public static final String ANSI_RESET = "\u001B[0m";
-  public static final String ANSI_BLUE = "\u001B[34m";
-  public static final String ANSI_RED = "\u001B[31m";
-  public static final String ANSI_GREEN = "\u001B[32m";
+  public static String printOutOfFuelDeath = "<html><center><font size='30'><font color=C0C0C0>Your ship ran out of fuel mid flight...<br>Better luck in your next life!<br></font></center></html>";
+  public static String printOutOfHealthDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of health...<br>Better luck in your next life!<br></font></center></html>";
+  public static String printOutOfTimeDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of oxygen...<br>Better luck in your next life!<br></font></center></html>";
+  public static String printCrashIntoSunDeath = "<html><center><font size='30'><font color=C0C0C0>You were too ambitious and flew into the sun...<br>Better luck in your next life!<br></font></center></html>";
+
 
   public static void consoleToGUI(Gui gui) {
-//    Gui gui = new Gui();
     System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
-//    gui.start();
   }
-
   public static void getGameTextJson() {
     // create a reader
     try (Reader reader = new InputStreamReader(
@@ -39,131 +33,93 @@ public class View {
     }
   }
 
-  public static void clearConsole() {
-    System.out.print("\033[H\033[2J");
-    System.out.flush();
+  public static void printPlanetArrivalMessage(String currentPlanet, String astronautsPresent, String danger){
+    System.out.printf("You've arrived at %1$s. You look around and see %2$s stranded astronauts here. Scouting for danger, you confirm there is %3$s!",
+        currentPlanet, astronautsPresent, danger);
   }
 
-  public static void printTitle() {
-    System.out.println(ANSI_BLUE);
-    for (String line : gameText.getTitle()) {
-      System.out.println(line);
-    }
-    System.out.println(ANSI_RESET);
-    System.out.println();
+  public static void printStationArrivalMessage(int startingRefuel, int remainingRefuel){
+    System.out.printf("You've arrived at the Space Station. You have %1$d refuels remaining out of %2$d.", remainingRefuel, startingRefuel);
   }
 
-  public static void printIntro() {
-    System.out.println();
-    for (String line : gameText.getIntroduction()) {
-      System.out.println(line);
-    }
-    System.out.println();
+  public static void printHurryUp() {
+    System.out.println("We have to move fast out there, my oxygen is limited on this rescue mission!\n\nTime to hop in and take off!");
   }
 
-  public static void printInstructions() {
-    System.out.println();
-    for (String line : gameText.getInstructions()) {
-      System.out.println(line);
-    }
-    System.out.println();
-  }
-
-  public static void printGameState(String planetName, int astrosOnPlanet, String itemOnPlanet, int shipHealth, int remainingAstros, int remainingDays
-,int numOfPassengersOnboard, int astrosOnEarth, List<String> currentInventory, double fuelLevel, int refuelsLeft, int repairs) {
-    if(itemOnPlanet == null){
-      itemOnPlanet = "No Item";
-    }
-
-    System.out.println();
-    System.out.println("Current Planet: " + planetName);
-    System.out.println("Astronauts on " + planetName + ": " + astrosOnPlanet);
-    System.out.println(planetName + "'s Inventory: " + itemOnPlanet);
-    System.out.println("Ship's Condition: " + shipHealth);
-    System.out.println("Astronauts Lost in Space: " + remainingAstros);
-    System.out.println("Number of Remaining Days: " + remainingDays);
-    System.out.println("Fuel: " + fuelLevel);
-    System.out.println("Refuels left: " + refuelsLeft);
-    System.out.println("Number of Passengers Onboard: " + numOfPassengersOnboard);
-    System.out.println("Passengers Returned Home: " + astrosOnEarth);
-    System.out.println("Current Inventory: " + currentInventory);
-    System.out.println("Number of Repairs left: " + repairs);
-    System.out.println();
-  }
-
-  public static void printUserInputPrompt(String prompt) {
-    System.out.println(prompt);
+  public static void textSpacing() {
+    System.out.println("\n\n\n\n");
   }
 
   public static void printLoadGameResult(boolean savedGameExists) {
     System.out.println();
     if (savedGameExists) {
-      System.out.println(ANSI_GREEN + "Previous game data successfully loaded" + ANSI_RESET);
+      System.out.println("Previous game data successfully loaded");
     } else {
-      System.out.println(ANSI_RED + "Failed - previous game data does not exist" + ANSI_RESET);
+      System.out.println("Failed - previous game data does not exist");
     }
     System.out.println();
   }
 
   public static void printSaveGameMessage() {
     System.out.println();
-    System.out.println(ANSI_BLUE + "SAVED GAME DATA" + ANSI_RESET);
+    System.out.println("SAVED GAME DATA");
     System.out.println();
   }
 
   public static void printSamePlanetAlert() {
     System.out.println();
-    System.out.println(ANSI_RED + "System: You are already there");
+    System.out.println("System: You are already there");
     System.out.println();
   }
 
   public static void printNoEngineerAlert() {
     System.out.println();
-    System.out.println(ANSI_RED + gameText.getNoEngineerOnBoardAlert() + ANSI_RESET);
+    System.out.println(gameText.getNoEngineerOnBoardAlert());
     System.out.println();
   }
 
   public static void printEventAlert(String event) {
     System.out.println();
     System.out.println(
-        ANSI_RED + "MISSION CONTROL: Your spacecraft has been damaged by " + event + ANSI_RESET);
+        "MISSION CONTROL: Your spacecraft has been damaged by " + event);
     System.out.println();
   }
 
-  public static void printDamageConditionAlert(String damageCondition, String planet, String preReq){
-    System.out.println();
+  public static void printPlanetDamageConditionAlert(String damageCondition, String planet, String preReq){
     System.out.println(
-        ANSI_RED + "MISSION CONTROL: When you landed on " + planet + ", your spacecraft was damaged by "
-            + damageCondition + ". You need to find the " + preReq + " to safely load the passengers here." + ANSI_RESET
+        "MISSION CONTROL: When you landed on " + planet + ", you noticed a "
+            + damageCondition + ". You need to find the " + preReq + " to get the astronauts out of here!"
+    );
+  }
+
+  public static void printAlienDamageConditionAlert(String damageCondition, String planet, String preReq){
+    System.out.println(
+        "MISSION CONTROL: You have angered the "
+            + damageCondition + "! You need to evacuate and find the " + preReq + " to get the astronauts out of here!"
     );
   }
 
   public static void printCantLoadWithoutPreReqAlert(String preReq){
     System.out.println();
     System.out.println(
-        ANSI_RED + "MISSION CONTROL: It is unsafe to load passengers on this planet without " + preReq + ANSI_RESET
+        "MISSION CONTROL: It is unsafe to load passengers on this planet without a " + preReq
     );
   }
 
-  public static void printDamageConditionAvoidedAlert(String preReq, String damageCondition){
+  public static void printAlienDestroyed(String preReq, String damageCondition){
     System.out.println();
-    System.out.println(ANSI_RED + "MISSION CONTROL: You used " + preReq + " to avoid damage from " + damageCondition + "! "
-        + "You are clear to load passengers." + ANSI_RESET);
+    System.out.println("MISSION CONTROL: You used the " + preReq + " and destroyed the " + damageCondition + "! "
+        + "You are clear to load the astronauts.");
   }
 
-  public static void printYouveGotAnEngineer() {
-    System.out.println(ANSI_GREEN + "You have got at least 1 engineer on board...\n"
-        + "and they've got the ability to repair the spacecraft!" + ANSI_RESET);
-  }
-
-  public static void printYouHaventGotAnEngineerOnBoard() {
-    System.out.println(ANSI_RED + "You don't have any engineers on board...\n"
-        + "thus, you cannot repair the spacecraft." + ANSI_RESET);
-  }
-
-  public static void printNPCDialoguePrompt() {
+  public static void printAlienBabyReturned(String preReq, String damageCondition){
     System.out.println();
-    System.out.println(ANSI_RED + "The passengers don't seem to be doing well..." + ANSI_RESET);
+    System.out.println("MISSION CONTROL: You returned the " + preReq + " to the " + damageCondition + "! "
+        + "You are clear to the astronauts..");
+  }
+
+  public static void newItemReceived(String item) {
+    System.out.println("The astronauts had a " + item + " with them, maybe I can use this to help rescue the others!");
   }
 
   public static void printNPCDialogue() {
@@ -172,93 +128,81 @@ public class View {
     System.out.println("Passenger: " + gameText.getNpcDialogue()[randomIntInArrayRange]);
   }
 
-  public static void printGameOverMessage(boolean userWon) {
-    System.out.println();
-    if (userWon) {
-      System.out.println();
-      System.out.println(ANSI_GREEN + gameText.getUserWon() + ANSI_RESET);
-    } else {
-      System.out.println();
-      System.out.println(ANSI_RED + gameText.getUserLost() + ANSI_RESET);
-    }
-  }
-
-  public static void printInvalidCommandAlert() {
-    System.out.println();
-    System.out.println(
-        ANSI_RED + "Invalid Command! Please use HELP command to see available commands"
-            + ANSI_RESET);
-    System.out.println();
-  }
-
   public static void printInvalidDestination() {
     System.out.println();
-    System.out.println(ANSI_RED + "Sorry, you cannot go there." + ANSI_RESET);
+    System.out.println("Sorry, you cannot go there.");
     System.out.println();
   }
 
   public static void printNoAstronautsToLoad() {
-    System.out.println(ANSI_RED + "There aren't any astronauts to rescue on this planet." + ANSI_RESET);
+    System.out.println("There aren't any astronauts to rescue on this planet.");
   }
 
   public static void printCannotRemovePeopleFromEarth() {
     System.out.println(
-        ANSI_RED + "All passengers dropped off on Earth must remain there, as planet Earth is their final destination." + ANSI_RESET);
+        "All passengers dropped off on Earth must remain there, as planet Earth is their final destination.");
   }
 
   public static void printYouCantUnloadPassengersIfCurrentPlanetNotEarth() {
-    System.out.println(ANSI_RED + "Passengers can only be dropped off on Earth." + ANSI_RESET);
+    System.out.println("Passengers can only be dropped off on Earth.");
   }
 
   public static void printStationHasNoMoreFuelAvailable() {
-    System.out.println(ANSI_RED + "Oh no! The station is out of fuel... I hope I can get back!" + ANSI_RESET);
+    System.out.println("Oh no! The station is out of fuel... I hope I can still get everyone back!");
   }
 
   public static void printSpacecraftHasBeenFilled() {
-    System.out.println(ANSI_GREEN + "Your ship has been refueled! Time to go save more astronauts!"
-        + "" + ANSI_RESET);
+    System.out.println("Your ship has been refueled! Time to go save more astronauts!"
+        + "");
   }
 
   public static void printYourSpacecraftIsOutOfFuelAndYouLose() {
-    System.out.println(ANSI_RED + "You left the planet and ran out of fuel mid flight. You are now stranded in space and slowly starve to death.\n\nGAME OVER"
-        + "" + ANSI_RESET);
+    System.out.println("You left the planet and ran out of fuel mid flight. You are now stranded in space and slowly starve to death.\n\nGAME OVER"
+        + "");
   }
 
   public static void printYouCanOnlyRefuelAtTheStation() {
-    System.out.println(ANSI_RED + "You can only refuel your ship at the Station!" + ANSI_RESET);
+    System.out.println("You can only refuel your ship at the Station!");
   }
   public static void printYourFuelTankIsFullAlready() {
-    System.out.println(ANSI_RED + "Your spacecraft is already full." + ANSI_RESET);
+    System.out.println("Your spacecraft is already full.");
   }
 
   public static void printYourHealthisFullAlready() {
-    System.out.println(ANSI_RED + "Your health is already full." + ANSI_RESET);
+    System.out.println("Your health is already full.");
   }
 
   public static void printRepair() {
     System.out.println();
-    System.out.println(ANSI_GREEN + "Spacecraft repair was successful." + ANSI_RESET);
+    System.out.println("Spacecraft repair was successful.");
     System.out.println();
   }
 
   public static void printRepairLimit() {
-    System.out.println(ANSI_RED + "Sorry, you cannot use the repair command\n"
-        + "more than twice per round of the game." + ANSI_RESET);
+    System.out.println("You are out of repairs!.");
   }
 
-  public static void printTheVolumeNumberDoesNotExist() {
-    System.out.println(ANSI_RED + "That volume number does not exist, please enter a volume number of '0-10'." + ANSI_RESET);
+  public static void tellUserToInteractToClearDamageCondition(String preReq, String damageCondition){
+    System.out.println("Use " + preReq + " on " + damageCondition + " to clear the way for loading astronauts!");
   }
 
-  public static void printMusicOnlyOnAndOffCommandsAreAllowed() {
-    System.out.println(ANSI_RED + "That command is invalid, please enter 'Music On' or 'Music Off'." + ANSI_RESET);
+  public static void cantUnloadOnEarthWithoutAllAstronauts(int remainingAstronauts){
+    System.out.println("You can't unload on Earth until you've rescued all astronauts! There are " + remainingAstronauts + " remaining.");
   }
 
-  public static void printFXOnlyOnAndOffCommandsAreAllowed() {
-    System.out.println(ANSI_RED + "That command is invalid, please enter 'FX On' or 'FX Off'." + ANSI_RESET);
+  public static String getPrintOutOfFuelDeath() {
+    return printOutOfFuelDeath;
   }
 
-  public static void printTheTrackNumberDoesNotExist() {
-    System.out.println(ANSI_RED + "That track number does not exist. please enter a track number '1-4'" + ANSI_RESET);
+  public static String getPrintOutOfHealthDeath() {
+    return printOutOfHealthDeath;
+  }
+
+  public static String getPrintOutOfTimeDeath() {
+    return printOutOfTimeDeath;
+  }
+
+  public static String getPrintCrashIntoSunDeath() {
+    return printCrashIntoSunDeath;
   }
 }

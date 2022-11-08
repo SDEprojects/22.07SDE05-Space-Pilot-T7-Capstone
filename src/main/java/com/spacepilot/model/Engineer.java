@@ -10,8 +10,7 @@ public class Engineer extends Person {
     super(name, currentPlanet.getName());
   }
 
-  public static void repairSpacecraft(Spacecraft spacecraft) {
-//    int currentScHealth = spacecraft.getHealth();
+  public void repairSpacecraft(Spacecraft spacecraft) {
     spacecraft.setHealth(100);
   }
 

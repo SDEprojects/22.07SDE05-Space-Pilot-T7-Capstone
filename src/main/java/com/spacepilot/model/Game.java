@@ -4,28 +4,31 @@ import java.util.List;
 
 public class Game {
 
+  //FIELDS
   private boolean isOver;
-  private int remainingDays;
   private Spacecraft spacecraft;
   private int totalNumberOfAstronauts;
   private List<Planet> planets;
+  private int startingRefuels;
+  private int remainingRefuels;
+  private int startingRepairs;
+  private int remainingRepairs;
 
 
+  //METHODS
+  public int calculateRemainingAstronautsViaTotalNumOfAstronauts() {
+    int totalNumberOfAstronauts = getTotalNumberOfAstronauts()-spacecraft.getPassengers().size();
+    return totalNumberOfAstronauts;
+  }
 
+
+  //GETTERS AND SETTERS
   public boolean isOver() { // Getter for isOver
     return isOver;
   }
 
   public void setOver(boolean over) {
     isOver = over;
-  }
-
-  public int getRemainingDays() {
-    return remainingDays;
-  }
-
-  public void setRemainingDays(int remainingDays) {
-    this.remainingDays = remainingDays;
   }
 
   public Spacecraft getSpacecraft() {
@@ -52,12 +55,35 @@ public class Game {
     this.planets = planets;
   }
 
-  public int calculateRemainingAstronautsViaTotalNumOfAstronauts() {
-    int totalNumberOfAstronauts = getTotalNumberOfAstronauts()-spacecraft.getPassengers().size();
-    return totalNumberOfAstronauts;
+  public int getStartingRefuels() {
+    return startingRefuels;
   }
 
+  public void setStartingRefuels(int startingRefuels) {
+    this.startingRefuels = startingRefuels;
+  }
 
+  public int getRemainingRefuels() {
+    return remainingRefuels;
+  }
 
+  public void setRemainingRefuels(int remainingRefuels) {
+    this.remainingRefuels = remainingRefuels;
+  }
 
+  public int getStartingRepairs() {
+    return startingRepairs;
+  }
+
+  public void setStartingRepairs(int startingRepairs) {
+    this.startingRepairs = startingRepairs;
+  }
+
+  public int getRemainingRepairs() {
+    return remainingRepairs;
+  }
+
+  public void setRemainingRepairs(int remainingRepairs) {
+    this.remainingRepairs = remainingRepairs;
+  }
 }

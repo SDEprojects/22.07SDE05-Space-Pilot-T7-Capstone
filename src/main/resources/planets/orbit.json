@@ -1,0 +1,17 @@
+{
+  "name": "Orbit",
+  "event": null,
+  "gravity": 9,
+  "radius": 6300,
+  "mass": 100,
+  "names": [
+    "Bob",
+    "Michelle",
+    "Chad",
+    "Aria"
+  ],
+  "arrayOfAstronautsOnPlanet": [],
+  "preReq": null,
+  "damageCondition": null,
+  "item": null
+}
