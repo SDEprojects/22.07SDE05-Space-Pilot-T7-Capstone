@@ -52,7 +52,7 @@ public class Gui {
   private JPanel titleScreenPanel, titleBtnPanel, controlPanel, statusPanel, centralDisplayPanel, inventoryPanel, rightSidePanel,
       planetStatusPanel, menuPanel, soundPanel, mapPanel, helpScreenPanel, helpBtnPanel, backgroundScreenPanel;
   private JLabel titleLabel, currentPlanetLabel, damageConditionLabel, itemsOnPlanetLabel,
-      numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel, warningLabel, helpLabel;
+      numberOfAstronautsOnPlanetLabel, strandedAstronautsLabel, inventoryLabel, repairsLeftLabel, warningLabel, helpLabel, youSuckLabel;
   private JButton continueBtn, startBtn, sunBtn, stationBtn, mapBtn, menuBtn, repairBtn, helpBtn, loadBtn, unloadBtn, refuelBtn, interactBtn, godModeBtn, mainBtn, godStarBtn;
   private Boolean warningBoolean = true;
 
@@ -563,6 +563,7 @@ public class Gui {
   }
 
   public void createGameOverLoseScreen() {
+deathStatement();
     gameOverLosePanel.setVisible(false);
 //    removeOtherPanelsToShowGameOverLoseScreen();
 //    showGameOverLoseScreen();
@@ -578,7 +579,10 @@ public class Gui {
     JLabel gameOverLabel = new JLabel(
         new ImageIcon(getClass().getClassLoader().getResource("game_over_PNG56.png")),
         SwingConstants.CENTER);
-    JLabel youSuckLabel = new JLabel("YOU SUCK LOSER!", SwingConstants.CENTER);
+    youSuckLabel = new JLabel("", SwingConstants.CENTER);
+    Dimension loseStatement = new Dimension();
+   loseStatement.setSize(450, 200);
+    youSuckLabel.setPreferredSize(loseStatement);
 
     youLostLabel.setFont(titleFont);
     youLostLabel.setForeground(Color.lightGray);
@@ -826,7 +830,6 @@ public class Gui {
     backgroundLabel.setIcon(
         new ImageIcon(getClass().getClassLoader().getResource("images/Space.jpg")));
     backgroundLabel.setBounds(0, 0, 1140, 900);
-
     //Creating maps buttons to go to respective planets below
 
     //    creates sun btn, icon, and functionality
@@ -836,6 +839,7 @@ public class Gui {
       @Override
       public void actionPerformed(ActionEvent e) {
         Music.playAudioFX("sounds/Explosion.wav");
+        youSuckLabel.setText(View.getPrintCrashIntoSunDeath());
         showGameOverLoseScreen();
       }
     });
@@ -1103,6 +1107,7 @@ public class Gui {
   }
 
   public void showGameOverLoseScreen() {
+    deathStatement();
     statusPanel.setVisible(false);
     centralDisplayPanel.setVisible(false);
     frame.remove(centralDisplayPanel);
@@ -1273,6 +1278,16 @@ public class Gui {
     label.setForeground(Color.lightGray);
   }
 
+  public void deathStatement() {
+    if (shipHealthBar.getValue() < 2) {
+      youSuckLabel.setText(View.getPrintOutOfHealthDeath());
+    } else if (fuelLevelBar.getValue() < 2) {
+      youSuckLabel.setText(View.getPrintOutOfFuelDeath());
+    } else if (ticktock.getOxygenTickerLose()) {
+      youSuckLabel.setText(View.getPrintOutOfTimeDeath());
+    }
+  }
+
   //  GETTERS AND SETTERS
 
   public JProgressBar getFuelLevelBar() {
@@ -1306,6 +1321,7 @@ public class Gui {
   public void setInitialGame(Boolean initialGame) {
     isInitialGame = initialGame;
   }
+
 }
 
 

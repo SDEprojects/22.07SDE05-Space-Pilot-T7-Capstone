@@ -15,6 +15,12 @@ public class View {
 
   public static GameText gameText;
 
+  public static String printOutOfFuelDeath = "<html><center><font size='30'><font color=C0C0C0>Your ship ran out of fuel mid flight...<br>Better luck in your next life!<br></font></center></html>";
+  public static String printOutOfHealthDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of health...<br>Better luck in your next life!<br></font></center></html>";
+  public static String printOutOfTimeDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of oxygen...<br>Better luck in your next life!<br></font></center></html>";
+  public static String printCrashIntoSunDeath = "<html><center><font size='30'><font color=C0C0C0>You ran out of health...<br>Better luck in your next life!<br></font></center></html>";
+
+
   public static void consoleToGUI(Gui gui) {
     System.setOut(new PrintStream(new RedirectingOutputStream(gui), true));
   }
@@ -177,5 +183,21 @@ public class View {
 
   public static void cantUnloadOnEarthWithoutAllAstronauts(int remainingAstronauts){
     System.out.println("You can't unload on Earth until you've rescued all astronauts! There are " + remainingAstronauts + " remaining.");
+  }
+
+  public static String getPrintOutOfFuelDeath() {
+    return printOutOfFuelDeath;
+  }
+
+  public static String getPrintOutOfHealthDeath() {
+    return printOutOfHealthDeath;
+  }
+
+  public static String getPrintOutOfTimeDeath() {
+    return printOutOfTimeDeath;
+  }
+
+  public static String getPrintCrashIntoSunDeath() {
+    return printCrashIntoSunDeath;
   }
 }
